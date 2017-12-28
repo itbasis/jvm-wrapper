@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+
+source ./jdk_scripts/common.sh
+source ./jdk_scripts/latest.sh
+
+OS=$(build_os)
+ARCHIVE_EXT=$(build_archive_extension)
+JVM_NAME=$(build_jdk_name)
+
+if [[ "${OS}" == 'darwin' ]]; then
+	source ./jdk_scripts/os_darwin.sh
+fi
+
+JDK_HOME=$(eval "calculate_jdk_home_${OS}")
+
+
+if [[ ! -f "${JVMW_HOME}/.${JVM_NAME}" ]]; then
+	update_jvm
+else
+	prev_date=$(date -jf "%F %R" "$(cat "${JVMW_HOME}/.${JVM_NAME}")" +%j)
+	curr_date=$(date +%j)
+	if [[ ${curr_date} -gt ${prev_date} ]]; then
+		update_jvm
+	fi
+fi
+
+# execute
+if [[ "$1" == 'info' ]]; then
+	echo "JDK_HOME=${JDK_HOME}"
+	echo "JAVA_HOME=${JDK_HOME}"
+else
+	eval "${JDK_HOME}/bin/$1" "${@:2}"
+fi

@@ -1,0 +1,12 @@
+# Created by .ignore support plugin (hsz.mobi)
+
+.DS_Store
+
+build/
+
+.idea/
+!.idea/externalDependencies.xml
+!.idea/vcs.xml
+!.idea/bashsupport_project.xml
+!.idea/runConfigurations/
+!.idea/dictionaries/
