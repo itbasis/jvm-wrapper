@@ -4,22 +4,23 @@ before_install:
   make clean
 
 script:
-  make check
-  make build
+  - make check
+  - make build
 
 matrix:
-  - os: osx
-    osx_image: xcode9.1
-    before_install:
-      - brew update
-      - brew install shellcheck
-  - os: osx
-    osx_image: xcode8
-    before_install:
-      - brew update
-      - brew install shellcheck
-  - os: osx
-    osx_image: xcode7.3
-    before_install:
-      - brew update
-      - brew install shellcheck
+  include:
+    - os: osx
+      osx_image: xcode9.1
+      before_install:
+        - brew update
+        - brew install shellcheck
+    - os: osx
+      osx_image: xcode8
+      before_install:
+        - brew update
+        - brew install shellcheck
+    - os: osx
+      osx_image: xcode7.3
+      before_install:
+        - brew update
+        - brew install shellcheck
