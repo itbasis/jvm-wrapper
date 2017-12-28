@@ -4,7 +4,7 @@
 
 build/
 
-.idea/
+.idea/*
 !.idea/externalDependencies.xml
 !.idea/vcs.xml
 !.idea/bashsupport_project.xml
