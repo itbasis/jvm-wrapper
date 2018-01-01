@@ -13,17 +13,21 @@ matrix:
       before_install:
         - brew update
         - brew install shellcheck
+        - python2 -m pip install pycodestyle
     - os: osx
       osx_image: xcode8.3
       before_install:
         - brew update
         - brew install shellcheck
+        - python2 -m pip install pycodestyle
     - os: osx
       osx_image: xcode7.3
       before_install:
         - brew update
         - brew install shellcheck
+        - python2 -m pip install pycodestyle
       osx_image: xcode6.4
       before_install:
         - brew update
         - brew install shellcheck
+        - python2 -m pip install pycodestyle
