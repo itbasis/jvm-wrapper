@@ -9,7 +9,7 @@ import shlex
 # noinspection PyProtectedMember
 import sys
 from glob import glob
-from os import environ, path, linesep, getcwd
+from os import environ, path, linesep, getcwd, makedirs
 from shutil import move, rmtree
 # noinspection PyProtectedMember
 from subprocess import CalledProcessError, PIPE, Popen, check_call, list2cmdline
@@ -288,6 +288,8 @@ class JdkWrapper:
     }
 
     def __init__(self):
+        if not path.isdir(self.home):
+            makedirs(self.home)
         self.__properties_load_from_file(self.home)
         self.__properties_load_from_file('.')
         self.__properties_load_from_environ()
