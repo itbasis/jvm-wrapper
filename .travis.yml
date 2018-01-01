@@ -1,12 +1,13 @@
 sudo: false
+language: python
 
 install:
   - make clean
   - if [ "$TRAVIS_OS_NAME" = "osx" ]; then source ./travis_scripts/before_install.sh ; fi
+  - python --version
 
 script:
   - make check
-  - set +e
 
 matrix:
   include:
