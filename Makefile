@@ -13,6 +13,7 @@ validate:
 check: clean validate
 	JDK_FAMILY='8' CHECK_JDK_VERSION='1.8.0' ./tests.sh
 	JVMW_FILE='jvmw.8.properties' CHECK_JDK_VERSION='1.8.0' ./tests.sh || { rm jvmw.properties; exit $$?; }
+	JVMW_FILE='jvmw.8u152.properties' CHECK_JDK_VERSION='1.8.0_152' ./tests.sh || { rm jvmw.properties; exit $$?; }
 
 	JDK_FAMILY='9' CHECK_JDK_VERSION='9.0.1' ./tests.sh
 	JVMW_FILE='jvmw.9.properties' CHECK_JDK_VERSION='9.0.1' ./tests.sh || { rm jvmw.properties; exit $$?; }

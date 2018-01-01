@@ -26,6 +26,7 @@ matrix:
         - brew update
         - brew install shellcheck
         - python2 -m pip install pycodestyle
+    - os: osx
       osx_image: xcode6.4
       before_install:
         - brew update

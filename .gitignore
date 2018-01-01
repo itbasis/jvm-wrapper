@@ -5,6 +5,7 @@
 build/
 jvmw.properties
 *.log
+tmp.*
 
 .idea/*
 !.idea/externalDependencies.xml

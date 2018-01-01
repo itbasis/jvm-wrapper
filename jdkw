@@ -5,17 +5,17 @@ import hashlib
 import logging
 import platform
 import re
-import shlex
 # noinspection PyProtectedMember
 import sys
 from glob import glob
-from os import environ, path, linesep, getcwd, makedirs
+from os import environ, getcwd, linesep, makedirs, path, remove
 from shutil import move, rmtree
 # noinspection PyProtectedMember
 from subprocess import CalledProcessError, PIPE, Popen, check_call, list2cmdline
 from tempfile import mkdtemp
 from urllib2 import urlopen
 
+# noinspection PyProtectedMember
 from pip._vendor import requests
 # noinspection PyProtectedMember
 from pip._vendor.requests.models import ITER_CHUNK_SIZE
@@ -148,11 +148,21 @@ class JDKDownloader:
             return archive_url_
 
         try:
-            latest_page = self.__get_latest_page()
-            if latest_page:
-                page_jdk = urlopen('http://www.oracle.com' + latest_page).read()
-                mask = 'http://.*?\.' + self.__params['ARCHIVE_EXTENSION']
-                archive_url_ = re.search('(' + mask + ')', page_jdk).group(1)
+            jdk_page = self.__get_jdk_page()
+            if jdk_page:
+                page_jdk = urlopen('http://www.oracle.com' + jdk_page).read()
+
+                mask = 'http://.*?' + JdkWrapper.jdk_full_version() + '.*?\.' + self.__params['ARCHIVE_EXTENSION']
+                logging.debug('mask: \'' + mask + '\'')
+
+                re_search = re.search('(' + mask + ')', page_jdk)
+                if not re_search:
+                    logging.error('not found url')
+                    archive_url_ = None
+                    return archive_url_
+
+                archive_url_ = re_search.group(1)
+                logging.debug('archive_url: ' + archive_url_)
                 self.__params['ARCHIVE_SHA256'] = re.search(mask + '.*?"SHA256":"(.*?)"', page_jdk).group(1)
         finally:
             self.__params['ARCHIVE_URL'] = archive_url_
@@ -201,7 +211,7 @@ class JDKDownloader:
             JDKDownloader.__params['ARCHIVE_FILE'] = archive_file_
 
     @staticmethod
-    def __get_latest_page():
+    def __get_jdk_page():
         page_index = urlopen('http://www.oracle.com/technetwork/java/javase/downloads/index.html').read()
         try:
             return re.search('name="JDK' + JdkWrapper.jvm_family() + '".*?"(/technetwork.*?)"', page_index).group(1)
@@ -222,6 +232,7 @@ class JdkUnpacker:
             self.__darwin_detach(show_error=False)
             self.__darwin_attach()
             self.__darwin_pkg_unpack()
+            remove(JDKDownloader.archive_file())
         finally:
             self.__darwin_detach()
 
@@ -281,7 +292,9 @@ class JdkWrapper:
     _property_file = 'jvmw.properties'
     _params = {
         'JDK_FAMILY':         _default_properties['JDK_FAMILY'],
+        'JDK_UPDATE_VERSION': None,
         'JDK_FULL_NAME':      None,
+        'JDK_FULL_VERSION':   None,
         'JDK_HOME':           None,
         'JAVA_HOME':          None,
         'JVM_HOME_ROOT_NAME': None,
@@ -304,6 +317,10 @@ class JdkWrapper:
         return JdkWrapper.instance()._params['JDK_FULL_NAME']
 
     @staticmethod
+    def jdk_full_version():
+        return JdkWrapper.instance()._params['JDK_FULL_VERSION']
+
+    @staticmethod
     def jdk_home():
         return JdkWrapper.instance()._params['JDK_HOME']
 
@@ -314,18 +331,20 @@ class JdkWrapper:
 
     def __properties_load_from_file(self, root_dir):
         file_path = path.join(root_dir, self._property_file)
-        logging.debug('file_path: ' + file_path)
         if not path.isfile(file_path):
-            logging.info('not found: ' + file_path)
+            logging.info('not found properties file: ' + file_path)
             return
+        logging.info('loading properties file: ' + file_path)
         split_properties = [line.split("=") for line in open(file_path)]
         for key, value in split_properties:
-            logging.debug(key + ' = ' + value)
+            value = value.replace('\n', '').replace('\r', '')
             if len(value) > 0:
                 self._params[key] = value
 
     def __properties_calculate(self):
-        self._params['JDK_FULL_NAME'] = 'jdk' + self._params['JDK_FAMILY']
+        self._params['JDK_FULL_VERSION'] = self._params['JDK_FAMILY'] \
+                                           + (('u' + self._params['JDK_UPDATE_VERSION']) if self._params['JDK_UPDATE_VERSION'] else '')
+        self._params['JDK_FULL_NAME'] = 'jdk' + self._params['JDK_FULL_VERSION']
         self._params['JDK_HOME'] = path.join(self.home,
                                              self._params['JDK_FULL_NAME'],
                                              ('Home' if OS.is_darwin() else '')
@@ -336,6 +355,7 @@ class JdkWrapper:
     def __has_update(self):
         if not path.isfile(self._params['JVM_EXEC']):
             return True
+
         return False
 
     def update(self):
