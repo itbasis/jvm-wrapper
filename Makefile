@@ -6,8 +6,6 @@ clean:
 	rm -Rf ./build/ jvmw.properties
 
 validate:
-	command -v travis || gem install travis --no-rdoc --no-ri
-	travis lint ./.travis.yml
 	shellcheck ./tests.sh
 	pycodestyle ./jdkw
 
