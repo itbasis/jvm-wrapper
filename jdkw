@@ -62,7 +62,7 @@ class OS:
     @staticmethod
     def cmd_exists(cmds):
         for cmd in cmds:
-            logging.debug('check exists command: ' + cmd)
+            logging.debug('check exists system command: ' + cmd)
             result = commands.getstatusoutput(' '.join([
                 'command',
                 '-v',
@@ -88,6 +88,9 @@ class OS:
     def run_large_command(arguments, environment=environ):
         cwd_ = getcwd()
         logging.debug('cwd=' + cwd_)
+        if not path.isfile(arguments[0]):
+            sys.stderr.write('not found: ' + arguments[0])
+            exit(1)
         process = Popen(args=arguments, stdout=PIPE, stderr=PIPE, env=environment, cwd=cwd_)
         while True:
             output = process.stdout.readline()
@@ -188,10 +191,12 @@ class JDKDownloader:
         if not JDKDownloader.__params['ARCHIVE_URL']:
             JDKDownloader.instance().get_archive_url()
 
-        archive_url_ = str(JDKDownloader.__params['ARCHIVE_URL'])
+        archive_url_ = JDKDownloader.__params['ARCHIVE_URL']
         archive_file_ = path.join(JdkWrapper.home,
                                   JdkWrapper.jdk_full_name() + '.' + JDKDownloader.__params['ARCHIVE_EXTENSION']
                                   )
+        if archive_url_ is None:
+            return False
         try:
             archive_sha256_ = JDKDownloader.__calculate_sha256(archive_file_)
             if path.isfile(archive_file_) and archive_sha256_ == JDKDownloader.__params['ARCHIVE_SHA256']:
@@ -365,7 +370,7 @@ class JdkWrapper:
     @staticmethod
     def __update():
         if not JDKDownloader.download():
-            logging.error('can\'t file: ' + JDKDownloader.instance().get_archive_url())
+            logging.error('can\'t file: ' + str(JDKDownloader.instance().get_archive_url()))
             return
         JdkUnpacker().unpack()
 

@@ -11,9 +11,9 @@ function check_output() {
 	output=$("${JVMW}" $1 2>&1)
 	if [[ "${output}" != *"$2"* ]]; then
 		>&2 echo --- check \'"$1"\' contains \'"$2"\' ---
-		echo --- capture output :: begin ---
-		echo "${output}"
-		echo --- capture output :: end ---
+		>&2 echo --- capture output :: begin ---
+		>&2 echo "${output}"
+		>&2 echo --- capture output :: end ---
 		exit 1
 	fi
 }
@@ -21,8 +21,6 @@ function check_output() {
 #
 if [ -f "samples/${JVMW_FILE}" ]; then
 	cp "samples/${JVMW_FILE}" jvmw.properties
-else
-	touch jvmw.properties
 fi
 
 #
@@ -36,9 +34,10 @@ cmd='javac -d ./build/test test/Test.java'
 output=$("${JVMW}" ${cmd} 2>&1)
 if [ -n "${output}" ]; then
 	>&2 echo --- check \'"${cmd}"\' ---
-	echo --- capture output :: begin ---
-	echo "${output}"
-	echo --- capture output :: end ---
+	>&2 echo --- capture output :: begin ---
+	>&2 echo "${output}"
+	>&2 echo --- capture output :: end ---
+	rm -Rf ./build/test/
 	exit 1
 fi
 
