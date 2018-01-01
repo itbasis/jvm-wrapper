@@ -3,6 +3,8 @@
 .DS_Store
 
 build/
+jvmw.properties
+*.log
 
 .idea/*
 !.idea/externalDependencies.xml
@@ -10,3 +12,4 @@ build/
 !.idea/bashsupport_project.xml
 !.idea/runConfigurations/
 !.idea/dictionaries/
+!.idea/codeStyles/

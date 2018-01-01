@@ -1,10 +1,17 @@
 <component name="ProjectDictionaryState">
   <dictionary name="victor.alenkov">
     <words>
+      <w>asctime</w>
+      <w>cmds</w>
       <w>cpio</w>
       <w>hdiutil</w>
+      <w>jdkw</w>
       <w>jvmw</w>
+      <w>levelname</w>
+      <w>lineno</w>
+      <w>mountpoint</w>
       <w>oraclelicense</w>
+      <w>pycodestyle</w>
       <w>securebackup</w>
       <w>shellcheck</w>
       <w>technetwork</w>
