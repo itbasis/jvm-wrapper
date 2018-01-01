@@ -1,8 +1,10 @@
 sudo: false
 
-install:
+before_install:
   - make clean
-  - if [ "$TRAVIS_OS_NAME" = "osx" ]; then source ./travis_scripts/before_install.sh ; fi
+  - if [ "$TRAVIS_OS_NAME" = "osx" ]; then travis_retry brew update ; fi
+  - if [ "$TRAVIS_OS_NAME" = "osx" ]; then travis_retry brew install shellcheck ; fi
+  - if [ "$TRAVIS_OS_NAME" = "osx" ]; then travis_retry python2 -m pip install pycodestyle ; fi
   - python --version
 
 script:
