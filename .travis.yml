@@ -13,7 +13,8 @@ before_install:
 
 script:
   - if [[ -z "$DOCKER_IMAGE" ]]; then ./test_suite.sh 2>&1; fi
-  - if [[ ! -z "$DOCKER_IMAGE" and  ]] && [[ "$DOCKER_IMAGE" -eq "ubuntu" -o "$DOCKER_IMAGE" -eq "debian" ]]; then docker run --rm -v "`pwd`/jdkw":/root/jdkw -v "`pwd`/test/":/root/test/ -v "`pwd`/samples/":/root/samples/ -v "`pwd`/test_suite.sh":/root/test_suite.sh -v "`pwd`/tests.sh":/root/tests.sh -v "`pwd`/tmp.volume":/root/.jvm -it --rm $DOCKER_IMAGE:$DOCKER_TAG bash -c "sudo apt-get update && sudo apt-get install -y curl && cd /root && ./test_suite.sh 2>&1"; fi
+  - if [[ ! -z "$DOCKER_IMAGE" and  ]] && [[ "$DOCKER_IMAGE" -eq "ubuntu" ]]; then docker run --rm -v "`pwd`/jdkw":/root/jdkw -v "`pwd`/test/":/root/test/ -v "`pwd`/samples/":/root/samples/ -v "`pwd`/test_suite.sh":/root/test_suite.sh -v "`pwd`/tests.sh":/root/tests.sh -v "`pwd`/tmp.volume":/root/.jvm -it --rm $DOCKER_IMAGE:$DOCKER_TAG bash -c "sudo apt-get update && sudo apt-get install -y curl && cd /root && ./test_suite.sh 2>&1"; fi
+  - if [[ ! -z "$DOCKER_IMAGE" and  ]] && [[ "$DOCKER_IMAGE" -eq "debian" ]]; then docker run --rm -v "`pwd`/jdkw":/root/jdkw -v "`pwd`/test/":/root/test/ -v "`pwd`/samples/":/root/samples/ -v "`pwd`/test_suite.sh":/root/test_suite.sh -v "`pwd`/tests.sh":/root/tests.sh -v "`pwd`/tmp.volume":/root/.jvm -it --rm $DOCKER_IMAGE:$DOCKER_TAG bash -c "apt-get update && apt-get install -y curl && cd /root && ./test_suite.sh 2>&1"; fi
   - if [[ ! -z "$DOCKER_IMAGE" and  ]] && [[ "$DOCKER_IMAGE" -eq "centos" ]]; then docker run --rm -v "`pwd`/jdkw":/root/jdkw -v "`pwd`/test/":/root/test/ -v "`pwd`/samples/":/root/samples/ -v "`pwd`/test_suite.sh":/root/test_suite.sh -v "`pwd`/tests.sh":/root/tests.sh -v "`pwd`/tmp.volume":/root/.jvm -it --rm $DOCKER_IMAGE:$DOCKER_TAG bash -c "cd /root && ./test_suite.sh 2>&1"; fi
 
 matrix:
@@ -25,6 +26,7 @@ matrix:
         - travis_retry brew install shellcheck
       script:
         - find . \( -name 'jdkw' -o -name '*.sh' \) -exec shellcheck {} \;
+        - ./test_suite.sh 2>&1
     - os: osx
       osx_image: xcode9.2
     - os: osx
@@ -42,23 +44,19 @@ matrix:
     - os: linux
       sudo: required
       env:
-        - DOCKER_IMAGE: centos
-        - DOCKER_TAG: centos6
+        global:
+          - DOCKER_IMAGE: centos
+        matrix:
+          - DOCKER_TAG: centos6
+          - DOCKER_TAG: centos7
     - os: linux
       sudo: required
       env:
-        - DOCKER_IMAGE: centos
-        - DOCKER_TAG: centos7
-    - os: linux
-      sudo: required
-      env:
-        - DOCKER_IMAGE: debian
-        - DOCKER_TAG: wheezy
-    - os: linux
-      sudo: required
-      env:
-        - DOCKER_IMAGE: debian
-        - DOCKER_TAG: jessie
+        global:
+          - DOCKER_IMAGE: debian
+        matrix:
+          - DOCKER_TAG: wheezy
+          - DOCKER_TAG: jessie
     - os: linux
       sudo: required
       env:

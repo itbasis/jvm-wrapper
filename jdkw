@@ -14,16 +14,29 @@ JDK_UPDATE_VERSION=${JDK_UPDATE_VERSION}
 
 mkdir -p "${JVMW_HOME}"
 
+function debug() {
+	>&2 echo "[DEBUG] $*"
+	printf ''
+}
+
 function print_debug_info() {
 	for key in OS ARCH ARCHIVE_EXT JDK_FAMILY JDK_UPDATE_VERSION JDK_FULL_VERSION JDK_CHECK_VERSION JDK_FULL_NAME JDK_HOME JAVA_HOME JAVA_EXEC JDK_PAGE_URL ARCHIVE_JDK_URL ARCHIVE_JDK_SHA256 ARCHIVE_FILE; do
 		>&2 echo "[DEBUG] ${key}=${!key}";
 	done
 }
 
+function error() {
+	>&2 echo "[ERROR] $*"
+	print_debug_info
+	exit 1
+}
+
+
 function check_program_exists() {
 	for cmd in "$@"; do
-		command -v "${cmd}" 1> /dev/null 2>&1 || { echo >&2 "command not found: ${cmd}";
-		exit 1; }
+		if [[ "$("$cmd" --version 2>&1)" == *"command not found"* ]]; then
+			error "command not found: ${cmd}"
+		fi
 	done
 }
 
@@ -70,21 +83,19 @@ function get_archive_jdk_url() {
 	get_latest_jdk_page_url
 	local -r content=$(curl -s "${JDK_PAGE_URL}")
 	local -r awk_mask='^downloads.*?/jdk/'${JDK_FULL_VERSION}'.*?-'${ARCH}'.*?.'${ARCHIVE_EXT}
-	>&2 echo "[TRACE] awk_mask=${awk_mask}"
+	debug "awk_mask=${awk_mask}"
 
 	local -r awk_sep='":"|", "|"}'
 	# shellcheck disable=SC2086
 	local -r row=$(echo "${content}" | awk '{ if (match($0, "'${awk_mask}'")) print }' | head -1)
 	ARCHIVE_JDK_URL=$(echo "${row}" | awk -F"${awk_sep}" '{ print $5 }')
 	ARCHIVE_JDK_SHA256=$(echo "${row}" | awk -F"${awk_sep}" '{ print $9 }')
-	>&2 echo "[TRACE] ARCHIVE_JDK_URL=${ARCHIVE_JDK_URL}"
+	debug "ARCHIVE_JDK_URL=${ARCHIVE_JDK_URL}"
 }
 
 function download_archive_jdk() {
 	if [[ -z "${ARCHIVE_JDK_URL}" ]]; then
-		>&2 echo "empty ARCHIVE_JDK_URL"
-		print_debug_info
-		exit 1
+		error "empty ARCHIVE_JDK_URL"
 	fi
 	if [[ -f "${ARCHIVE_FILE}" ]]; then
 		if [[ "${OS}" == "darwin" ]]; then
@@ -156,20 +167,18 @@ fi
 if [[ ! -f "${JAVA_EXEC}" ]]; then
 	update_jdk
 elif [[ "$(${JAVA_EXEC} -version 2>&1 | head -1)" != *"${JDK_CHECK_VERSION}"* ]]; then
-	>&2 echo 'The local Java version does not match the expected version'
-	print_debug_info
-	exit 1
+	error 'The local Java version does not match the expected version'
 fi
-# debug
-print_debug_info
 #
 if [[ "$1" == "info" ]]; then
 	echo "JDK_HOME=${JDK_HOME}"
 	echo "JAVA_HOME=${JAVA_HOME}"
 elif [[ -z "${JDK_HOME}" ]]; then
-	>&2 echo "can't JDK_HOME"
-	exit 1
+	error "can't JDK_HOME"
+elif [[ -z "$1" ]]; then
+	error "command is empty"
 else
-	>&2 echo "command: ${JDK_HOME}/bin/$1" "${@:2}"
+	print_debug_info
+	debug "command: ${JDK_HOME}/bin/$1" "${@:2}"
 	eval "${JDK_HOME}/bin/$1" "${@:2}"
 fi
