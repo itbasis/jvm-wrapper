@@ -1,97 +1,78 @@
 sudo: false
 language: generic
 
-#services:
-#  - docker
+services:
+  - docker
+
+install:
+  - if [ "$TRAVIS_OS_NAME" = "osx" ]; then travis_retry brew update && travis_retry brew install shellcheck; fi
+  - if [ "$TRAVIS_OS_NAME" = "linux" ]; then travis_retry sudo apt-get update && travis_retry sudo apt-get install -y shellcheck; fi
 
 before_script:
-  - rm -Rf ./build/ ./jvmw.properties ~/.jvm/
+  - find . \( -name 'jdkw' -o -name '*.sh' \) -exec shellcheck {} \;
+  - if [[ ! -z "$DOCKER_IMAGE" ]]; then sudo docker pull $DOCKER_IMAGE:$DOCKER_TAG; fi
 
-#before_install:
-#  - if [ "$TRAVIS_OS_NAME" = "linux" ]; then travis_retry sudo apt-get update && travis_retry sudo apt-get install -y curl; fi
-#  - if [[ ! -z "$DOCKER_IMAGE" ]]; then sudo docker pull $DOCKER_IMAGE:$DOCKER_TAG; fi
+script:
+  - if [[ -z "$DOCKER_IMAGE" ]]; then ./test_suite.sh 2>&1; fi
 
-#script:
-#  - if [[ -z "$DOCKER_IMAGE" ]]; then ./test_suite.sh 2>&1; fi
-
-stages:
-  - checkstyle
-  - test
-  - test_docker
-
-jobs:
+matrix:
+  fast_finish: true
   include:
-    - stage: checkstyle
-      os: osx
-      before_install:
-        - travis_retry brew update
-        - travis_retry brew install shellcheck
-      script:
-        - find . \( -name 'jdkw' -o -name '*.sh' \) -exec shellcheck {} \;
+    - os: osx
+    - os: osx
+      osx_image: xcode9.2
+    - os: osx
+      osx_image: xcode8.3
+    - os: osx
+      osx_image: xcode8
+    - os: osx
+      osx_image: xcode7.3
 
-#matrix:
-#  fast_finish: true
-#  include:
-#    - os: osx
-#      before_install:
-#        - travis_retry brew update
-#        - travis_retry brew install shellcheck
-#      script:
-#        - find . \( -name 'jdkw' -o -name '*.sh' \) -exec shellcheck {} \;
-#        - ./test_suite.sh 2>&1
-#    - os: osx
-#      osx_image: xcode9.2
-#    - os: osx
-#      osx_image: xcode8.3
-#    - os: osx
-#      osx_image: xcode8
-#    - os: osx
-#      osx_image: xcode7.3
-#
-#    - os: linux
-#    - os: linux
-#      dist: trusty
-#    - os: linux
-#      dist: precise
-#    - os: linux
-#      sudo: required
-#      env:
-#        - DOCKER_IMAGE: centos
-#        - DOCKER_TAG: centos6
-#      script:
-#        - ./travis_scripts/script_docker.centos.sh
-#    - os: linux
-#      sudo: required
-#      env:
-#        - DOCKER_IMAGE: centos
-#        - DOCKER_TAG: centos7
-#      env:
-#        - DOCKER_IMAGE: centos
-#        - DOCKER_TAG: centos6
-#      script:
-#        - ./travis_scripts/script_docker.centos.sh
-#    - os: linux
-#      sudo: required
-#      env:
-#        - DOCKER_IMAGE: debian
-#        - DOCKER_TAG: wheezy
-#      script:
-#        - ./travis_scripts/script_docker.debian.sh
-#    - os: linux
-#      sudo: required
-#      env:
-#        - DOCKER_IMAGE: debian
-#        - DOCKER_TAG: jessie
-#      script:
-#        - ./travis_scripts/script_docker.debian.sh
-#    - os: linux
-#      sudo: required
-#      env:
-#        - DOCKER_IMAGE: ubuntu
-#        - DOCKER_TAG: trusty
-#      script:
-#        - ./travis_scripts/script_docker.ubuntu.sh
-#
-#  allow_failures:
-#    - os: osx
-#      osx_image: xcode6.4
+    - os: linux
+    - os: linux
+      dist: trusty
+    - os: linux
+      dist: precise
+
+    - os: linux
+      sudo: required
+      env:
+        - DOCKER_IMAGE: centos
+        - DOCKER_TAG: centos6
+      script:
+        - ./travis_scripts/script_docker.centos.sh
+    - os: linux
+      sudo: required
+      env:
+        - DOCKER_IMAGE: centos
+        - DOCKER_TAG: centos7
+      env:
+        - DOCKER_IMAGE: centos
+        - DOCKER_TAG: centos6
+      script:
+        - ./travis_scripts/script_docker.centos.sh
+    - os: linux
+      sudo: required
+      env:
+        - DOCKER_IMAGE: debian
+        - DOCKER_TAG: wheezy
+      script:
+        - ./travis_scripts/script_docker.debian.sh
+    - os: linux
+      sudo: required
+      env:
+        - DOCKER_IMAGE: debian
+        - DOCKER_TAG: jessie
+      script:
+        - ./travis_scripts/script_docker.debian.sh
+    - os: linux
+      sudo: required
+      env:
+        - DOCKER_IMAGE: ubuntu
+        - DOCKER_TAG: trusty
+      script:
+        - ./travis_scripts/script_docker.ubuntu.sh
+
+  allow_failures:
+    - os: osx
+      osx_image: xcode6.4

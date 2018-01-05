@@ -6,7 +6,7 @@ JDK_FAMILY=${JDK_FAMILY}
 CHECK_JDK_VERSION=${CHECK_JDK_VERSION}
 CHECK_JDK_HOME=${CHECK_JDK_HOME}
 #
-rm -f ./jvmw.properties
+rm -Rf ./build/ ./jvmw.properties
 #
 function check_output() {
 	# shellcheck disable=SC2086
