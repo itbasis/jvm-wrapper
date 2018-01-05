@@ -29,10 +29,13 @@ matrix:
       osx_image: xcode7.3
 
     - os: linux
+      sudo: required
     - os: linux
       dist: trusty
+      sudo: required
     - os: linux
       dist: precise
+      sudo: required
 
     - os: linux
       sudo: required
