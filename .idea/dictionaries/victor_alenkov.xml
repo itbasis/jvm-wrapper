@@ -2,6 +2,7 @@
   <dictionary name="victor.alenkov">
     <words>
       <w>asctime</w>
+      <w>centos</w>
       <w>cmds</w>
       <w>cpio</w>
       <w>hdiutil</w>
@@ -12,7 +13,9 @@
       <w>mountpoint</w>
       <w>oraclelicense</w>
       <w>pycodestyle</w>
+      <w>readlink</w>
       <w>securebackup</w>
+      <w>shasum</w>
       <w>shellcheck</w>
       <w>technetwork</w>
     </words>

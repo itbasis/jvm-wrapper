@@ -1,408 +1,170 @@
-#!/usr/bin/env python2
-# -*- coding: utf-8 -*-
-import commands
-import hashlib
-import logging
-import platform
-import re
-# noinspection PyProtectedMember
-import sys
-from glob import glob
-from os import environ, getcwd, linesep, makedirs, path, remove
-from shutil import move, rmtree
-# noinspection PyProtectedMember
-from subprocess import CalledProcessError, PIPE, Popen, check_call, list2cmdline
-from tempfile import mkdtemp
-from urllib2 import urlopen
+#!/usr/bin/env bash
 
-# noinspection PyProtectedMember
-from pip._vendor import requests
-# noinspection PyProtectedMember
-from pip._vendor.requests.models import ITER_CHUNK_SIZE
+#
+JVMW_HOME=${HOME}/.jvm/
+JVMW_PROPERTY_FILE="${JVMW_PROPERTY_FILE:-./jvmw.properties}"
+OS=$(uname | tr '[:upper:]' '[:lower:]')
+ARCH=$([[ "$(uname -m)" == "x86_64" ]] && echo "x64" || echo "i586")
+ARCHIVE_EXT=$([[ "$(uname)" == "Darwin" ]] && echo "dmg" || echo "tar.gz")
 
-# https://docs.python.org/2/library/logging.html
-logging.basicConfig(level=logging.DEBUG,
-                    format='%(asctime)s [%(levelname)-8s] [line:%(lineno)-3d] %(message)s',
-                    datefmt='%Y-%m-%d %H:%M:%S',
-                    filename='jdkw.log',
-                    filemode='w',
-                    )
+#
+JDK_FAMILY=${JDK_FAMILY}
+JDK_UPDATE_VERSION=${JDK_UPDATE_VERSION}
+#
 
-_default_properties = {
-    'JDK_FAMILY': '8'
+mkdir -p "${JVMW_HOME}"
+
+function check_program_exists() {
+	for cmd in "$@"; do
+		command -v "${cmd}" 1> /dev/null 2>&1 || { echo >&2 "command not found: ${cmd}";
+		exit 1; }
+	done
 }
 
+function properties_parser() {
+	while IFS='=' read -r key value || [[ -n "$key" ]]; do
+		[[ -z "${!key}" ]] && eval "${key}='${value}'"
+	done <<<"$1"
+}
 
-class OS:
-    __instance = None
+function properties_default() {
+	cat << EOF
+JDK_FAMILY=9
+JDK_UPDATE_VERSION=
+EOF
+}
 
-    @staticmethod
-    def instance():
-        if OS.__instance is None:
-            OS.__instance = OS()
-        return OS.__instance
+function properties_calculate() {
+	if [[ ${JDK_FAMILY} -lt 9 ]]; then
+		JDK_FULL_VERSION="${JDK_FAMILY}$(if [[ ! -z "${JDK_UPDATE_VERSION}" ]]; then
+			echo "u${JDK_UPDATE_VERSION}";
+		fi)"
+		JDK_CHECK_VERSION="1.${JDK_FAMILY}.0$(if [[ ! -z "${JDK_UPDATE_VERSION}" ]]; then
+			echo "_${JDK_UPDATE_VERSION}";
+		fi)"
+	else
+		#	TODO Fix mask for version greater than or equal to 9
+		JDK_FULL_VERSION="${JDK_FAMILY}"
+		JDK_CHECK_VERSION="${JDK_FAMILY}.0.1"
+	fi
+	JDK_FULL_NAME="jdk${JDK_FULL_VERSION}"
+	JDK_HOME=$(echo "${JVMW_HOME}/${JDK_FULL_NAME}/$(if [[ "${OS}" == 'darwin' ]]; then
+		echo 'Home';
+	fi)" | sed s#//*#/#g)
+	JAVA_HOME="${JDK_HOME}"
+	JAVA_EXEC=$(echo "${JAVA_HOME}/bin/java" | sed s#//*#/#g)
+	ARCHIVE_FILE=$(echo "${JVMW_HOME}/${JDK_FULL_NAME}.${ARCHIVE_EXT}" | sed s#//*#/#g)
+}
 
-    system = 'darwin' if platform.system() == 'Darwin' else 'linux'
-    arch = 'x64' if platform.architecture()[0] == '64bit' else 'i586'
+function get_latest_jdk_page_url() {
+	JDK_PAGE_URL=http://www.oracle.com$(curl -s http://www.oracle.com/technetwork/java/javase/downloads/index.html | tr '"' $'\n' | grep "jdk${JDK_FAMILY}-downloads" | head -1)
+}
 
-    CMD_HDIUTIL = 'hdiutil'
-    CMD_XAR = 'xar'
-    CMD_CPIO = 'cpio'
+function get_archive_jdk_url() {
+	get_latest_jdk_page_url
+	local -r content=$(curl -s "${JDK_PAGE_URL}")
+	local -r awk_mask='^downloads.*?/jdk/'${JDK_FULL_VERSION}'.*?-'${ARCH}'.'${ARCHIVE_EXT}
+	>&2 echo "[TRACE] awk_mask=${awk_mask}"
 
-    _CMD_FOR_DARWIN = [CMD_HDIUTIL, CMD_XAR, CMD_CPIO]
+	local -r awk_sep='":"|", "|"}'
+	# shellcheck disable=SC2086
+	local -r row=$(echo "${content}" | awk '{ if (match($0, "'${awk_mask}'")) print }' | head -1)
+	ARCHIVE_JDK_URL=$(echo "${row}" | awk -F"${awk_sep}" '{ print $5 }')
+	ARCHIVE_JDK_SHA256=$(echo "${row}" | awk -F"${awk_sep}" '{ print $9 }')
+	>&2 echo "[TRACE] ARCHIVE_JDK_URL=${ARCHIVE_JDK_URL}"
+}
 
-    @staticmethod
-    def is_darwin():
-        return OS.instance().system == 'darwin'
+function download_archive_jdk() {
+	if [[ -f "${ARCHIVE_FILE}" ]]; then
+		if [[ "${OS}" == "darwin" ]]; then
+			sha256=$(shasum -a 256 "${ARCHIVE_FILE}" | cut -d' ' -f 1)
+		else
+			sha256=$(sha256sum "${ARCHIVE_FILE}" | cut -d' ' -f 1)
+		fi
+		if [[ "${sha256}" == "${ARCHIVE_JDK_SHA256}" ]]; then
+			return;
+		fi
+	fi
+	curl -o "${ARCHIVE_FILE}" -L -H "Cookie: oraclelicense=accept-securebackup-cookie" "${ARCHIVE_JDK_URL}"
+}
 
-    def check_require_commands(self):
-        if self.is_darwin():
-            return self.cmd_exists(self._CMD_FOR_DARWIN)
+function unpack_dmg() {
+	hdiutil detach "/Volumes/${JDK_FULL_NAME}" -quiet -force 2> /dev/null
+	hdiutil attach "${ARCHIVE_FILE}" -quiet -mountpoint "/Volumes/${JDK_FULL_NAME}" || exit 1
+	local -r PKG_FILE_NAME=$(find "/Volumes/${JDK_FULL_NAME}" -mindepth 1 -maxdepth 1 -name '*.pkg')
+	mkdir -p "${JVMW_HOME}/${JDK_FULL_NAME}.tmp" || exit 1
+	cd "${JVMW_HOME}/${JDK_FULL_NAME}.tmp/" || { echo "can't change directory: ${JVMW_HOME}/${JDK_FULL_NAME}.tmp/";
+		exit 1; }
+	xar -xf "${PKG_FILE_NAME}" . &> /dev/null || exit 1
+	for dir in ./*jdk*; do
+		cpio -i <"${dir}/Payload" || exit 1
+	done
+	rm -Rf "${JVMW_HOME:?}/${JDK_FULL_NAME}/"
+	mv Contents "../${JDK_FULL_NAME}" 1> /dev/null 2>&1 || exit 1
+	cd - || exit 1
+	# FIXME
+	rm -Rf "${JVMW_HOME:?}/${JDK_FULL_NAME}.tmp/"
+	#		rm -Rf "${JVMW_HOME:?}/${JDK_FULL_NAME}.tmp/" "${ARCHIVE_FILE}"
+	#
+	hdiutil detach "/Volumes/${JDK_FULL_NAME}" -quiet -force
+}
 
-    @staticmethod
-    def cmd_exists(cmds):
-        for cmd in cmds:
-            logging.debug('check exists system command: ' + cmd)
-            result = commands.getstatusoutput(' '.join([
-                'command',
-                '-v',
-                cmd,
-            ]))
-            if result[0]:
-                logging.error('command not found: ' + cmd)
-                return False
-        return True
+function unpack_linux() {
+	mkdir -p "${JVMW_HOME}/${JDK_FULL_NAME}.tmp" || exit 1
+	tar xf "${ARCHIVE_FILE}" -C "${JVMW_HOME}/${JDK_FULL_NAME}.tmp" || exit 1
+	mv "$(find "${JVMW_HOME}/${JDK_FULL_NAME}.tmp" -mindepth 1 -maxdepth 1 -type d)" "${JVMW_HOME}/${JDK_FULL_NAME}" || exit 1
+	# FIXME
+	rm -Rf "${JVMW_HOME:?}/${JDK_FULL_NAME}.tmp/"
+	#		rm -Rf "${JVMW_HOME:?}/${JDK_FULL_NAME}.tmp/" "${ARCHIVE_FILE}"
+}
 
-    @staticmethod
-    def run_command(arguments, cwd=None, show_error=True):
-        logging.debug('working dir: ' + (str(cwd) or ''))
-        logging.debug('command line: ' + list2cmdline(arguments))
-        try:
-            return check_call(args=arguments, cwd=cwd)
-        except CalledProcessError, e:
-            if show_error:
-                logging.error('call error. code: ' + str(e.returncode))
-                logging.error(e.output)
+function update_jdk() {
+	get_archive_jdk_url
+	download_archive_jdk
+	if [[ "${ARCHIVE_EXT}" == "dmg" ]]; then
+		unpack_dmg
+	else
+		unpack_linux
+	fi
+}
 
-    @staticmethod
-    def run_large_command(arguments, environment=environ):
-        cwd_ = getcwd()
-        logging.debug('cwd=' + cwd_)
-        if not path.isfile(arguments[0]):
-            sys.stderr.write('not found: ' + arguments[0])
-            exit(1)
-        process = Popen(args=arguments, stdout=PIPE, stderr=PIPE, env=environment, cwd=cwd_)
-        while True:
-            output = process.stdout.readline()
-            error = process.stderr.readline()
-            if output == '' and error == '' and process.poll() is not None:
-                break
-            if output:
-                sys.stdout.write(output.strip())
-                sys.stdout.write(linesep)
-            if error:
-                sys.stderr.write(error.strip())
-                sys.stderr.write(linesep)
-        return process.poll()
+function print_debug_info() {
+	for key in OS ARCH ARCHIVE_EXT JDK_FAMILY JDK_UPDATE_VERSION JDK_FULL_VERSION JDK_CHECK_VERSION JDK_FULL_NAME JDK_HOME JAVA_HOME JAVA_EXEC JDK_PAGE_URL ARCHIVE_JDK_URL ARCHIVE_JDK_SHA256 ARCHIVE_FILE; do
+		>&2 echo "[DEBUG] ${key}=${!key}";
+	done
+}
 
-    def __init__(self):
-        pass
-
-    def __str__(self):
-        return 'OsParams{' \
-               + 'system: \'' + self.system + '\'' \
-               + ', arch: \'' + self.arch + '\'' \
-               + '}'
-
-
-class JDKDownloader:
-    __instance = None
-    __params = {
-        'ARCHIVE_EXTENSION': 'dmg' if OS.is_darwin() else 'tar.gz',
-        'ARCHIVE_URL':       None,
-        'ARCHIVE_SHA256':    None,
-        'ARCHIVE_FILE':      None,
-    }
-
-    @staticmethod
-    def instance():
-        if JDKDownloader.__instance is None:
-            JDKDownloader.__instance = JDKDownloader()
-        return JDKDownloader.__instance
-
-    def __init__(self):
-        pass
-
-    def __str__(self):
-        return 'JDKDownloader{' \
-               + 'archive.extension: \'' + self.__params['ARCHIVE_EXTENSION'] + '\'' \
-               + ', archive.url: \'' + (str(self.__params['ARCHIVE_URL']) or '') + '\'' \
-               + ', archive.sha256: \'' + (str(self.__params['ARCHIVE_SHA256']) or '') + '\'' \
-               + ', archive.file: \'' + (str(self.__params['ARCHIVE_FILE']) or '') + '\'' \
-               + '}'
-
-    @staticmethod
-    def archive_file():
-        return JDKDownloader.instance().__params['ARCHIVE_FILE']
-
-    def get_archive_url(self):
-        archive_url_ = self.__params['ARCHIVE_URL']
-        if archive_url_:
-            return archive_url_
-
-        try:
-            jdk_page = self.__get_jdk_page()
-            if jdk_page:
-                page_jdk = urlopen('http://www.oracle.com' + jdk_page).read()
-
-                mask = 'http://.*?' + JdkWrapper.jdk_full_version() + '.*?\.' + self.__params['ARCHIVE_EXTENSION']
-                logging.debug('mask: \'' + mask + '\'')
-
-                re_search = re.search('(' + mask + ')', page_jdk)
-                if not re_search:
-                    logging.error('not found url')
-                    archive_url_ = None
-                    return archive_url_
-
-                archive_url_ = re_search.group(1)
-                logging.debug('archive_url: ' + archive_url_)
-                self.__params['ARCHIVE_SHA256'] = re.search(mask + '.*?"SHA256":"(.*?)"', page_jdk).group(1)
-        finally:
-            self.__params['ARCHIVE_URL'] = archive_url_
-        return archive_url_
-
-    @staticmethod
-    def __calculate_sha256(filepath, block_size=65536):
-        result = ''
-        try:
-            if path.isfile(filepath):
-                sha256 = hashlib.sha256()
-                with open(filepath, 'rb') as f:
-                    for block in iter(lambda: f.read(block_size), b''):
-                        sha256.update(block)
-                result = sha256.hexdigest()
-        finally:
-            logging.debug('sha256 for file \'' + filepath + '\' = ' + result)
-        return result
-
-    @staticmethod
-    def download():
-        # noinspection PyUnusedLocal
-        if not JDKDownloader.__params['ARCHIVE_URL']:
-            JDKDownloader.instance().get_archive_url()
-
-        archive_url_ = JDKDownloader.__params['ARCHIVE_URL']
-        archive_file_ = path.join(JdkWrapper.home,
-                                  JdkWrapper.jdk_full_name() + '.' + JDKDownloader.__params['ARCHIVE_EXTENSION']
-                                  )
-        if archive_url_ is None:
-            return False
-        try:
-            archive_sha256_ = JDKDownloader.__calculate_sha256(archive_file_)
-            if path.isfile(archive_file_) and archive_sha256_ == JDKDownloader.__params['ARCHIVE_SHA256']:
-                # noinspection PyUnusedLocal
-                return True
-
-            logging.debug('download file: ' + archive_url_)
-            req = requests.get(archive_url_, stream=True, cookies={'oraclelicense': 'accept-securebackup-cookie'})
-            with open(archive_file_, 'wb') as fp:
-                for chunk in req.iter_content(chunk_size=ITER_CHUNK_SIZE):
-                    if chunk:
-                        fp.write(chunk)
-                        fp.flush()
-
-            return True
-        finally:
-            JDKDownloader.__params['ARCHIVE_FILE'] = archive_file_
-
-    @staticmethod
-    def __get_jdk_page():
-        page_index = urlopen('http://www.oracle.com/technetwork/java/javase/downloads/index.html').read()
-        try:
-            return re.search('name="JDK' + JdkWrapper.jvm_family() + '".*?"(/technetwork.*?)"', page_index).group(1)
-        except AttributeError:
-            return ''
+# build properties
+[[ -f "${JVMW_HOME}/${JVMW_PROPERTY_FILE}" ]] && { properties_parser "$(cat "${JVMW_HOME}/${JVMW_PROPERTY_FILE}")"; }
+[[ -f "${JVMW_PROPERTY_FILE}" ]] && { properties_parser "$(cat "${JVMW_PROPERTY_FILE}")"; }
+properties_parser "$(properties_default)"
+properties_calculate
 
 
-class JdkUnpacker:
-    def __init__(self):
-        pass
-
-    def unpack(self):
-        if OS.is_darwin():
-            self.__darwin_unpack()
-
-    def __darwin_unpack(self):
-        try:
-            self.__darwin_detach(show_error=False)
-            self.__darwin_attach()
-            self.__darwin_pkg_unpack()
-            remove(JDKDownloader.archive_file())
-        finally:
-            self.__darwin_detach()
-
-    @staticmethod
-    def __darwin_mount_path():
-        mount_path_ = path.join('/Volumes', JdkWrapper.jdk_full_name())
-        logging.debug('mount.path: ' + mount_path_)
-        return mount_path_
-
-    @staticmethod
-    def __darwin_detach(show_error=True):
-        OS.run_command(arguments=[OS.CMD_HDIUTIL,
-                                  'detach',
-                                  JdkUnpacker.__darwin_mount_path(),
-                                  '-quiet',
-                                  '-force',
-                                  ],
-                       show_error=show_error)
-
-    @staticmethod
-    def __darwin_attach():
-        OS.run_command(arguments=[OS.CMD_HDIUTIL,
-                                  'attach',
-                                  JDKDownloader.archive_file(),
-                                  '-quiet',
-                                  '-mountpoint',
-                                  JdkUnpacker.__darwin_mount_path(),
-                                  ])
-
-    def __darwin_pkg_unpack(self):
-        tmp_dir = mkdtemp()
-        logging.debug('tmp.dir: ' + tmp_dir)
-        try:
-            OS.run_command(arguments=[OS.CMD_XAR, '-xf', glob(path.join(self.__darwin_mount_path(), '*.pkg'))[0], '.', ], cwd=tmp_dir)
-
-            OS.run_command(arguments=[OS.CMD_CPIO, '--quiet', '-diI', path.join(glob(path.join(tmp_dir, 'jdk*'))[0], 'Payload')],
-                           cwd=tmp_dir)
-
-            prev_dir = path.join(tmp_dir, 'Contents')
-            new_dir = path.dirname(JdkWrapper.jdk_home())
-            logging.debug('moving \'' + prev_dir + '\' to \'' + new_dir + '\'')
-            move(prev_dir, new_dir)
-        finally:
-            rmtree(tmp_dir)
-
-
-class JdkWrapper:
-    __instance = None
-
-    @staticmethod
-    def instance():
-        if JdkWrapper.__instance is None:
-            JdkWrapper.__instance = JdkWrapper()
-        return JdkWrapper.__instance
-
-    home = path.join(path.expanduser('~'), '.jvm')
-    _property_file = 'jvmw.properties'
-    _params = {
-        'JDK_FAMILY':         _default_properties['JDK_FAMILY'],
-        'JDK_UPDATE_VERSION': None,
-        'JDK_FULL_NAME':      None,
-        'JDK_FULL_VERSION':   None,
-        'JDK_HOME':           None,
-        'JAVA_HOME':          None,
-        'JVM_HOME_ROOT_NAME': None,
-    }
-
-    def __init__(self):
-        if not path.isdir(self.home):
-            makedirs(self.home)
-        self.__properties_load_from_file(self.home)
-        self.__properties_load_from_file('.')
-        self.__properties_load_from_environ()
-        self.__properties_calculate()
-
-    @staticmethod
-    def jvm_family():
-        return JdkWrapper.instance()._params['JDK_FAMILY']
-
-    @staticmethod
-    def jdk_full_name():
-        return JdkWrapper.instance()._params['JDK_FULL_NAME']
-
-    @staticmethod
-    def jdk_full_version():
-        return JdkWrapper.instance()._params['JDK_FULL_VERSION']
-
-    @staticmethod
-    def jdk_home():
-        return JdkWrapper.instance()._params['JDK_HOME']
-
-    def __properties_load_from_environ(self):
-        for key in self._params:
-            if key in environ:
-                self._params[key] = environ.get(key)
-
-    def __properties_load_from_file(self, root_dir):
-        file_path = path.join(root_dir, self._property_file)
-        if not path.isfile(file_path):
-            logging.info('not found properties file: ' + file_path)
-            return
-        logging.info('loading properties file: ' + file_path)
-        split_properties = [line.split("=") for line in open(file_path)]
-        for key, value in split_properties:
-            value = value.replace('\n', '').replace('\r', '')
-            if len(value) > 0:
-                self._params[key] = value
-
-    def __properties_calculate(self):
-        self._params['JDK_FULL_VERSION'] = self._params['JDK_FAMILY'] \
-                                           + (('u' + self._params['JDK_UPDATE_VERSION']) if self._params['JDK_UPDATE_VERSION'] else '')
-        self._params['JDK_FULL_NAME'] = 'jdk' + self._params['JDK_FULL_VERSION']
-        self._params['JDK_HOME'] = path.join(self.home,
-                                             self._params['JDK_FULL_NAME'],
-                                             ('Home' if OS.is_darwin() else '')
-                                             )
-        self._params['JAVA_HOME'] = self._params['JDK_HOME']
-        self._params['JVM_EXEC'] = path.join(self._params['JDK_HOME'], 'bin', 'java')
-
-    def __has_update(self):
-        if not path.isfile(self._params['JVM_EXEC']):
-            return True
-
-        return False
-
-    def update(self):
-        if self.__has_update():
-            self.__update()
-
-    @staticmethod
-    def __update():
-        if not JDKDownloader.download():
-            logging.error('can\'t file: ' + str(JDKDownloader.instance().get_archive_url()))
-            return
-        JdkUnpacker().unpack()
-
-    def run(self):
-        args = sys.argv
-        if len(args) < 2:
-            exit()
-        args.remove(args[0])
-        args[0] = path.join(self._params['JDK_HOME'], 'bin', args[0])
-        logging.info('command: ' + str(args))
-        exit(OS.run_large_command(arguments=args, environment=self.__prepare_environment()))
-
-    def __prepare_environment(self):
-        environment = environ.copy()
-        for key in ['JDK_HOME', 'JAVA_HOME']:
-            environment[key] = self._params[key]
-        return environment
-
-    def __str__(self):
-        return 'JdkWrapper{' \
-               + 'home: \'' + self.home + '\'' \
-               + ', params: ' + str(self._params) \
-               + '}'
-
-
-if not OS.instance().check_require_commands():
-    exit(1)
-jdk_wrapper = JdkWrapper.instance()
-jdk_wrapper.update()
-
-logging.info(str(OS.instance()))
-logging.info(str(JdkWrapper.instance()))
-logging.info(str(JDKDownloader.instance()))
-
-jdk_wrapper.run()
+# main section
+check_program_exists 'awk' 'tr' 'grep' 'head' 'readlink' 'rm' 'mv' 'cd'
+if [[ "${OS}" == "darwin" ]]; then
+	check_program_exists 'hdiutil' 'xar' 'cpio' 'shasum'
+else
+	check_program_exists 'sha256sum' 'tar'
+fi
+if [[ ! -f "${JAVA_EXEC}" ]]; then
+	update_jdk
+elif [[ "$(${JAVA_EXEC} -version 2>&1 | head -1)" != *"${JDK_CHECK_VERSION}"* ]]; then
+	>&2 echo 'The local Java version does not match the expected version'
+	print_debug_info
+	exit 1
+fi
+# debug
+print_debug_info
+#
+if [[ "$1" == "info" ]]; then
+	echo "JDK_HOME=${JDK_HOME}"
+	echo "JAVA_HOME=${JAVA_HOME}"
+elif [[ -z "${JDK_HOME}" ]]; then
+	>&2 echo "can't JDK_HOME"
+	exit 1
+else
+	>&2 echo "command: ${JDK_HOME}/bin/$1" "${@:2}"
+	eval "${JDK_HOME}/bin/$1" "${@:2}"
+fi

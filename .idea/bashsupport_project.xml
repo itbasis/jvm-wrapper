@@ -4,5 +4,6 @@
     <option name="autocompleteBuiltinVars" value="true" />
     <option name="evalEscapesEnabled" value="true" />
     <option name="formatterEnabled" value="true" />
+    <option name="globalFunctionVarDefs" value="true" />
   </component>
 </project>
