@@ -6,17 +6,15 @@ services:
 
 install:
   - if [ "$TRAVIS_OS_NAME" = "osx" ]; then travis_retry brew update && travis_retry brew install shellcheck; fi
-  - if [ "$TRAVIS_OS_NAME" = "linux" ]; then travis_retry sudo apt-get update && travis_retry sudo apt-get install -y shellcheck; fi
 
 before_script:
-  - find . \( -name 'jdkw' -o -name '*.sh' \) -exec shellcheck {} \;
+  - if [ "$TRAVIS_OS_NAME" = "osx" ]; then find . \( -name 'jdkw' -o -name '*.sh' \) -exec shellcheck {} \; fi
   - if [[ ! -z "$DOCKER_IMAGE" ]]; then sudo docker pull $DOCKER_IMAGE:$DOCKER_TAG; fi
 
 script:
   - if [[ -z "$DOCKER_IMAGE" ]]; then ./test_suite.sh 2>&1; fi
 
 matrix:
-  fast_finish: true
   include:
     - os: osx
     - os: osx
