@@ -158,7 +158,7 @@ properties_calculate
 
 
 # main section
-check_program_exists 'awk' 'tr' 'grep' 'head' 'readlink' 'rm' 'mv' 'cd' 'curl'
+check_program_exists 'awk' 'tr' 'grep' 'head' 'rm' 'mv' 'cd' 'curl'
 if [[ "${OS}" == "darwin" ]]; then
 	check_program_exists 'hdiutil' 'xar' 'cpio' 'shasum'
 else

@@ -5,11 +5,11 @@ services:
   - docker
 
 install:
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then travis_retry brew update && travis_retry brew install shellcheck; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]] && [[ "$SKIP_SHELLCHECK" != "yes" ]] ; then travis_retry brew update && travis_retry brew install shellcheck; fi
   - chmod +x ./travis_scripts/*.sh
 
 before_script:
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then find . \( -name 'jdkw' -o -name '*.sh' \) -exec shellcheck {} \; ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]] && [[ "$SKIP_SHELLCHECK" != "yes" ]] ; then find . \( -name 'jdkw' -o -name '*.sh' \) -exec shellcheck {} \; ; fi
   - if [[ ! -z "$DOCKER_IMAGE" ]]; then sudo docker pull $DOCKER_IMAGE:$DOCKER_TAG; fi
 
 script:
@@ -26,6 +26,10 @@ matrix:
       osx_image: xcode8
     - os: osx
       osx_image: xcode7.3
+    - os: osx
+      osx_image: xcode6.4
+      env:
+        - SKIP_SHELLCHECK=yes
 
     - os: linux
       sudo: required
@@ -74,7 +78,3 @@ matrix:
         - DOCKER_TAG: trusty
       script:
         - ./travis_scripts/script_docker.ubuntu.sh
-
-  allow_failures:
-    - os: osx
-      osx_image: xcode6.4
