@@ -8,19 +8,22 @@ before_script:
   - rm -Rf ./build/ ./jvmw.properties ~/.jvm/
 
 before_install:
-  - if [ "$TRAVIS_OS_NAME" = "osx" ]; then travis_retry brew update && travis_retry brew install shellcheck; fi
-  - if [ "$TRAVIS_OS_NAME" = "linux" ]; then travis_retry sudo apt-get update && travis_retry sudo apt-get install -y curl shellcheck; fi
+  - if [ "$TRAVIS_OS_NAME" = "linux" ]; then travis_retry sudo apt-get update && travis_retry sudo apt-get install -y curl; fi
   - if [[ ! -z "$DOCKER_IMAGE" ]]; then sudo docker pull $DOCKER_IMAGE:$DOCKER_TAG; fi
 
 script:
-  - find . \( -name 'jdkw' -o -name '*.sh' \) -exec shellcheck {} \;
   - if [[ -z "$DOCKER_IMAGE" ]]; then ./test_suite.sh 2>&1; fi
-  - if [[ ! -z "$DOCKER_IMAGE" ]]; then docker run --rm -v "`pwd`/jdkw":/root/jdkw -v "`pwd`/test/":/root/test/ -v "`pwd`/samples/":/root/samples/ -v "`pwd`/test_suite.sh":/root/test_suite.sh -v "`pwd`/tests.sh":/root/tests.sh -v "`pwd`/tmp.volume":/root/.jvm -it --rm $DOCKER_IMAGE:$DOCKER_TAG bash -c "sudo apt-get update && sudo apt-get install -y curl shellcheck && cd /root && ./test_suite.sh 2>&1"; fi
+  - if [[ ! -z "$DOCKER_IMAGE" ]]; then docker run --rm -v "`pwd`/jdkw":/root/jdkw -v "`pwd`/test/":/root/test/ -v "`pwd`/samples/":/root/samples/ -v "`pwd`/test_suite.sh":/root/test_suite.sh -v "`pwd`/tests.sh":/root/tests.sh -v "`pwd`/tmp.volume":/root/.jvm -it --rm $DOCKER_IMAGE:$DOCKER_TAG bash -c "sudo apt-get update && sudo apt-get install -y curl && cd /root && ./test_suite.sh 2>&1"; fi
 
 matrix:
   fast_finish: true
   include:
     - os: osx
+      before_install:
+        - travis_retry brew update
+        - travis_retry brew install shellcheck
+      script:
+        - find . \( -name 'jdkw' -o -name '*.sh' \) -exec shellcheck {} \;
     - os: osx
       osx_image: xcode9.2
     - os: osx

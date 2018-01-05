@@ -14,6 +14,12 @@ JDK_UPDATE_VERSION=${JDK_UPDATE_VERSION}
 
 mkdir -p "${JVMW_HOME}"
 
+function print_debug_info() {
+	for key in OS ARCH ARCHIVE_EXT JDK_FAMILY JDK_UPDATE_VERSION JDK_FULL_VERSION JDK_CHECK_VERSION JDK_FULL_NAME JDK_HOME JAVA_HOME JAVA_EXEC JDK_PAGE_URL ARCHIVE_JDK_URL ARCHIVE_JDK_SHA256 ARCHIVE_FILE; do
+		>&2 echo "[DEBUG] ${key}=${!key}";
+	done
+}
+
 function check_program_exists() {
 	for cmd in "$@"; do
 		command -v "${cmd}" 1> /dev/null 2>&1 || { echo >&2 "command not found: ${cmd}";
@@ -63,7 +69,7 @@ function get_latest_jdk_page_url() {
 function get_archive_jdk_url() {
 	get_latest_jdk_page_url
 	local -r content=$(curl -s "${JDK_PAGE_URL}")
-	local -r awk_mask='^downloads.*?/jdk/'${JDK_FULL_VERSION}'.*?-'${ARCH}'.'${ARCHIVE_EXT}
+	local -r awk_mask='^downloads.*?/jdk/'${JDK_FULL_VERSION}'.*?-'${ARCH}'.*?.'${ARCHIVE_EXT}
 	>&2 echo "[TRACE] awk_mask=${awk_mask}"
 
 	local -r awk_sep='":"|", "|"}'
@@ -75,6 +81,11 @@ function get_archive_jdk_url() {
 }
 
 function download_archive_jdk() {
+	if [[ -z "${ARCHIVE_JDK_URL}" ]]; then
+		>&2 echo "empty ARCHIVE_JDK_URL"
+		print_debug_info
+		exit 1
+	fi
 	if [[ -f "${ARCHIVE_FILE}" ]]; then
 		if [[ "${OS}" == "darwin" ]]; then
 			sha256=$(shasum -a 256 "${ARCHIVE_FILE}" | cut -d' ' -f 1)
@@ -126,12 +137,6 @@ function update_jdk() {
 	else
 		unpack_linux
 	fi
-}
-
-function print_debug_info() {
-	for key in OS ARCH ARCHIVE_EXT JDK_FAMILY JDK_UPDATE_VERSION JDK_FULL_VERSION JDK_CHECK_VERSION JDK_FULL_NAME JDK_HOME JAVA_HOME JAVA_EXEC JDK_PAGE_URL ARCHIVE_JDK_URL ARCHIVE_JDK_SHA256 ARCHIVE_FILE; do
-		>&2 echo "[DEBUG] ${key}=${!key}";
-	done
 }
 
 # build properties

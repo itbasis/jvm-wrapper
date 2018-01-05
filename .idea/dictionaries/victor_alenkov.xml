@@ -17,6 +17,7 @@
       <w>securebackup</w>
       <w>shasum</w>
       <w>shellcheck</w>
+      <w>sudo</w>
       <w>technetwork</w>
     </words>
   </dictionary>
