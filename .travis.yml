@@ -6,6 +6,7 @@ services:
 
 install:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then travis_retry brew update && travis_retry brew install shellcheck; fi
+  - chmod +x ./travis_scripts/*.sh
 
 before_script:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then find . \( -name 'jdkw' -o -name '*.sh' \) -exec shellcheck {} \; ; fi
