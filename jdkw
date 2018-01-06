@@ -6,7 +6,10 @@ JVMW_PROPERTY_FILE="${JVMW_PROPERTY_FILE:-./jvmw.properties}"
 OS=$(uname | tr '[:upper:]' '[:lower:]')
 ARCH=$([[ "$(uname -m)" == "x86_64" ]] && echo "x64" || echo "i586")
 ARCHIVE_EXT=$([[ "$(uname)" == "Darwin" ]] && echo "dmg" || echo "tar.gz")
-
+#
+REQUIRED_COMMANDS_CORE='awk tr grep head rm mv cd curl'
+REQUIRED_COMMANDS_DARWIN='hdiutil xar cpio shasum'
+REQUIRED_COMMANDS_LINUX='sha256sum tar'
 #
 JDK_FAMILY=${JDK_FAMILY}
 JDK_UPDATE_VERSION=${JDK_UPDATE_VERSION}
@@ -33,7 +36,8 @@ function error() {
 
 
 function check_program_exists() {
-	for cmd in "$@"; do
+	# shellcheck disable=SC2068
+	for cmd in $@; do
 		if [[ "$("$cmd" --version 2>&1)" == *"command not found"* ]]; then
 			error "command not found: ${cmd}"
 		fi
@@ -158,12 +162,12 @@ properties_calculate
 
 
 # main section
-check_program_exists 'awk' 'tr' 'grep' 'head' 'rm' 'mv' 'cd' 'curl'
 if [[ "${OS}" == "darwin" ]]; then
-	check_program_exists 'hdiutil' 'xar' 'cpio' 'shasum'
+	check_program_exists "${REQUIRED_COMMANDS_CORE}" "${REQUIRED_COMMANDS_DARWIN}"
 else
-	check_program_exists 'sha256sum' 'tar'
+	check_program_exists "${REQUIRED_COMMANDS_CORE}" "${REQUIRED_COMMANDS_LINUX}"
 fi
+#
 if [[ ! -f "${JAVA_EXEC}" ]]; then
 	update_jdk
 elif [[ "$(${JAVA_EXEC} -version 2>&1 | head -1)" != *"${JDK_CHECK_VERSION}"* ]]; then
@@ -177,7 +181,7 @@ elif [[ -z "${JDK_HOME}" ]]; then
 	error "can't JDK_HOME"
 elif [[ -z "$1" ]]; then
 	error "command is empty"
-else
+else # execute program
 	print_debug_info
 	debug "command: ${JDK_HOME}/bin/$1" "${@:2}"
 	eval "${JDK_HOME}/bin/$1" "${@:2}"
