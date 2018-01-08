@@ -7,6 +7,10 @@
 ![Support Linux](https://img.shields.io/badge/support%20OS-Linux-green.svg?style=flat-square)
 ![Support Mac OS](https://img.shields.io/badge/support%20OS-Mac%20OS-green.svg?style=flat-square)
 
+![Support JDK](https://img.shields.io/badge/support%20JDK-9-green.svg?style=flat-square)
+![Support JDK](https://img.shields.io/badge/support%20JDK-8-green.svg?style=flat-square)
+![Support JDK](https://img.shields.io/badge/support%20JDK-7-green.svg?style=flat-square)
+
 ## Install
 
 download file `jdkw` in `~/.jvm/` or project directory
@@ -19,6 +23,8 @@ download file `jdkw` in `~/.jvm/` or project directory
 Instead of `java` or `javac`, you can use any command from `$JAVA_HOME/bin/`
 
 ## properties
-reading order: ENVIRONMENT, `~/jvmw.properties`, `./jvmw.properties`
+Order of reading variables: environment, `~/jvmw.properties`, `./jvmw.properties`. The last read value is set for the variable
 
-Properties are read without replacing the previously read. For example, if ENVIRONMENT does not have an empty `JDK_FAMILY` variable and also has `./jvmw.properties`, then the variable from the ENVIRONMENT
+Properties are read without replacing the previously read. For example, if environment does not have an empty `JDK_FAMILY` variable and also has `./jvmw.properties`, then the variable from the environment
+
+To download archival versions of JDK, you must set the variables `ORACLE_USER` and `ORACLE_PASSWORD`

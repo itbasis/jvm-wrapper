@@ -14,6 +14,7 @@ before_script:
 
 script:
   - if [[ -z "$DOCKER_IMAGE" ]]; then ./test_suite.sh 2>&1; fi
+#  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then CHECK_JDK_VERSION='1.6.0_45' CHECK_JDK_HOME='jdk6u45' JVMW_FILE='jvmw.6u45.properties' ./tests.sh ; fi
 
 matrix:
   include:
