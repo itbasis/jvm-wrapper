@@ -4,6 +4,8 @@
 docker run \
 --rm \
 -it \
+-e "ORACLE_USER=${ORACLE_USER}" \
+-e "ORACLE_PASSWORD=${ORACLE_PASSWORD}" \
 -v "$(pwd)/jdkw":/root/jdkw \
 -v "$(pwd)/test/":/root/test/ \
 -v "$(pwd)/samples/":/root/samples/ \
