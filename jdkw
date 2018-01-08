@@ -140,9 +140,9 @@ function otn_login() {
 		error 'no values were found in ORACLE_USER and ORACLE_PASSWORD'
 	fi
 
-	OTN_COOKIE_FILE=$(mktemp -t OTN_COOKIE_)
-	OTN_HEADERS_FILE=$(mktemp -t OTN_HEADERS_)
-	OTN_CONTENT_FILE=$(mktemp -t OTN_CONTENT_)
+	OTN_COOKIE_FILE=$(mktemp -t OTN_COOKIE_XXXXX.tmp)
+	OTN_HEADERS_FILE=$(mktemp -t OTN_HEADERS_XXXXX.tmp)
+	OTN_CONTENT_FILE=$(mktemp -t OTN_CONTENT_XXXXX.tmp)
 	OTN_URL_INDEX=https://www.oracle.com/index.html
 	OTN_HOST_LOGIN=https://login.oracle.com
 	OTN_URL_SIGNON="http://www.oracle.com/webapps/redirect/signon?nexturl=${OTN_URL_INDEX}"
