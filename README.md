@@ -28,3 +28,11 @@ Order of reading variables: environment, `~/jvmw.properties`, `./jvmw.properties
 Properties are read without replacing the previously read. For example, if environment does not have an empty `JDK_FAMILY` variable and also has `./jvmw.properties`, then the variable from the environment
 
 To download archival versions of JDK, you must set the variables `ORACLE_USER` and `ORACLE_PASSWORD`
+
+#### jvmw.properties
+|property name|required|sample|
+|:---|:---:|:---|
+|JDK_FAMILY|Y|JDK_FAMILY=8<br/>JDK_FAMILY=9|
+|JDK_UPDATE_VERSION|N|JDK_UPDATE_VERSION=<br/>JDK_UPDATE_VERSION=144<br/>JDK_UPDATE_VERSION=80|
+|ORACLE_USER|N|ORACLE_USER=user@example.com|
+|ORACLE_PASSWORD|N|ORACLE_PASSWORD=password|
