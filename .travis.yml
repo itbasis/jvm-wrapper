@@ -78,12 +78,7 @@ matrix:
     - os: linux
       sudo: required
       env:
-        - DOCKER_IMAGE: alpine
-        - DOCKER_TAG: latest
-    - os: linux
-      sudo: required
-      env:
         - DOCKER_IMAGE: base/arch
         - DOCKER_TAG: latest
       script:
-        - ./travis_scripts/script_docker.$DOCKER_IMAGE.sh 2>&1
+        - ./travis_scripts/script_docker.sh 2>&1
