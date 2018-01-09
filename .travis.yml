@@ -43,12 +43,10 @@ matrix:
       sudo: required
 
     - os: linux
-      sudo: required
       env:
         - DOCKER_IMAGE: centos
         - DOCKER_TAG: centos6
     - os: linux
-      sudo: required
       env:
         - DOCKER_IMAGE: centos
         - DOCKER_TAG: centos7
@@ -56,27 +54,22 @@ matrix:
         - DOCKER_IMAGE: centos
         - DOCKER_TAG: centos6
     - os: linux
-      sudo: required
       env:
         - DOCKER_IMAGE: debian
         - DOCKER_TAG: wheezy
     - os: linux
-      sudo: required
       env:
         - DOCKER_IMAGE: debian
         - DOCKER_TAG: jessie
     - os: linux
-      sudo: required
       env:
         - DOCKER_IMAGE: ubuntu
         - DOCKER_TAG: trusty
     - os: linux
-      sudo: required
       env:
         - DOCKER_IMAGE: opensuse
         - DOCKER_TAG: latest
     - os: linux
-      sudo: required
       env:
         - DOCKER_IMAGE: base/arch
         - DOCKER_TAG: latest
