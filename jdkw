@@ -14,11 +14,12 @@ REQUIRED_COMMANDS_LINUX='sha256sum tar'
 JDK_FAMILY=${JDK_FAMILY}
 JDK_UPDATE_VERSION=${JDK_UPDATE_VERSION}
 #
-
+OTN_USER_AGENT='Mozilla/5.0 https://github.com/itbasis/jvm-wrapper'
+#
 mkdir -p "${JVMW_HOME}"
 
 function debug() {
-	>&2 echo "[DEBUG] $*"
+	>&2 echo "[DEBUG] [${BASH_SOURCE[0]}:${FUNCNAME[1]}:${BASH_LINENO[0]}] $*"
 	printf ''
 }
 
@@ -29,7 +30,8 @@ function print_debug_info() {
 }
 
 function error() {
-	>&2 echo "[ERROR] $*"
+	rm -f "${OTN_HEADERS_FILE}" "${OTN_CONTENT_FILE}" "${OTN_COOKIE_FILE}"
+	>&2 echo "[ERROR] [${BASH_SOURCE[0]}:${FUNCNAME[1]}:${BASH_LINENO[0]}] $*"
 	print_debug_info
 	exit 1
 }
@@ -79,14 +81,91 @@ function properties_calculate() {
 	ARCHIVE_FILE=$(echo "${JVMW_HOME}/${JDK_FULL_NAME}.${ARCHIVE_EXT}" | sed s#//*#/#g)
 }
 
+function curl_get() {
+	local url="$1"
+	curl -kLsS -A "${OTN_USER_AGENT}" -D "${OTN_HEADERS_FILE}" -b "${OTN_COOKIE_FILE}" -c "${OTN_COOKIE_FILE}" -o "${OTN_CONTENT_FILE}" "${url}"
+}
+
+function curl_post() {
+	otn_form_parse
+	curl -kLsS -A "${OTN_USER_AGENT}" -D "${OTN_HEADERS_FILE}" -b "${OTN_COOKIE_FILE}" -c "${OTN_COOKIE_FILE}" -X POST -d "${OTN_FORM_DATA}" "${OTN_FORM_ACTION}" -o "${OTN_CONTENT_FILE}"
+}
+
+function ont_form_data() {
+	IFS='>'
+	local form_data=
+	for fld in $(echo "$1" | awk '{ if (match($0, "<input")) print }'); do
+		fld_name=$(echo "${fld}" | awk 'match($0, /name="([^"]+)/) { print substr($0, RSTART+6, RLENGTH-6) }')
+		fld_value=$(echo "${fld}" | awk 'match($0, /value="([^"]+)/) { print substr($0, RSTART+7, RLENGTH-7) }')
+
+		if [[ ! -z "${fld_name}" ]]; then
+			if [[ "${fld_name}" == "userid" ]]; then
+				fld_value=${ORACLE_USER}
+			elif [[ "${fld_name}" == "pass" ]]; then
+				fld_value=${ORACLE_PASSWORD}
+			fi
+			form_data="${form_data}&${fld_name}=${fld_value}"
+		fi
+	done
+	echo "${form_data}"
+}
+
+function otn_clean_env() {
+	unset OTN_FORM_DATA OTN_FORM_ACTION
+}
+
+function otn_form_parse() {
+	otn_clean_env
+
+	OTN_FORM_DATA=$(ont_form_data "$(cat "${OTN_CONTENT_FILE}")")
+	OTN_FORM_ACTION=$(awk 'match($0, /action="([^"]+)/) { print substr($0, RSTART+8, RLENGTH-8) }' <"${OTN_CONTENT_FILE}")
+	if [[ "${OTN_FORM_ACTION:0:1}" == "/" ]]; then
+		OTN_FORM_ACTION="${OTN_HOST_LOGIN}${OTN_FORM_ACTION}"
+	fi
+}
+
+function otn_redirect() {
+	# FIXME https://github.com/koalaman/shellcheck/issues/1089
+	# shellcheck disable=SC2155
+	local host=$(awk '{ if (match($0, "http-equiv=\"refresh\".*")) print substr($0, RSTART, RLENGTH) }' <"${OTN_CONTENT_FILE}" | awk -F';' '{ if (match($0, "URL=[^\"]+")) print substr($0, RSTART+4, RLENGTH-4)}')
+	if [[ "${host:0:1}" == "/" ]]; then
+		host="${OTN_HOST_LOGIN}${host}"
+	fi
+
+	curl_get "${host}"
+}
+
+function otn_login() {
+	if [[ -z "${ORACLE_USER}" ]] || [[ -z "${ORACLE_PASSWORD}" ]]; then
+		error 'no values were found in ORACLE_USER and ORACLE_PASSWORD'
+	fi
+
+	OTN_COOKIE_FILE=$(mktemp -t OTN_COOKIE_XXXXX.tmp)
+	OTN_HEADERS_FILE=$(mktemp -t OTN_HEADERS_XXXXX.tmp)
+	OTN_CONTENT_FILE=$(mktemp -t OTN_CONTENT_XXXXX.tmp)
+	OTN_URL_INDEX=https://www.oracle.com/index.html
+	OTN_HOST_LOGIN=https://login.oracle.com
+	OTN_URL_SIGNON="http://www.oracle.com/webapps/redirect/signon?nexturl=${OTN_URL_INDEX}"
+
+	curl_get "${OTN_URL_SIGNON}" && curl_post && curl_post && otn_redirect && curl_post && curl_get "${OTN_URL_SIGNON}"
+	rm -f "${OTN_HEADERS_FILE}" "${OTN_CONTENT_FILE}"
+}
+
 function get_latest_jdk_page_url() {
 	JDK_PAGE_URL=http://www.oracle.com$(curl -s http://www.oracle.com/technetwork/java/javase/downloads/index.html | tr '"' $'\n' | grep "jdk${JDK_FAMILY}-downloads" | head -1)
 }
 
+function get_archive_jdk_page_url() {
+	local -r url_archive=http://www.oracle.com$(curl -sS http://www.oracle.com/technetwork/java/javase/downloads/index.html | tr '"' $'\n' | grep "/archive-" | head -1)
+	debug "url_archive='${url_archive}'"
+	JDK_PAGE_URL=http://www.oracle.com$(curl -sS "${url_archive}" | tr '"' $'\n' | grep "/java-archive.*-javase${JDK_FAMILY}-" | head -1)
+	debug "JDK_PAGE_URL='${JDK_PAGE_URL}'"
+}
+
 function get_archive_jdk_url() {
-	get_latest_jdk_page_url
+	debug "JDK_PAGE_URL='${JDK_PAGE_URL}'"
 	local -r content=$(curl -s "${JDK_PAGE_URL}")
-	local -r awk_mask='^downloads.*?/jdk/'${JDK_FULL_VERSION}'.*?-'${ARCH}'.*?.'${ARCHIVE_EXT}
+	local -r awk_mask='^downloads.*?jdk-'${JDK_FULL_VERSION}'.*?-'${ARCH}'.*?.'${ARCHIVE_EXT}
 	debug "awk_mask=${awk_mask}"
 
 	local -r awk_sep='":"|", "|"}'
@@ -94,12 +173,13 @@ function get_archive_jdk_url() {
 	local -r row=$(echo "${content}" | awk '{ if (match($0, "'${awk_mask}'")) print }' | head -1)
 	ARCHIVE_JDK_URL=$(echo "${row}" | awk -F"${awk_sep}" '{ print $5 }')
 	ARCHIVE_JDK_SHA256=$(echo "${row}" | awk -F"${awk_sep}" '{ print $9 }')
-	debug "ARCHIVE_JDK_URL=${ARCHIVE_JDK_URL}"
+
+	debug "ARCHIVE_JDK_URL='${ARCHIVE_JDK_URL}'"
 }
 
 function download_archive_jdk() {
 	if [[ -z "${ARCHIVE_JDK_URL}" ]]; then
-		error "empty ARCHIVE_JDK_URL"
+		error "empty ARCHIVE_JDK_URL. Use page '${JDK_PAGE_URL}'"
 	fi
 	if [[ -f "${ARCHIVE_FILE}" ]]; then
 		if [[ "${OS}" == "darwin" ]]; then
@@ -111,7 +191,7 @@ function download_archive_jdk() {
 			return;
 		fi
 	fi
-	curl -o "${ARCHIVE_FILE}" -L -H "Cookie: oraclelicense=accept-securebackup-cookie" "${ARCHIVE_JDK_URL}"
+	curl -kL -A "${OTN_USER_AGENT}" -b "${OTN_COOKIE_FILE}" -o "${ARCHIVE_FILE}" --cookie "oraclelicense=accept-securebackup-cookie" "${ARCHIVE_JDK_URL}"
 }
 
 function unpack_dmg() {
@@ -128,9 +208,7 @@ function unpack_dmg() {
 	rm -Rf "${JVMW_HOME:?}/${JDK_FULL_NAME}/"
 	mv Contents "../${JDK_FULL_NAME}" 1> /dev/null 2>&1 || exit 1
 	cd - || exit 1
-	# FIXME
-	rm -Rf "${JVMW_HOME:?}/${JDK_FULL_NAME}.tmp/"
-	#		rm -Rf "${JVMW_HOME:?}/${JDK_FULL_NAME}.tmp/" "${ARCHIVE_FILE}"
+	rm -Rf "${JVMW_HOME:?}/${JDK_FULL_NAME}.tmp/" "${ARCHIVE_FILE}"
 	#
 	hdiutil detach "/Volumes/${JDK_FULL_NAME}" -quiet -force
 }
@@ -139,13 +217,17 @@ function unpack_linux() {
 	mkdir -p "${JVMW_HOME}/${JDK_FULL_NAME}.tmp" || exit 1
 	tar xf "${ARCHIVE_FILE}" -C "${JVMW_HOME}/${JDK_FULL_NAME}.tmp" || exit 1
 	mv "$(find "${JVMW_HOME}/${JDK_FULL_NAME}.tmp" -mindepth 1 -maxdepth 1 -type d)" "${JVMW_HOME}/${JDK_FULL_NAME}" || exit 1
-	# FIXME
-	rm -Rf "${JVMW_HOME:?}/${JDK_FULL_NAME}.tmp/"
-	#		rm -Rf "${JVMW_HOME:?}/${JDK_FULL_NAME}.tmp/" "${ARCHIVE_FILE}"
+	rm -Rf "${JVMW_HOME:?}/${JDK_FULL_NAME}.tmp/" "${ARCHIVE_FILE}"
 }
 
 function update_jdk() {
+	get_latest_jdk_page_url
 	get_archive_jdk_url
+	if [[ "${ARCHIVE_JDK_URL}" == '' ]]; then
+		get_archive_jdk_page_url
+		get_archive_jdk_url
+		otn_login
+	fi
 	download_archive_jdk
 	if [[ "${ARCHIVE_EXT}" == "dmg" ]]; then
 		unpack_dmg
@@ -175,14 +257,15 @@ elif [[ "$(${JAVA_EXEC} -version 2>&1 | head -1)" != *"${JDK_CHECK_VERSION}"* ]]
 fi
 #
 if [[ "$1" == "info" ]]; then
+	print_debug_info
 	echo "JDK_HOME=${JDK_HOME}"
 	echo "JAVA_HOME=${JAVA_HOME}"
 elif [[ -z "${JDK_HOME}" ]]; then
 	error "can't JDK_HOME"
 elif [[ -z "$1" ]]; then
 	error "command is empty"
-else # execute program
-	print_debug_info
+else
+	# execute program
 	debug "command: ${JDK_HOME}/bin/$1" "${@:2}"
 	eval "${JDK_HOME}/bin/$1" "${@:2}"
 fi

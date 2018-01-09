@@ -25,11 +25,14 @@ run CHECK_JDK_VERSION='1.8.0_152' CHECK_JDK_HOME='jdk8u152' JDK_FAMILY='8' JDK_U
 run CHECK_JDK_VERSION='1.8.0' CHECK_JDK_HOME='jdk8' JVMW_FILE='jvmw.8.properties' ./tests.sh || test_failure
 run CHECK_JDK_VERSION='1.8.0_151' CHECK_JDK_HOME='jdk8' JVMW_FILE='jvmw.8.properties' ./tests.sh || test_failure
 run CHECK_JDK_VERSION='1.8.0_152' CHECK_JDK_HOME='jdk8u152' JVMW_FILE='jvmw.8u152.properties' ./tests.sh || test_failure
+run CHECK_JDK_VERSION='1.8.0_144' CHECK_JDK_HOME='jdk8u144' JVMW_FILE='jvmw.8u144.properties' ./tests.sh || test_failure
 
 run CHECK_JDK_VERSION='9.0.1' CHECK_JDK_HOME='jdk9' ./tests.sh || test_failure
 run CHECK_JDK_VERSION='9.0.1' CHECK_JDK_HOME='jdk9' JDK_FAMILY='9' ./tests.sh || test_failure
 run CHECK_JDK_VERSION='9.0.1' CHECK_JDK_HOME='jdk9' JVMW_FILE='jvmw.9.properties' ./tests.sh || test_failure
 run CHECK_JDK_VERSION='9.0.1' CHECK_JDK_HOME='jdk9u152' JVMW_FILE='incorrect.jvmw.9u152.properties' ./tests.sh 2>/dev/null && test_failure
+
+run CHECK_JDK_VERSION='1.7.0_80' CHECK_JDK_HOME='jdk7u80' JVMW_FILE='jvmw.7u80.properties' ./tests.sh || test_failure
 
 cleanup && mkdir -p ./tmp/ && cp ./jdkw ./tmp/jdkw
 run CHECK_JDK_VERSION='1.8.0' CHECK_JDK_HOME='jdk8' JDK_FAMILY='8' ./tests.sh ./tmp/jdkw || test_failure
