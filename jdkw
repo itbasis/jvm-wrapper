@@ -206,7 +206,7 @@ function download_archive_jdk() {
 
 function unpack_dmg() {
 	hdiutil detach "/Volumes/${JDK_FULL_NAME}" -quiet -force 2> /dev/null
-	hdiutil attach "${ARCHIVE_FILE}" -quiet -mountpoint "/Volumes/${JDK_FULL_NAME}" 2>&1 || error
+	hdiutil attach "${ARCHIVE_FILE}" -mountpoint "/Volumes/${JDK_FULL_NAME}" 2>&1 || error
 	local -r PKG_FILE_NAME=$(find "/Volumes/${JDK_FULL_NAME}" -mindepth 1 -maxdepth 1 -name '*.pkg')
 	local -r tmp_dir=$(mktemp -d -t "${JDK_FULL_NAME}.XXXXXX")
 	cd "${tmp_dir}/" || { rm -Rf "${tmp_dir}";
@@ -215,7 +215,7 @@ function unpack_dmg() {
 	for dir in ./*jdk*; do
 		cpio -i <"${dir}/Payload" || exit 1
 	done
-	mv Contents "../${JDK_FULL_NAME}" 1> /dev/null 2>&1 || error
+	mv Contents "${JVMW_HOME}/${JDK_FULL_NAME}" 1> /dev/null 2>&1 || error
 	cd - || error
 	rm -Rf "${tmp_dir}" "${ARCHIVE_FILE}"
 	#
