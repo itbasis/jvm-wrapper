@@ -206,21 +206,20 @@ function download_archive_jdk() {
 
 function unpack_dmg() {
 	hdiutil detach "/Volumes/${JDK_FULL_NAME}" -quiet -force 2> /dev/null
-	hdiutil attach "${ARCHIVE_FILE}" -quiet -mountpoint "/Volumes/${JDK_FULL_NAME}" || exit 1
+	hdiutil attach "${ARCHIVE_FILE}" -quiet -mountpoint "/Volumes/${JDK_FULL_NAME}" 2>&1 || error
 	local -r PKG_FILE_NAME=$(find "/Volumes/${JDK_FULL_NAME}" -mindepth 1 -maxdepth 1 -name '*.pkg')
 	local -r tmp_dir=$(mktemp -d -t "${JDK_FULL_NAME}.XXXXXX")
 	cd "${tmp_dir}/" || { rm -Rf "${tmp_dir}";
 		error "can't change directory: ${tmp_dir}/"; }
-	xar -xf "${PKG_FILE_NAME}" . &> /dev/null || exit 1
+	xar -xf "${PKG_FILE_NAME}" . &> /dev/null || error
 	for dir in ./*jdk*; do
 		cpio -i <"${dir}/Payload" || exit 1
 	done
-	rm -Rf "${JVMW_HOME:?}/${JDK_FULL_NAME}/"
-	mv Contents "../${JDK_FULL_NAME}" 1> /dev/null 2>&1 || exit 1
-	cd - || exit 1
+	mv Contents "../${JDK_FULL_NAME}" 1> /dev/null 2>&1 || error
+	cd - || error
 	rm -Rf "${tmp_dir}" "${ARCHIVE_FILE}"
 	#
-	hdiutil detach "/Volumes/${JDK_FULL_NAME}" -quiet -force
+	hdiutil detach "/Volumes/${JDK_FULL_NAME}" -force || error
 }
 
 function unpack_linux() {
