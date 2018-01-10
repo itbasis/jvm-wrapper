@@ -14,6 +14,7 @@ before_script:
 
 script:
   - if [[ -z "$DOCKER_IMAGE" ]]; then ./test_suite.sh 2>&1; fi
+  - if [[ ! -z "$DOCKER_IMAGE" ]]; then ./travis_scripts/script_docker.$DOCKER_IMAGE.sh 2>&1; fi
 #  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then CHECK_JDK_VERSION='1.6.0_45' CHECK_JDK_HOME='jdk6u45' JVMW_FILE='jvmw.6u45.properties' ./tests.sh ; fi
 
 matrix:
@@ -42,40 +43,35 @@ matrix:
       sudo: required
 
     - os: linux
-      sudo: required
       env:
         - DOCKER_IMAGE: centos
         - DOCKER_TAG: centos6
-      script:
-        - ./travis_scripts/script_docker.centos.sh
     - os: linux
-      sudo: required
       env:
         - DOCKER_IMAGE: centos
         - DOCKER_TAG: centos7
       env:
         - DOCKER_IMAGE: centos
         - DOCKER_TAG: centos6
-      script:
-        - ./travis_scripts/script_docker.centos.sh
     - os: linux
-      sudo: required
       env:
         - DOCKER_IMAGE: debian
         - DOCKER_TAG: wheezy
-      script:
-        - ./travis_scripts/script_docker.debian.sh
     - os: linux
-      sudo: required
       env:
         - DOCKER_IMAGE: debian
         - DOCKER_TAG: jessie
-      script:
-        - ./travis_scripts/script_docker.debian.sh
     - os: linux
-      sudo: required
       env:
         - DOCKER_IMAGE: ubuntu
         - DOCKER_TAG: trusty
+    - os: linux
+      env:
+        - DOCKER_IMAGE: opensuse
+        - DOCKER_TAG: latest
+    - os: linux
+      env:
+        - DOCKER_IMAGE: base/arch
+        - DOCKER_TAG: latest
       script:
-        - ./travis_scripts/script_docker.ubuntu.sh
+        - ./travis_scripts/script_docker.sh 2>&1

@@ -11,4 +11,4 @@ docker run \
 -v "$(pwd)/samples/":/root/samples/ \
 -v "$(pwd)/test_suite.sh":/root/test_suite.sh \
 -v "$(pwd)/tests.sh":/root/tests.sh \
- $DOCKER_IMAGE:$DOCKER_TAG bash -c "apt-get update && apt-get install -y curl && cd /root && ./test_suite.sh 2>&1"
+ $DOCKER_IMAGE:$DOCKER_TAG bash -c "export HOME=/root && cd /root && ./test_suite.sh 2>&1"

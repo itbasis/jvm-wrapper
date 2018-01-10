@@ -24,15 +24,15 @@ function debug() {
 }
 
 function print_debug_info() {
-	for key in OS ARCH ARCHIVE_EXT JDK_FAMILY JDK_UPDATE_VERSION JDK_FULL_VERSION JDK_CHECK_VERSION JDK_FULL_NAME JDK_HOME JAVA_HOME JAVA_EXEC JDK_PAGE_URL ARCHIVE_JDK_URL ARCHIVE_JDK_SHA256 ARCHIVE_FILE; do
+	for key in OS ARCH JVMW_HOME ARCHIVE_EXT JDK_FAMILY JDK_UPDATE_VERSION JDK_FULL_VERSION JDK_CHECK_VERSION JDK_FULL_NAME JDK_HOME JAVA_HOME JAVA_EXEC JDK_PAGE_URL ARCHIVE_JDK_URL ARCHIVE_JDK_SHA256 ARCHIVE_FILE; do
 		>&2 echo "[DEBUG] ${key}=${!key}";
 	done
 }
 
 function error() {
 	rm -f "${OTN_HEADERS_FILE}" "${OTN_CONTENT_FILE}" "${OTN_COOKIE_FILE}"
-	>&2 echo "[ERROR] [${BASH_SOURCE[0]}:${FUNCNAME[1]}:${BASH_LINENO[0]}] $*"
 	print_debug_info
+	>&2 echo "[ERROR] [${BASH_SOURCE[0]}:${FUNCNAME[1]}:${BASH_LINENO[0]}] $*"
 	exit 1
 }
 
@@ -214,10 +214,11 @@ function unpack_dmg() {
 }
 
 function unpack_linux() {
-	mkdir -p "${JVMW_HOME}/${JDK_FULL_NAME}.tmp" || exit 1
-	tar xf "${ARCHIVE_FILE}" -C "${JVMW_HOME}/${JDK_FULL_NAME}.tmp" || exit 1
-	mv "$(find "${JVMW_HOME}/${JDK_FULL_NAME}.tmp" -mindepth 1 -maxdepth 1 -type d)" "${JVMW_HOME}/${JDK_FULL_NAME}" || exit 1
-	rm -Rf "${JVMW_HOME:?}/${JDK_FULL_NAME}.tmp/" "${ARCHIVE_FILE}"
+	local tmp_dir=$(mktemp -d -t "${JDK_FULL_NAME}.XXXXXX")
+	debug "tmp_dir=${tmp_dir}"
+	tar xf "${ARCHIVE_FILE}" -C "${tmp_dir}" || { rm -Rf "${tmp_dir}"; error 'error unpack archive...'; }
+	mv "$(find "${tmp_dir}" -mindepth 1 -maxdepth 1 -type d)" "${JVMW_HOME}/${JDK_FULL_NAME}" || { rm -Rf "${tmp_dir}"; error 'error move unpacked jdk...'; }
+	rm -Rf "${tmp_dir}" "${ARCHIVE_FILE}"
 }
 
 function update_jdk() {
@@ -252,7 +253,11 @@ fi
 #
 if [[ ! -f "${JAVA_EXEC}" ]]; then
 	update_jdk
-elif [[ "$(${JAVA_EXEC} -version 2>&1 | head -1)" != *"${JDK_CHECK_VERSION}"* ]]; then
+fi
+JDK_CURRENT_VERSION=$(${JAVA_EXEC} -version 2>&1 | head -1)
+if [[ "${JDK_CURRENT_VERSION}" != *"${JDK_CHECK_VERSION}"* ]]; then
+	debug "JDK_CURRENT_VERSION: '${JDK_CURRENT_VERSION}'"
+	debug "JDK_CHECK_VERSION: '${JDK_CHECK_VERSION}'"
 	error 'The local Java version does not match the expected version'
 fi
 #
