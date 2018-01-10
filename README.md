@@ -25,17 +25,20 @@ Instead of `java` or `javac`, you can use any command from `$JAVA_HOME/bin/`
 ## properties
 Order of reading variables: environment, `~/jvmw.properties`, `./jvmw.properties`. The last read value is set for the variable
 
-Properties are read without replacing the previously read. For example, if environment does not have an empty `JDK_FAMILY` variable and also has `./jvmw.properties`, then the variable from the environment
+Properties are read without replacing the previously read. For example, if environment does not have an empty `JDK_VERSION_MAJOR` variable and also has `./jvmw.properties`, then the variable from the environment
 
 To download archival versions of JDK, you must set the variables `ORACLE_USER` and `ORACLE_PASSWORD`
 
 #### jvmw.properties
 
-|property name|required|sample|
-|:---|:---:|:---|
-|JDK_FAMILY|Y|JDK_FAMILY=8<br/>JDK_FAMILY=9|
-|JDK_UPDATE_VERSION|N|JDK_UPDATE_VERSION=<br/>JDK_UPDATE_VERSION=144<br/>JDK_UPDATE_VERSION=80|
-|ORACLE_USER|N|ORACLE_USER=user@example.com|
-|ORACLE_PASSWORD|N|ORACLE_PASSWORD=password|
+|property name|sample|
+|---|---|
+|JDK_VERSION|JDK_VERSION=9<br/>JDK_VERSION=8<br/>JDK_VERSION=8u144|
+|JDK_VERSION_MAJOR|JDK_VERSION_MAJOR=8<br/>JDK_VERSION_MAJOR=9|
+|JDK_VERSION_MINOR|JDK_VERSION_MINOR=<br/>JDK_VERSION_MINOR=144<br/>JDK_VERSION_MINOR=80|
+|ORACLE_USER|ORACLE_USER=user@example.com|
+|ORACLE_PASSWORD|ORACLE_PASSWORD=password|
+
+\* The `JDK_VERSION` variable takes precedence over `JDK_VERSION_MAJOR` and `JDK_VERSION_MINOR`.
 
 [sample configuration files](samples)

@@ -11,8 +11,8 @@ REQUIRED_COMMANDS_CORE='awk tr grep head rm mv cd curl'
 REQUIRED_COMMANDS_DARWIN='hdiutil xar cpio shasum'
 REQUIRED_COMMANDS_LINUX='sha256sum tar'
 #
-JDK_FAMILY=${JDK_FAMILY}
-JDK_UPDATE_VERSION=${JDK_UPDATE_VERSION}
+JDK_VERSION_MAJOR=${JDK_VERSION_MAJOR}
+JDK_VERSION_MINOR=${JDK_VERSION_MINOR}
 #
 OTN_USER_AGENT='Mozilla/5.0 https://github.com/itbasis/jvm-wrapper'
 #
@@ -24,7 +24,7 @@ function debug() {
 }
 
 function print_debug_info() {
-	for key in OS ARCH JVMW_HOME ARCHIVE_EXT JDK_FAMILY JDK_UPDATE_VERSION JDK_FULL_VERSION JDK_CHECK_VERSION JDK_FULL_NAME JDK_HOME JAVA_HOME JAVA_EXEC JDK_PAGE_URL ARCHIVE_JDK_URL ARCHIVE_JDK_SHA256 ARCHIVE_FILE; do
+	for key in OS ARCH JVMW_HOME ARCHIVE_EXT JDK_VERSION_MAJOR JDK_VERSION_MINOR JDK_VERSION JDK_CHECK_VERSION JDK_FULL_NAME JDK_HOME JAVA_HOME JAVA_EXEC JDK_PAGE_URL ARCHIVE_JDK_URL ARCHIVE_JDK_SHA256 ARCHIVE_FILE; do
 		>&2 echo "[DEBUG] ${key}=${!key}";
 	done
 }
@@ -54,25 +54,35 @@ function properties_parser() {
 
 function properties_default() {
 	cat << EOF
-JDK_FAMILY=9
-JDK_UPDATE_VERSION=
+JDK_VERSION=
+JDK_VERSION_MAJOR=9
+JDK_VERSION_MINOR=
 EOF
 }
 
 function properties_calculate() {
-	if [[ ${JDK_FAMILY} -lt 9 ]]; then
-		JDK_FULL_VERSION="${JDK_FAMILY}$(if [[ ! -z "${JDK_UPDATE_VERSION}" ]]; then
-			echo "u${JDK_UPDATE_VERSION}";
-		fi)"
-		JDK_CHECK_VERSION="1.${JDK_FAMILY}.0$(if [[ ! -z "${JDK_UPDATE_VERSION}" ]]; then
-			echo "_${JDK_UPDATE_VERSION}";
-		fi)"
+	if [[ ! -z "${JDK_VERSION}" ]]; then
+		if [[ "${JDK_VERSION}" == *"u"* ]]; then
+			JDK_VERSION_MAJOR="${JDK_VERSION%u*}"
+			JDK_VERSION_MINOR="${JDK_VERSION#*u}"
+		else
+			JDK_VERSION_MAJOR="${JDK_VERSION}"
+			unset JDK_VERSION_MINOR
+		fi
 	else
 		#	TODO Fix mask for version greater than or equal to 9
-		JDK_FULL_VERSION="${JDK_FAMILY}"
-		JDK_CHECK_VERSION="${JDK_FAMILY}.0.1"
+		JDK_VERSION="${JDK_VERSION_MAJOR}$(if [[ ! -z "${JDK_VERSION_MINOR}" ]]; then
+			echo "u${JDK_VERSION_MINOR}";
+		fi)"
 	fi
-	JDK_FULL_NAME="jdk${JDK_FULL_VERSION}"
+	if [[ ${JDK_VERSION_MAJOR} -lt 9 ]]; then
+		JDK_CHECK_VERSION="1.${JDK_VERSION_MAJOR}.0$(if [[ ! -z "${JDK_VERSION_MINOR}" ]]; then
+			echo "_${JDK_VERSION_MINOR}";
+		fi)"
+	else
+		JDK_CHECK_VERSION="${JDK_VERSION_MAJOR}.0.1"
+	fi
+	JDK_FULL_NAME="jdk${JDK_VERSION}"
 	JDK_HOME=$(echo "${JVMW_HOME}/${JDK_FULL_NAME}/$(if [[ "${OS}" == 'darwin' ]]; then
 		echo 'Home';
 	fi)" | sed s#//*#/#g)
@@ -152,20 +162,20 @@ function otn_login() {
 }
 
 function get_latest_jdk_page_url() {
-	JDK_PAGE_URL=http://www.oracle.com$(curl -s http://www.oracle.com/technetwork/java/javase/downloads/index.html | tr '"' $'\n' | grep "jdk${JDK_FAMILY}-downloads" | head -1)
+	JDK_PAGE_URL=http://www.oracle.com$(curl -s http://www.oracle.com/technetwork/java/javase/downloads/index.html | tr '"' $'\n' | grep "jdk${JDK_VERSION_MAJOR}-downloads" | head -1)
 }
 
 function get_archive_jdk_page_url() {
 	local -r url_archive=http://www.oracle.com$(curl -sS http://www.oracle.com/technetwork/java/javase/downloads/index.html | tr '"' $'\n' | grep "/archive-" | head -1)
 	debug "url_archive='${url_archive}'"
-	JDK_PAGE_URL=http://www.oracle.com$(curl -sS "${url_archive}" | tr '"' $'\n' | grep "/java-archive.*-javase${JDK_FAMILY}-" | head -1)
+	JDK_PAGE_URL=http://www.oracle.com$(curl -sS "${url_archive}" | tr '"' $'\n' | grep "/java-archive.*-javase${JDK_VERSION_MAJOR}-" | head -1)
 	debug "JDK_PAGE_URL='${JDK_PAGE_URL}'"
 }
 
 function get_archive_jdk_url() {
 	debug "JDK_PAGE_URL='${JDK_PAGE_URL}'"
 	local -r content=$(curl -s "${JDK_PAGE_URL}")
-	local -r awk_mask='^downloads.*?jdk-'${JDK_FULL_VERSION}'.*?-'${ARCH}'.*?.'${ARCHIVE_EXT}
+	local -r awk_mask='^downloads.*?jdk-'${JDK_VERSION}'.*?-'${ARCH}'.*?.'${ARCHIVE_EXT}
 	debug "awk_mask=${awk_mask}"
 
 	local -r awk_sep='":"|", "|"}'
@@ -196,28 +206,29 @@ function download_archive_jdk() {
 
 function unpack_dmg() {
 	hdiutil detach "/Volumes/${JDK_FULL_NAME}" -quiet -force 2> /dev/null
-	hdiutil attach "${ARCHIVE_FILE}" -quiet -mountpoint "/Volumes/${JDK_FULL_NAME}" || exit 1
+	hdiutil attach "${ARCHIVE_FILE}" -mountpoint "/Volumes/${JDK_FULL_NAME}" 2>&1 || error
 	local -r PKG_FILE_NAME=$(find "/Volumes/${JDK_FULL_NAME}" -mindepth 1 -maxdepth 1 -name '*.pkg')
-	mkdir -p "${JVMW_HOME}/${JDK_FULL_NAME}.tmp" || exit 1
-	cd "${JVMW_HOME}/${JDK_FULL_NAME}.tmp/" || { echo "can't change directory: ${JVMW_HOME}/${JDK_FULL_NAME}.tmp/";
-		exit 1; }
-	xar -xf "${PKG_FILE_NAME}" . &> /dev/null || exit 1
+	local -r tmp_dir=$(mktemp -d -t "${JDK_FULL_NAME}.XXXXXX")
+	cd "${tmp_dir}/" || { rm -Rf "${tmp_dir}";
+		error "can't change directory: ${tmp_dir}/"; }
+	xar -xf "${PKG_FILE_NAME}" . &> /dev/null || error
 	for dir in ./*jdk*; do
 		cpio -i <"${dir}/Payload" || exit 1
 	done
-	rm -Rf "${JVMW_HOME:?}/${JDK_FULL_NAME}/"
-	mv Contents "../${JDK_FULL_NAME}" 1> /dev/null 2>&1 || exit 1
-	cd - || exit 1
-	rm -Rf "${JVMW_HOME:?}/${JDK_FULL_NAME}.tmp/" "${ARCHIVE_FILE}"
+	mv Contents "${JVMW_HOME}/${JDK_FULL_NAME}" 1> /dev/null 2>&1 || error
+	cd - || error
+	rm -Rf "${tmp_dir}" "${ARCHIVE_FILE}"
 	#
-	hdiutil detach "/Volumes/${JDK_FULL_NAME}" -quiet -force
+	hdiutil detach "/Volumes/${JDK_FULL_NAME}" -force || error
 }
 
 function unpack_linux() {
 	local tmp_dir=$(mktemp -d -t "${JDK_FULL_NAME}.XXXXXX")
 	debug "tmp_dir=${tmp_dir}"
-	tar xf "${ARCHIVE_FILE}" -C "${tmp_dir}" || { rm -Rf "${tmp_dir}"; error 'error unpack archive...'; }
-	mv "$(find "${tmp_dir}" -mindepth 1 -maxdepth 1 -type d)" "${JVMW_HOME}/${JDK_FULL_NAME}" || { rm -Rf "${tmp_dir}"; error 'error move unpacked jdk...'; }
+	tar xf "${ARCHIVE_FILE}" -C "${tmp_dir}" || { rm -Rf "${tmp_dir}";
+		error 'error unpack archive...'; }
+	mv "$(find "${tmp_dir}" -mindepth 1 -maxdepth 1 -type d)" "${JVMW_HOME}/${JDK_FULL_NAME}" || { rm -Rf "${tmp_dir}";
+		error 'error move unpacked jdk...'; }
 	rm -Rf "${tmp_dir}" "${ARCHIVE_FILE}"
 }
 
