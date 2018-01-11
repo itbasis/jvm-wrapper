@@ -4,7 +4,7 @@ JVMW=${1:-./jdkw}
 JVMW_FILE=${JVMW_FILE}
 JDK_VERSION_MAJOR=${JDK_VERSION_MAJOR}
 CHECK_JDK_VERSION=${CHECK_JDK_VERSION}
-CHECK_JDK_HOME=${CHECK_JDK_HOME}
+CHECK_JDK_ROOT_DIR=${CHECK_JDK_ROOT_DIR}
 #
 rm -Rf ./build/ ./jvmw.properties
 #
@@ -18,6 +18,7 @@ function check_output() {
 		>&2 echo --- capture output :: end ---
 		exit 1
 	fi
+	echo "${output}"
 }
 
 #
@@ -26,7 +27,7 @@ if [ -f "samples/${JVMW_FILE}" ]; then
 fi
 
 #
-check_output 'info' "JDK_HOME=${HOME}/.jvm/${CHECK_JDK_HOME}/"
+check_output 'info' "JDK_HOME=${HOME}/.jvm/${CHECK_JDK_ROOT_DIR}/"
 check_output 'javac -version' "${CHECK_JDK_VERSION}"
 check_output 'java -version' "${CHECK_JDK_VERSION}"
 

@@ -24,8 +24,8 @@ function debug() {
 }
 
 function print_debug_info() {
-	for key in OS ARCH JVMW_HOME ARCHIVE_EXT JDK_VERSION_MAJOR JDK_VERSION_MINOR JDK_VERSION JDK_CHECK_VERSION JDK_FULL_NAME JDK_HOME JAVA_HOME JAVA_EXEC JDK_PAGE_URL ARCHIVE_JDK_URL ARCHIVE_JDK_SHA256 ARCHIVE_FILE; do
-		>&2 echo "[DEBUG] ${key}=${!key}";
+	for key in OS ARCH JVMW_HOME ARCHIVE_EXT JDK_VERSION_MAJOR JDK_VERSION_MINOR JDK_VERSION JDK_CHECK_VERSION JDK_FULL_NAME JDK_HOME_DIR JAVA_HOME_DIR JAVA_EXEC JDK_PAGE_URL ARCHIVE_JDK_URL ARCHIVE_JDK_SHA256 ARCHIVE_FILE; do
+		>&2 debug "${key}=${!key}";
 	done
 }
 
@@ -83,12 +83,13 @@ function properties_calculate() {
 		JDK_CHECK_VERSION="${JDK_VERSION_MAJOR}.0.1"
 	fi
 	JDK_FULL_NAME="jdk${JDK_VERSION}"
-	JDK_HOME=$(echo "${JVMW_HOME}/${JDK_FULL_NAME}/$(if [[ "${OS}" == 'darwin' ]]; then
+	JDK_ROOT_DIR=${JVMW_HOME}/${JDK_FULL_NAME}
+	JDK_HOME_DIR=$(echo "${JDK_ROOT_DIR}/$(if [[ "${OS}" == 'darwin' ]]; then
 		echo 'Home';
 	fi)" | sed s#//*#/#g)
-	JAVA_HOME="${JDK_HOME}"
-	JAVA_EXEC=$(echo "${JAVA_HOME}/bin/java" | sed s#//*#/#g)
-	ARCHIVE_FILE=$(echo "${JVMW_HOME}/${JDK_FULL_NAME}.${ARCHIVE_EXT}" | sed s#//*#/#g)
+	JAVA_HOME_DIR="${JDK_HOME_DIR}"
+	JAVA_EXEC=$(echo "${JAVA_HOME_DIR}/bin/java" | sed s#//*#/#g)
+	ARCHIVE_FILE=$(echo "${JDK_ROOT_DIR}.${ARCHIVE_EXT}" | sed s#//*#/#g)
 }
 
 function curl_get() {
@@ -215,7 +216,7 @@ function unpack_dmg() {
 	for dir in ./*jdk*; do
 		cpio -i <"${dir}/Payload" || exit 1
 	done
-	mv Contents "${JVMW_HOME}/${JDK_FULL_NAME}" 1> /dev/null 2>&1 || error
+	mv Contents "${JDK_ROOT_DIR}" 1> /dev/null 2>&1 || error
 	cd - || error
 	rm -Rf "${tmp_dir}" "${ARCHIVE_FILE}"
 	#
@@ -227,7 +228,7 @@ function unpack_linux() {
 	debug "tmp_dir=${tmp_dir}"
 	tar xf "${ARCHIVE_FILE}" -C "${tmp_dir}" || { rm -Rf "${tmp_dir}";
 		error 'error unpack archive...'; }
-	mv "$(find "${tmp_dir}" -mindepth 1 -maxdepth 1 -type d)" "${JVMW_HOME}/${JDK_FULL_NAME}" || { rm -Rf "${tmp_dir}";
+	mv "$(find "${tmp_dir}" -mindepth 1 -maxdepth 1 -type d)" "${JDK_ROOT_DIR}" || { rm -Rf "${tmp_dir}";
 		error 'error move unpacked jdk...'; }
 	rm -Rf "${tmp_dir}" "${ARCHIVE_FILE}"
 }
@@ -246,42 +247,57 @@ function update_jdk() {
 	else
 		unpack_linux
 	fi
+	date +"%F %R" >"${JVMW_HOME}/.${JDK_FULL_NAME}"
 }
 
-# build properties
-[[ -f "${JVMW_HOME}/${JVMW_PROPERTY_FILE}" ]] && { properties_parser "$(cat "${JVMW_HOME}/${JVMW_PROPERTY_FILE}")"; }
-[[ -f "${JVMW_PROPERTY_FILE}" ]] && { properties_parser "$(cat "${JVMW_PROPERTY_FILE}")"; }
-properties_parser "$(properties_default)"
-properties_calculate
+function main_properties_make() {
+	[[ -f "${JVMW_HOME}/${JVMW_PROPERTY_FILE}" ]] && { properties_parser "$(cat "${JVMW_HOME}/${JVMW_PROPERTY_FILE}")"; }
+	[[ -f "${JVMW_PROPERTY_FILE}" ]] && { properties_parser "$(cat "${JVMW_PROPERTY_FILE}")"; }
+	properties_parser "$(properties_default)"
+	properties_calculate
+}
 
+function main_check_for_update() {
+	if [[ ! -f "${JAVA_EXEC}" ]]; then
+		update_jdk
+	fi
+}
 
-# main section
-if [[ "${OS}" == "darwin" ]]; then
-	check_program_exists "${REQUIRED_COMMANDS_CORE}" "${REQUIRED_COMMANDS_DARWIN}"
-else
-	check_program_exists "${REQUIRED_COMMANDS_CORE}" "${REQUIRED_COMMANDS_LINUX}"
-fi
-#
-if [[ ! -f "${JAVA_EXEC}" ]]; then
-	update_jdk
-fi
-JDK_CURRENT_VERSION=$(${JAVA_EXEC} -version 2>&1 | head -1)
-if [[ "${JDK_CURRENT_VERSION}" != *"${JDK_CHECK_VERSION}"* ]]; then
-	debug "JDK_CURRENT_VERSION: '${JDK_CURRENT_VERSION}'"
-	debug "JDK_CHECK_VERSION: '${JDK_CHECK_VERSION}'"
-	error 'The local Java version does not match the expected version'
-fi
-#
-if [[ "$1" == "info" ]]; then
-	print_debug_info
-	echo "JDK_HOME=${JDK_HOME}"
-	echo "JAVA_HOME=${JAVA_HOME}"
-elif [[ -z "${JDK_HOME}" ]]; then
-	error "can't JDK_HOME"
-elif [[ -z "$1" ]]; then
-	error "command is empty"
-else
-	# execute program
-	debug "command: ${JDK_HOME}/bin/$1" "${@:2}"
-	eval "${JDK_HOME}/bin/$1" "${@:2}"
-fi
+function main_check_version() {
+	JDK_CURRENT_VERSION=$(${JAVA_EXEC} -version 2>&1 | head -1)
+	if [[ "${JDK_CURRENT_VERSION}" != *"${JDK_CHECK_VERSION}"* ]]; then
+		debug "JDK_CURRENT_VERSION: '${JDK_CURRENT_VERSION}'"
+		debug "JDK_CHECK_VERSION: '${JDK_CHECK_VERSION}'"
+		error 'The local Java version does not match the expected version'
+	fi
+}
+
+function main() {
+	if [[ "${OS}" == "darwin" ]]; then
+		check_program_exists "${REQUIRED_COMMANDS_CORE}" "${REQUIRED_COMMANDS_DARWIN}"
+	else
+		check_program_exists "${REQUIRED_COMMANDS_CORE}" "${REQUIRED_COMMANDS_LINUX}"
+	fi
+	main_properties_make
+	main_check_for_update
+	main_check_version
+
+	if [[ "$1" == "info" ]]; then
+		print_debug_info
+		echo "JDK_HOME=${JDK_HOME_DIR}"
+		echo "JAVA_HOME=${JAVA_HOME_DIR}"
+
+	elif [[ -z "${JDK_HOME_DIR}" ]]; then
+		error "can't JDK_HOME_DIR"
+
+	elif [[ -z "$1" ]]; then
+		error "command is empty"
+
+	else
+		# execute program
+		debug "command: ${JDK_HOME_DIR}/bin/$1" "${@:2}"
+		eval "${JDK_HOME_DIR}/bin/$1" "${@:2}"
+	fi
+}
+
+main "$@"
