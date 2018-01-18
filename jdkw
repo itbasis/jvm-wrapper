@@ -5,7 +5,7 @@ JVMW_HOME=${HOME}/.jvm/
 JVMW_PROPERTY_FILE="${JVMW_PROPERTY_FILE:-./jvmw.properties}"
 OS=$(uname | tr '[:upper:]' '[:lower:]')
 ARCH=$([[ "$(uname -m)" == "x86_64" ]] && echo "x64" || echo "i586")
-ARCHIVE_EXT=$([[ "$(uname)" == "Darwin" ]] && echo "dmg" || echo "tar.gz")
+ARCHIVE_EXT=$([[ "${OS}" == "darwin" ]] && echo "dmg" || echo "tar.gz")
 REQUIRED_UPDATE="${REQUIRED_UPDATE:-Y}"
 #
 REQUIRED_COMMANDS_CORE='awk tr grep head rm mv cd curl'
@@ -358,7 +358,7 @@ function check_is_out_of_date() {
 		REQUIRED_UPDATE=Y
 	else
 		local -r luf_date=$(head -1 <"${LAST_UPDATE_FILE}")
-		local -r prev_date=$(date -jf '%F %R' "${luf_date}" +%j)
+		local -r prev_date=$([[ "${OS}" == "darwin" ]] && $(date -jf '%F %R' "${luf_date}" +%j) || $(date --date="${luf_date}" '+%F %R'))
 		local -r curr_date=$(date +%j)
 		debug "prev_date='${prev_date}', curr_date='${curr_date}'"
 		if [[ ${curr_date} > ${prev_date} ]]; then
