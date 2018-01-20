@@ -6,6 +6,7 @@
       <w>centos</w>
       <w>cmds</w>
       <w>cpio</w>
+      <w>funcname</w>
       <w>hdiutil</w>
       <w>itbasis</w>
       <w>jdkw</w>
@@ -26,6 +27,7 @@
       <w>substr</w>
       <w>sudo</w>
       <w>technetwork</w>
+      <w>uname</w>
       <w>userid</w>
       <w>xxxxxx</w>
     </words>

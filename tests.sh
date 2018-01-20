@@ -6,6 +6,7 @@ JDK_VERSION_MAJOR=${JDK_VERSION_MAJOR}
 CHECK_JDK_VERSION=${CHECK_JDK_VERSION}
 CHECK_JDK_ROOT_DIR=${CHECK_JDK_ROOT_DIR}
 LAST_UPDATE_FILE=${HOME}/.jvm/${CHECK_JDK_ROOT_DIR}.last_update
+OS=$(uname | tr '[:upper:]' '[:lower:]')
 #
 rm -Rf ./build/ ./jvmw.properties "${LAST_UPDATE_FILE}"
 #
@@ -62,16 +63,19 @@ if [[ ${output} != *"prev_date="* ]]; then
 	error "${output}"
 fi
 
-log_test "check not call function 'otn_page_archive_jdk_parser'"
-sed -i "" "1s/.*/$(date -v -2d +"%F %R")/" "${LAST_UPDATE_FILE}"
-if [[ ${output} == *"otn_page_archive_jdk_parser"* ]]; then
+log_test "check call function 'otn_page_archive_jdk_parser'"
+fake_date=$([[ "${OS}" == "darwin" ]] && echo "$(date -v -2d +"%F %R"))" || echo "$(date --date="-2 days" '+%F %R')")
+printf "%s" "${fake_date}" >"${LAST_UPDATE_FILE}"
+output=$(check_output 'info' "JDK_HOME=${HOME}/.jvm/${CHECK_JDK_ROOT_DIR}/" 2>&1)
+if [[ ${output} != *"otn_page_archive_jdk_parser"* ]]; then
 	error "${output}"
 fi
-
-log_test "check call function 'otn_page_archive_jdk_parser'"
-sed -i "" "1s/.*/$(date -v -2d +"%F %R")/" "${LAST_UPDATE_FILE}"
-sed -i "" "2s/.*/fake/" "${LAST_UPDATE_FILE}"
-sed -i "" "3s/.*/fake/" "${LAST_UPDATE_FILE}"
+printf "%s\nfake" "${fake_date}" >"${LAST_UPDATE_FILE}"
+output=$(check_output 'info' "JDK_HOME=${HOME}/.jvm/${CHECK_JDK_ROOT_DIR}/" 2>&1)
+if [[ ${output} != *"otn_page_archive_jdk_parser"* ]]; then
+	error "${output}"
+fi
+printf "%s\nfake\nfake" "${fake_date}" >"${LAST_UPDATE_FILE}"
 output=$(check_output 'info' "JDK_HOME=${HOME}/.jvm/${CHECK_JDK_ROOT_DIR}/" 2>&1)
 if [[ ${output} != *"otn_page_archive_jdk_parser"* ]]; then
 	error "${output}"

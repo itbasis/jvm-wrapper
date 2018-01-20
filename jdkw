@@ -221,6 +221,10 @@ function otn_page_archive_jdk_parser() {
 }
 
 function check_checksum() {
+	if [[ ${JDK_VERSION_MAJOR} -lt 8 ]]; then
+		# checksum was added only from version 8
+		return 0
+	fi
 	local local_jdk_checksum
 	if [[ "${OS}" == "darwin" ]]; then
 		local_jdk_checksum=$(shasum -a 256 "${ARCHIVE_FILE}" | cut -d' ' -f 1)
@@ -264,17 +268,11 @@ function unpack_linux() {
 
 function write_last_update() {
 	local -r now=$(date +"%F %R")
-	debug "now=${now}"
 
-	if [[ ! -f "${LAST_UPDATE_FILE}" ]]; then
-		echo -e '\n\n' >"${LAST_UPDATE_FILE}"
-	fi
-
-	sed -i "" "1s/.*/$now/" "${LAST_UPDATE_FILE}"
-
-	if [[ ! -z "${ARCHIVE_JDK_URL}" ]]; then
-		sed -i "" "2s|.*|$ARCHIVE_JDK_URL|" "${LAST_UPDATE_FILE}"
-		sed -i "" "3s/.*/$ARCHIVE_JDK_CHECKSUM/" "${LAST_UPDATE_FILE}"
+	if [[ -z "${ARCHIVE_JDK_URL}" ]]; then
+			printf "%s\n%s" "${now}" "$(tail -n2 "${LAST_UPDATE_FILE}")" >"${LAST_UPDATE_FILE}"
+	else
+			printf "%s\n%s\n%s" "${now}" "${ARCHIVE_JDK_URL}" "${ARCHIVE_JDK_CHECKSUM}" >"${LAST_UPDATE_FILE}"
 	fi
 }
 
@@ -357,8 +355,8 @@ function check_is_out_of_date() {
 		debug "not found file: '${LAST_UPDATE_FILE}'"
 		REQUIRED_UPDATE=Y
 	else
-		local -r luf_date=$(head -1 <"${LAST_UPDATE_FILE}")
-		local -r prev_date=$([[ "${OS}" == "darwin" ]] && $(date -jf '%F %R' "${luf_date}" +%j) || $(date --date="${luf_date}" '+%F %R'))
+		local -r luf_date="$(head -1 <"${LAST_UPDATE_FILE}")"
+		local -r prev_date=$([[ "${OS}" == "darwin" ]] && echo "$(date -jf '%F %R' "${luf_date}" +%j)" || echo "$(date --date="${luf_date}" '+%j')")
 		local -r curr_date=$(date +%j)
 		debug "prev_date='${prev_date}', curr_date='${curr_date}'"
 		if [[ ${curr_date} > ${prev_date} ]]; then
