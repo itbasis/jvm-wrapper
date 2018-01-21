@@ -62,7 +62,7 @@ function system_check_program_exists() {
 
 function properties_parser() {
 	while IFS='=' read -r key value || [[ -n "$key" ]]; do
-		[[ -z "${!key}" ]] && eval "${key}='${value}'"
+		[[ ! -z "${key}" ]] && [[ -z "${!key}" ]] && { debug "${key}='${value}'"; eval "${key}='${value}'"; }
 	done <<<"$1"
 }
 

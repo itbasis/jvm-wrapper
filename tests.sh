@@ -18,15 +18,15 @@ function log_cmd() {
 }
 
 function log_test() {
-	>&2 echo --- test: "$@" --- ${BASH_SOURCE[0]}:${FUNCNAME[1]}:${BASH_LINENO[0]}
+	>&2 echo --- test: "$@" --- ${BASH_SOURCE[0]}:${FUNCNAME[1]}:${BASH_LINENO[1]}:${BASH_LINENO[0]}
 }
 
 function error() {
 	>&2 echo --- capture output :: begin ---
 	>&2 echo "${output}"
 	>&2 echo --- capture output :: end ---
-	>&2 echo --- error :: ${BASH_SOURCE[0]}:${FUNCNAME[1]}:${BASH_LINENO[0]} ---
-	rm -Rf ./build/test/ jvmw.properties > /dev/null 2>&1
+	>&2 echo --- error :: ${BASH_SOURCE[0]}:${FUNCNAME[1]}:${BASH_LINENO[1]}:${BASH_LINENO[0]} ---
+	clean
 	exit 1
 }
 
