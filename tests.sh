@@ -42,34 +42,36 @@ function check_output() {
 	fi
 }
 
+function prepare_test(){
+	clean
+	if [ -f "samples/${JVMW_FILE}" ]; then
+		cp "samples/${JVMW_FILE}" jvmw.properties
+	fi
+}
+
 #
-clean
-#
-if [ -f "samples/${JVMW_FILE}" ]; then
-	cp "samples/${JVMW_FILE}" jvmw.properties
+prepare_test
+echo -e "\nREQUIRED_UPDATE=N" >> jvmw.properties
+rm -Rf "${LAST_UPDATE_FILE}" ${HOME}/.jvm/${CHECK_JDK_ROOT_DIR}/
+check_output 'java -version' "java: No such file or directory"
+log_test "check not call function 'otn_page_archive_jdk_parser'"
+if [[ ${output} == *"otn_page_archive_jdk_parser"* ]]; then
+	error
 fi
 
+#
+prepare_test
 check_output 'info' "JDK_HOME=${HOME}/.jvm/${CHECK_JDK_ROOT_DIR}/"
 if [[ ${output} == *"[DEBUG]"* ]]; then
 	error
 fi
 
+prepare_test
 echo -e "\nJVMW_DEBUG=Y" >> jvmw.properties
 
 #
-cp jvmw.properties jvmw.properties.bak
-echo 'REQUIRED_UPDATE=N' >> jvmw.properties
-rm -Rf "${LAST_UPDATE_FILE}" ${HOME}/.jvm/${CHECK_JDK_ROOT_DIR}/
-check_output 'info' "The local Java version does not match the expected version"
-log_test "check not call function 'otn_page_archive_jdk_parser'"
-if [[ ${output} == *"otn_page_archive_jdk_parser"* ]]; then
-	error
-fi
-cp jvmw.properties.bak jvmw.properties
-
-#
-log_test "check call function 'otn_page_archive_jdk_parser'"
 check_output 'info' "JDK_HOME=${HOME}/.jvm/${CHECK_JDK_ROOT_DIR}/"
+log_test "check call function 'otn_page_archive_jdk_parser'"
 if [[ ${output} != *"otn_page_archive_jdk_parser"* ]]; then
 	error
 fi
@@ -120,7 +122,6 @@ fi
 cp jvmw.properties.bak jvmw.properties
 
 #
-
 
 check_output 'info' "JDK_HOME=${HOME}/.jvm/${CHECK_JDK_ROOT_DIR}/"
 check_output 'javac -version' "${CHECK_JDK_VERSION}"
