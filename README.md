@@ -22,7 +22,7 @@ download file `jdkw` in `~/.jvm/` or project directory
 
 Instead of `java` or `javac`, you can use any command from `$JAVA_HOME/bin/`
 
-## properties
+## Properties
 Order of reading variables: environment, `~/jvmw.properties`, `./jvmw.properties`. The last read value is set for the variable
 
 Properties are read without replacing the previously read. For example, if environment does not have an empty `JDK_VERSION_MAJOR` variable and also has `./jvmw.properties`, then the variable from the environment
