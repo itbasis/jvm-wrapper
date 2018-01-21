@@ -13,7 +13,7 @@
 
 ## Install
 
-download file `jdkw` in `~/.jvm/` or project directory
+download file [jdkw](jdkw) in `~/.jvm/` or project directory
 
 ## Usage
 `./jdkw java commands` or `~/.jvm/jdkw java commands`
@@ -25,20 +25,21 @@ Instead of `java` or `javac`, you can use any command from `$JAVA_HOME/bin/`
 ## Properties
 Order of reading variables: environment, `~/jvmw.properties`, `./jvmw.properties`. The last read value is set for the variable
 
+#### jvmw.properties
+
+|property name|default|examples||
+|---|:---:|---|---|
+|JDK_VERSION| |JDK_VERSION=9<br/>JDK_VERSION=8<br/>JDK_VERSION=8u144|The `JDK_VERSION` variable takes precedence over `JDK_VERSION_MAJOR` and `JDK_VERSION_MINOR`|
+|JDK_VERSION_MAJOR|`9`|JDK_VERSION_MAJOR=8<br/>JDK_VERSION_MAJOR=9|
+|JDK_VERSION_MINOR| |JDK_VERSION_MINOR=<br/>JDK_VERSION_MINOR=144<br/>JDK_VERSION_MINOR=80|
+|ORACLE_USER| |ORACLE_USER=user@example.com|
+|ORACLE_PASSWORD| |ORACLE_PASSWORD=password|
+|JVMW_DEBUG|`N`|`Y`, `N`|If `JVMW_DEBUG`=`Y`, debugging information will be displayed in stderr|
+|REQUIRED_UPDATE|`Y`|`Y`, `N`|If `REQUIRED_UPDATE`=`N`, then an attempt will not be made to load the JDK / JVM distributor. If the required version of JDK/JVM is not found locally, an error will be generated<br/>If `REQUIRED_UPDATE`=`Y` and the required version is not locally found, an attempt will be made to download the distribution from the Oracle website
+
 Properties are read without replacing the previously read. For example, if environment does not have an empty `JDK_VERSION_MAJOR` variable and also has `./jvmw.properties`, then the variable from the environment
 
 To download archival versions of JDK, you must set the variables `ORACLE_USER` and `ORACLE_PASSWORD`
 
-#### jvmw.properties
-
-|property name|sample|
-|---|---|
-|JDK_VERSION|JDK_VERSION=9<br/>JDK_VERSION=8<br/>JDK_VERSION=8u144|
-|JDK_VERSION_MAJOR|JDK_VERSION_MAJOR=8<br/>JDK_VERSION_MAJOR=9|
-|JDK_VERSION_MINOR|JDK_VERSION_MINOR=<br/>JDK_VERSION_MINOR=144<br/>JDK_VERSION_MINOR=80|
-|ORACLE_USER|ORACLE_USER=user@example.com|
-|ORACLE_PASSWORD|ORACLE_PASSWORD=password|
-
-\* The `JDK_VERSION` variable takes precedence over `JDK_VERSION_MAJOR` and `JDK_VERSION_MINOR`.
 
 [sample configuration files](samples)
