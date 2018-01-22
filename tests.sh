@@ -53,7 +53,7 @@ function prepare_test(){
 prepare_test
 echo -e "\nREQUIRED_UPDATE=N" >> jvmw.properties
 rm -Rf "${LAST_UPDATE_FILE}" ${HOME}/.jvm/${CHECK_JDK_ROOT_DIR}/
-check_output 'java -version' "java: No such file or directory"
+check_output 'java -version' "java: No such file"
 log_test "check not call function 'otn_page_archive_jdk_parser'"
 if [[ ${output} == *"otn_page_archive_jdk_parser"* ]]; then
 	error

@@ -378,6 +378,9 @@ function check_is_out_of_date() {
 }
 
 function main_check_version() {
+	if [[ ! -f "${JAVA_EXEC}" ]]; then
+		error "${JAVA_EXEC}: No such file"
+	fi
 	local -r JDK_CURRENT_VERSION=$(${JAVA_EXEC} -version 2>&1 | head -1)
 	if [[ "${JDK_CURRENT_VERSION}" != *"${JDK_CHECK_VERSION}"* ]]; then
 		debug "JDK_CURRENT_VERSION: '${JDK_CURRENT_VERSION}'"
