@@ -5,6 +5,7 @@
 build/
 jvmw.properties
 *.log
+*.bak
 tmp.*
 
 .idea/*
