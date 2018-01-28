@@ -9,11 +9,11 @@ install:
   - chmod +x ./travis_scripts/*.sh
 
 before_script:
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]] && [[ "$SKIP_SHELLCHECK" != "yes" ]] ; then find . \( -name 'jdkw' -o -name '*.sh' \) -exec shellcheck {} \; ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]] && [[ "$SKIP_SHELLCHECK" != "yes" ]] ; then find . \( -name 'jdkw' -o -name 'script_*.sh' \) -exec shellcheck {} \; ; fi
   - if [[ ! -z "$DOCKER_IMAGE" ]]; then sudo docker pull $DOCKER_IMAGE:$DOCKER_TAG; fi
 
 script:
-  - if [[ -z "$DOCKER_IMAGE" ]]; then ./test_suite.sh 2>&1; fi
+  - if [[ -z "$DOCKER_IMAGE" ]]; then ./tests.sh 2>&1; fi
   - if [[ ! -z "$DOCKER_IMAGE" ]]; then ./travis_scripts/script_docker.$DOCKER_IMAGE.sh 2>&1; fi
 #  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then CHECK_JDK_VERSION='1.6.0_45' CHECK_JDK_HOME='jdk6u45' JVMW_FILE='jvmw.6u45.properties' ./tests.sh ; fi
 
