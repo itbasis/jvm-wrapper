@@ -6,6 +6,7 @@
       <w>centos</w>
       <w>cmds</w>
       <w>cpio</w>
+      <w>fullversion</w>
       <w>funcname</w>
       <w>hdiutil</w>
       <w>itbasis</w>
@@ -15,6 +16,7 @@
       <w>lineno</w>
       <w>mountpoint</w>
       <w>nexturl</w>
+      <w>nfake</w>
       <w>oraclelicense</w>
       <w>pycodestyle</w>
       <w>readlink</w>

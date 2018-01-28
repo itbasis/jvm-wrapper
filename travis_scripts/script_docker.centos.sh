@@ -8,7 +8,6 @@ docker run \
 -e "ORACLE_PASSWORD=${ORACLE_PASSWORD}" \
 -v "$(pwd)/jdkw":/root/jdkw \
 -v "$(pwd)/test/":/root/test/ \
--v "$(pwd)/samples/":/root/samples/ \
--v "$(pwd)/test_suite.sh":/root/test_suite.sh \
+-v "$(pwd)/samples.properties/":/root/samples.properties/ \
 -v "$(pwd)/tests.sh":/root/tests.sh \
- $DOCKER_IMAGE:$DOCKER_TAG bash -c "cd /root && ./test_suite.sh 2>&1"
+ $DOCKER_IMAGE:$DOCKER_TAG bash -c "cd /root && ./tests.sh 2>&1"
