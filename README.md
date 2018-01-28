@@ -29,13 +29,13 @@ Order of reading variables: environment, `~/jvmw.properties`, `./jvmw.properties
 
 |property name|default|examples||
 |---|:---:|---|---|
-|JDK_VERSION| |JDK_VERSION=9<br/>JDK_VERSION=8<br/>JDK_VERSION=8u144||
+|JVM_VERSION| |JVM_VERSION=9<br/>JVM_VERSION=8<br/>JVM_VERSION=8u144||
 |ORACLE_USER| |ORACLE_USER=user@example.com|
 |ORACLE_PASSWORD| |ORACLE_PASSWORD=password|
 |JVMW_DEBUG|`N`|`Y`, `N`|If `JVMW_DEBUG`=`Y`, debugging information will be displayed in stderr|
 |REQUIRED_UPDATE|`Y`|`Y`, `N`|If `REQUIRED_UPDATE`=`N`, then an attempt will not be made to load the JDK / JVM distributor. If the required version of JDK/JVM is not found locally, an error will be generated<br/>If `REQUIRED_UPDATE`=`Y` and the required version is not locally found, an attempt will be made to download the distribution from the Oracle website
 
-Properties are read without replacing the previously read. For example, if environment does not have an empty `JDK_VERSION` variable and also has `./jvmw.properties`, then the variable from the environment
+Properties are read without replacing the previously read. For example, if environment does not have an empty `JVM_VERSION` variable and also has `./jvmw.properties`, then the variable from the environment
 
 To download archival versions of JDK, you must set the variables `ORACLE_USER` and `ORACLE_PASSWORD`
 
