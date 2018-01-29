@@ -5,7 +5,7 @@ services:
   - docker
 
 install:
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]] && [[ "$SKIP_SHELLCHECK" != "yes" ]] ; then travis_retry brew update-reset && travis_retry brew reinstall shellcheck && travis_retry brew cask install java; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]] && [[ "$SKIP_SHELLCHECK" != "yes" ]] ; then travis_retry brew update-reset && travis_retry brew reinstall shellcheck && travis_retry brew cask reinstall java; fi
   - chmod +x ./travis_scripts/*.sh
 
 before_script:

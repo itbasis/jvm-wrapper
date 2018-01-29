@@ -94,7 +94,6 @@ function properties_build() {
 	JDK_FULL_NAME="jdk${JVM_VERSION}"
 	JDK_ROOT_DIR=${JVMW_HOME}/${JDK_FULL_NAME}
 	JDK_HOME_DIR=${JDK_ROOT_DIR}$([[ "${OS}" == 'darwin' ]] && echo '/Home')
-	JAVA_HOME_DIR="${JDK_HOME_DIR}"
 	ARCHIVE_FILE=${JDK_ROOT_DIR}.${ARCHIVE_EXT}
 	LAST_UPDATE_FILE=${JDK_ROOT_DIR}.last_update
 }
@@ -326,7 +325,7 @@ function download_jdk() {
 	fi
 	#
 	if [[ -d "${JDK_HOME_DIR}" ]]; then
-		if [[ "$(${JVM_HOME_DIR}/bin/java -fullversion 2>&1)" == *"${JVM_VERSION}"* ]]; then
+		if [[ "$("${JVM_HOME_DIR}/bin/java" -fullversion 2>&1)" == *"${JVM_VERSION}"* ]]; then
 			write_last_update
 			return 0
 		fi
@@ -381,16 +380,18 @@ function whereis() {
 }
 
 function get_system_path() {
+	local cmd_path ls_output jvm_dir
+
 	local -r cmd="${2}"
-	local cmd_path=$(whereis "${cmd}")
-	local ls_output="$(ls -l "${cmd_path}")"
+	cmd_path=$(whereis "${cmd}")
+	ls_output="$(ls -l "${cmd_path}")"
 	while [[ "${ls_output}" == *" -> "* ]]; do
-		cmd_path="$(readlink ${cmd_path})"
+		cmd_path="$(readlink "${cmd_path}")"
 		ls_output="$(ls -l "${cmd_path}")"
 	done
-	local jvm_dir=$(dirname "${cmd_path}")
+	jvm_dir=$(dirname "${cmd_path}")
 	if [[ -f "${jvm_dir}/java_home" ]]; then
-		jvm_dir=$(${jvm_dir}/java_home)
+		jvm_dir=$("${jvm_dir}/java_home")
 	fi
 	eval "${1}='${jvm_dir}'"
 }
