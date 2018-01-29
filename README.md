@@ -29,7 +29,7 @@ Order of reading variables: environment, `~/jvmw.properties`, `./jvmw.properties
 
 |property name|default|examples||
 |---|:---:|---|---|
-|JVM_VERSION| |JVM_VERSION=9<br/>JVM_VERSION=8<br/>JVM_VERSION=8u144||
+|JVM_VERSION| |[see examples of configuration files](samples.properties)||
 |ORACLE_USER| |ORACLE_USER=user@example.com|
 |ORACLE_PASSWORD| |ORACLE_PASSWORD=password|
 |JVMW_DEBUG|`N`|`Y`, `N`|If `JVMW_DEBUG`=`Y`, debugging information will be displayed in stderr|
@@ -39,5 +39,3 @@ Properties are read without replacing the previously read. For example, if envir
 
 To download archival versions of JDK, you must set the variables `ORACLE_USER` and `ORACLE_PASSWORD`
 
-
-[sample configuration files](samples.properties)
