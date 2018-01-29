@@ -5,8 +5,9 @@ services:
   - docker
 
 install:
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]] && [[ "$SKIP_SHELLCHECK" != "yes" ]] ; then travis_retry brew update-reset && travis_retry brew reinstall shellcheck && travis_retry brew cask reinstall java; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]] && [[ "$SKIP_SHELLCHECK" != "yes" ]] ; then travis_retry brew update && travis_retry brew reinstall shellcheck; fi
   - chmod +x ./travis_scripts/*.sh
+  - jdk_switcher use oraclejdk9
 
 before_script:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]] && [[ "$SKIP_SHELLCHECK" != "yes" ]] ; then find . \( -name 'jdkw' -o -name 'script_*.sh' \) -exec shellcheck {} \; ; fi

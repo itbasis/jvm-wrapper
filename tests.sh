@@ -18,6 +18,7 @@ function before_test() {
 	fi
 	c=$(grep -v -e 'TEST_' -e '^#' jvmw.properties)
 	echo "${c}" > jvmw.properties
+	echo -e "\\nUSE_SYSTEM_JDK=N" >> jvmw.properties
 
 	rm -f "${HOME}/${TEST_JDK_LAST_UPDATE_FILE}"
 	rm -Rf "${HOME}/${TEST_JAVA_HOME}"
@@ -32,7 +33,6 @@ function after_test() {
 }
 
 function test_execute_jvm_00() {
-	echo -e "\\nUSE_SYSTEM_JDK=N" >> jvmw.properties
 
 	TEST_OUTPUT=$(./jdkw info 2>&1)
 	[[ "${TEST_OUTPUT}" == *"${TEST_JAVA_HOME}"* ]] || return 10
@@ -43,7 +43,6 @@ function test_execute_jvm_00() {
 
 function test_execute_jvm_01() {
 	echo -e "\\nJVMW_DEBUG=Y" >> jvmw.properties
-	echo -e "\\nUSE_SYSTEM_JDK=N" >> jvmw.properties
 
 	[[ ! -f "${HOME}/${TEST_JDK_LAST_UPDATE_FILE}" ]] || return 10
 	TEST_OUTPUT=$(./jdkw java -fullversion 2>&1)
@@ -68,7 +67,6 @@ function test_execute_jvm_01() {
 function test_execute_jvm_02() {
 	echo -e "\\nJVMW_DEBUG=Y" >> jvmw.properties
 	echo -e "\\nREQUIRED_UPDATE=N" >> jvmw.properties
-	echo -e "\\nUSE_SYSTEM_JDK=N" >> jvmw.properties
 
 	fake_date=$([[ "${OS}" == "darwin" ]] && echo "$(date -v -2d +"%F %R")" || echo "$(date --date="-2 days" '+%F %R')")
 	printf "%s" "${fake_date}" >"${HOME}/${TEST_JDK_LAST_UPDATE_FILE}"
@@ -93,6 +91,8 @@ function test_execute_jdk_00() {
 function test_execute_system_jdk_00() {
 	rm -Rf ${HOME}/jdk${SYSTEM_JVM}
 
+	echo -e "\\nUSE_SYSTEM_JDK=Y" >> jvmw.properties
+
 	TEST_OUTPUT=$(./jdkw info 2>&1)
 	[[ "${TEST_OUTPUT}" != *"${TEST_JAVA_HOME}"* ]] || return 10
 
@@ -103,7 +103,9 @@ function test_execute_system_jdk_00() {
 function test_execute_system_jdk_01() {
 	rm -Rf ${HOME}/jdk${SYSTEM_JVM}
 
+	echo -e "\\nUSE_SYSTEM_JDK=Y" >> jvmw.properties
 	echo -e "\\nJVMW_DEBUG=Y" >> jvmw.properties
+
 	TEST_OUTPUT=$(./jdkw info 2>&1)
 	[[ "${TEST_OUTPUT}" == *"USE_SYSTEM_JDK=Y"* ]] || return 10
 
@@ -115,6 +117,7 @@ function test_execute_system_jdk_02() {
 	rm -Rf ${HOME}/jdk${SYSTEM_JVM}
 
 	echo -e "\\nUSE_SYSTEM_JDK=N" >> jvmw.properties
+
 	TEST_OUTPUT=$(./jdkw info 2>&1)
 	[[ "${TEST_OUTPUT}" == *"${TEST_JAVA_HOME}"* ]] || return 10
 
