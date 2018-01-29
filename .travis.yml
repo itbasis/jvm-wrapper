@@ -1,5 +1,8 @@
 sudo: false
-language: oraclejdk9
+language: generic
+
+jdk:
+  - oraclejdk9
 
 services:
   - docker
