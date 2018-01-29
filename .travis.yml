@@ -1,14 +1,11 @@
 sudo: false
 language: generic
 
-jdk:
-  - oraclejdk9
-
 services:
   - docker
 
 install:
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]] && [[ "$SKIP_SHELLCHECK" != "yes" ]] ; then travis_retry brew update && travis_retry brew reinstall shellcheck; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]] && [[ "$SKIP_SHELLCHECK" != "yes" ]] ; then travis_retry brew update && travis_retry brew reinstall shellcheck && && travis_retry brew reinstall java; fi
   - chmod +x ./travis_scripts/*.sh
 
 before_script:
@@ -37,12 +34,24 @@ matrix:
 
     - os: linux
       sudo: required
+      addons:
+        apt:
+          packages:
+            - oracle-java9-installer
     - os: linux
       dist: trusty
       sudo: required
+      addons:
+        apt:
+          packages:
+            - oracle-java9-installer
     - os: linux
       dist: precise
       sudo: required
+      addons:
+        apt:
+          packages:
+            - oracle-java9-installer
 
     - os: linux
       env:
