@@ -5,7 +5,7 @@ services:
   - docker
 
 install:
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]] && [[ "$SKIP_SHELLCHECK" != "yes" ]] ; then travis_retry brew update && travis_retry brew install shellcheck && travis_retry brew cask install java; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]] && [[ "$SKIP_SHELLCHECK" != "yes" ]] ; then travis_retry brew update-reset && travis_retry brew install shellcheck && travis_retry brew cask install java; fi
   - chmod +x ./travis_scripts/*.sh
 
 before_script:
@@ -15,7 +15,6 @@ before_script:
 script:
   - if [[ -z "$DOCKER_IMAGE" ]]; then ./tests.sh 2>&1; fi
   - if [[ ! -z "$DOCKER_IMAGE" ]]; then ./travis_scripts/script_docker.$DOCKER_IMAGE.sh 2>&1; fi
-#  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then CHECK_JDK_VERSION='1.6.0_45' CHECK_JDK_HOME='jdk6u45' JVMW_FILE='jvmw.6u45.properties' ./tests.sh ; fi
 
 matrix:
   include:

@@ -7,7 +7,7 @@ OS=$(uname | tr '[:upper:]' '[:lower:]')
 ARCH=$([[ "$(uname -m)" == "x86_64" ]] && echo "x64" || echo "i586")
 ARCHIVE_EXT=$([[ "${OS}" == "darwin" ]] && echo "dmg" || echo "tar.gz")
 #
-REQUIRED_COMMANDS_CORE='awk tr grep head rm mv cd curl whereis readlink dirname'
+REQUIRED_COMMANDS_CORE='awk tr grep head rm mv cd curl readlink dirname'
 REQUIRED_COMMANDS_DARWIN='hdiutil xar cpio shasum'
 REQUIRED_COMMANDS_LINUX='sha256sum tar'
 
@@ -369,6 +369,15 @@ function check_is_out_of_date() {
 		fi
 	fi
 	return 0
+}
+
+function whereis() {
+	for path in ${PATH//:/ }; do
+		if [[ -f "${path}/${1}" ]]; then
+			echo "${path}/${1}"
+			return 0
+		fi
+	done
 }
 
 function get_system_path() {

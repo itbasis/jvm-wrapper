@@ -19,7 +19,8 @@ function before_test() {
 	c=$(grep -v -e 'TEST_' -e '^#' jvmw.properties)
 	echo "${c}" > jvmw.properties
 
-	rm -f "${HOME:?}/${TEST_JDK_LAST_UPDATE_FILE}"
+	rm -f "${HOME}/${TEST_JDK_LAST_UPDATE_FILE}"
+	rm -Rf "${HOME}/${TEST_JAVA_HOME}"
 
 	return 0
 }
@@ -41,7 +42,6 @@ function test_execute_jvm_00() {
 }
 
 function test_execute_jvm_01() {
-	rm -Rf "${HOME:?}/${TEST_JAVA_HOME}"
 	echo -e "\\nJVMW_DEBUG=Y" >> jvmw.properties
 	echo -e "\\nUSE_SYSTEM_JDK=N" >> jvmw.properties
 
@@ -66,7 +66,6 @@ function test_execute_jvm_01() {
 }
 
 function test_execute_jvm_02() {
-	rm -Rf ${HOME}/${TEST_JAVA_HOME}
 	echo -e "\\nJVMW_DEBUG=Y" >> jvmw.properties
 	echo -e "\\nREQUIRED_UPDATE=N" >> jvmw.properties
 	echo -e "\\nUSE_SYSTEM_JDK=N" >> jvmw.properties
