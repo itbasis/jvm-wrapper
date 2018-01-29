@@ -18,7 +18,7 @@ function before_test() {
 	fi
 	c=$(grep -v -e 'TEST_' -e '^#' jvmw.properties)
 	echo "${c}" > jvmw.properties
-	echo -e "\\nUSE_SYSTEM_JDK=N" >> jvmw.properties
+	export USE_SYSTEM_JDK=N
 
 	rm -f "${HOME}/${TEST_JDK_LAST_UPDATE_FILE}"
 	rm -Rf "${HOME}/${TEST_JAVA_HOME}"
@@ -27,6 +27,7 @@ function before_test() {
 }
 
 function after_test() {
+	unset USE_SYSTEM_JDK JVMW_DEBUG REQUIRED_UPDATE
 	for env_test in $(env | grep TEST_); do
 		unset "${env_test%%=*}"
 	done
@@ -42,7 +43,7 @@ function test_execute_jvm_00() {
 }
 
 function test_execute_jvm_01() {
-	echo -e "\\nJVMW_DEBUG=Y" >> jvmw.properties
+	export JVMW_DEBUG=Y
 
 	[[ ! -f "${HOME}/${TEST_JDK_LAST_UPDATE_FILE}" ]] || return 10
 	TEST_OUTPUT=$(./jdkw java -fullversion 2>&1)
@@ -65,8 +66,8 @@ function test_execute_jvm_01() {
 }
 
 function test_execute_jvm_02() {
-	echo -e "\\nJVMW_DEBUG=Y" >> jvmw.properties
-	echo -e "\\nREQUIRED_UPDATE=N" >> jvmw.properties
+	export JVMW_DEBUG=Y
+	export REQUIRED_UPDATE=N
 
 	fake_date=$([[ "${OS}" == "darwin" ]] && echo "$(date -v -2d +"%F %R")" || echo "$(date --date="-2 days" '+%F %R')")
 	printf "%s" "${fake_date}" >"${HOME}/${TEST_JDK_LAST_UPDATE_FILE}"
@@ -91,7 +92,7 @@ function test_execute_jdk_00() {
 function test_execute_system_jdk_00() {
 	rm -Rf ${HOME}/jdk${SYSTEM_JVM}
 
-	echo -e "\\nUSE_SYSTEM_JDK=Y" >> jvmw.properties
+	export USE_SYSTEM_JDK=Y
 
 	TEST_OUTPUT=$(./jdkw info 2>&1)
 	[[ "${TEST_OUTPUT}" != *"${TEST_JAVA_HOME}"* ]] || return 10
@@ -103,8 +104,8 @@ function test_execute_system_jdk_00() {
 function test_execute_system_jdk_01() {
 	rm -Rf ${HOME}/jdk${SYSTEM_JVM}
 
-	echo -e "\\nUSE_SYSTEM_JDK=Y" >> jvmw.properties
-	echo -e "\\nJVMW_DEBUG=Y" >> jvmw.properties
+	export USE_SYSTEM_JDK=Y
+	export JVMW_DEBUG=Y
 
 	TEST_OUTPUT=$(./jdkw info 2>&1)
 	[[ "${TEST_OUTPUT}" == *"USE_SYSTEM_JDK=Y"* ]] || return 10
@@ -116,7 +117,7 @@ function test_execute_system_jdk_01() {
 function test_execute_system_jdk_02() {
 	rm -Rf ${HOME}/jdk${SYSTEM_JVM}
 
-	echo -e "\\nUSE_SYSTEM_JDK=N" >> jvmw.properties
+	export USE_SYSTEM_JDK=N
 
 	TEST_OUTPUT=$(./jdkw info 2>&1)
 	[[ "${TEST_OUTPUT}" == *"${TEST_JAVA_HOME}"* ]] || return 10
@@ -142,6 +143,9 @@ function run_test() {
 		echo '----- TEST ENVIRONMENTS :: end -----'
 		echo '----- TEST CONFIGURATION FILE :: begin -----'
 		cat jvmw.properties
+		echo USE_SYSTEM_JDK=${USE_SYSTEM_JDK}
+		echo JVMW_DEBUG=${JVMW_DEBUG}
+		echo REQUIRED_UPDATE=${REQUIRED_UPDATE}
 		echo '----- TEST CONFIGURATION FILE :: end -----'
 		echo '----- OUTPUT :: begin -----'
 		echo "${TEST_OUTPUT}"
@@ -157,6 +161,14 @@ test_system_names="$(cat "$0" | awk 'match($0, /function test_execute_system_([^
 
 rm -Rf ./build/*
 mkdir -p ./build/test && cd ./build/ && cp ../jdkw ./
+
+# test system jvm
+if [[ "${OS}" == "darwin" ]]; then
+	for test_suffix in ${test_system_names}; do
+		run_test "../samples.properties/jvmw.${SYSTEM_JVM}.properties" "test_execute_${test_suffix}"
+	done
+fi
+
 for p_file in $(find "../samples.properties" -mindepth 1 -maxdepth 1 -type f | sort -r); do
 	for test_suffix in ${test_jvm_names}; do
 		run_test "${p_file}" "test_execute_${test_suffix}"
@@ -165,13 +177,6 @@ for p_file in $(find "../samples.properties" -mindepth 1 -maxdepth 1 -type f | s
 		run_test "${p_file}" "test_execute_${test_suffix}"
 	done
 done
-
-# test system jvm
-if [[ "${OS}" == "darwin" ]]; then
-	for test_suffix in ${test_system_names}; do
-		run_test "../samples.properties/jvmw.${SYSTEM_JVM}.properties" "test_execute_${test_suffix}"
-	done
-fi
 
 # clean
 rm -Rf ./build/
