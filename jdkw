@@ -398,8 +398,13 @@ function get_system_path() {
 }
 
 function detect_system_jdk() {
-	local -r jdk_output="$(javac --version 2>&1)"
+	local -r jdk_output="$(java -fullversion 2>&1)"
 	if [[ "${jdk_output}" == *"command not found"* ]]; then
+		USE_SYSTEM_JDK=N
+		return 0
+	fi
+
+	if [[ "${jdk_output}" != *"java full version \"${JVM_VERSION_MAJOR}."* && "${jdk_output}" != *"java full version \"1.${JVM_VERSION_MAJOR}."* ]]; then
 		USE_SYSTEM_JDK=N
 		return 0
 	fi
