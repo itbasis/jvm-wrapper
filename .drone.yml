@@ -1,0 +1,12 @@
+build:
+  pull: true
+  image: teaci/msys64
+  commands:
+    - ./tests.sh
+
+
+#matrix:
+#  TEACI_SHELL:
+#    - mingw64
+#    - msys64
+#    - cygwin64
