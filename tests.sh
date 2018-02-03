@@ -22,7 +22,7 @@ function before_test() {
 }
 
 function after_test() {
-	unset USE_SYSTEM_JDK JVMW_DEBUG REQUIRED_UPDATE
+	unset USE_SYSTEM_JDK JVMW_DEBUG REQUIRED_UPDATE JVM_VERSION
 	for env_test in $(env | grep TEST_); do
 		unset "${env_test%%=*}"
 	done
@@ -70,6 +70,7 @@ function test_execute_jvm_02() {
 	export JVMW_DEBUG=Y
 	export REQUIRED_UPDATE=N
 
+	# shellcheck disable=SC2005
 	fake_date=$([[ "${OS}" == "darwin" ]] && echo "$(date -v -2d +"%F %R")" || echo "$(date --date="-2 days" '+%F %R')")
 	printf "%s" "${fake_date}" >"${HOME}/.jvm/${TEST_JDK_LAST_UPDATE_FILE}"
 
@@ -103,6 +104,7 @@ function test_execute_system_jdk_00() {
 
 	TEST_OUTPUT=$(./jdkw java -fullversion 2>&1)
 	[[ "${TEST_OUTPUT}" == *"${TEST_FULL_VERSION}"* ]] || return 20
+
 }
 
 function test_execute_system_jdk_01() {
@@ -128,6 +130,45 @@ function test_execute_system_jdk_02() {
 
 	TEST_OUTPUT=$(./jdkw java -fullversion 2>&1)
 	[[ "${TEST_OUTPUT}" == *"${TEST_FULL_VERSION}"* ]] || return 20
+}
+
+function test_execute_system_jdk_03() {
+	rm -Rf "${HOME}/.jvm/jdk${SYSTEM_JVM}"
+
+	export JVMW_DEBUG=Y
+	export JVM_VERSION=7u80
+
+	TEST_OUTPUT=$(./jdkw info 2>&1)
+	[[ "${TEST_OUTPUT}" == *"/.jvm/jdk7u80"* ]] || return 10
+
+	TEST_OUTPUT=$(./jdkw java -fullversion 2>&1)
+	[[ "${TEST_OUTPUT}" == *"1.7.0_80"* ]] || return 20
+}
+
+function test_execute_system_jdk_04() {
+	rm -Rf "${HOME}/.jvm/jdk${SYSTEM_JVM}"
+
+	export JVMW_DEBUG=Y
+	export JVM_VERSION=8u144
+
+	TEST_OUTPUT=$(./jdkw info 2>&1)
+	[[ "${TEST_OUTPUT}" == *"/.jvm/jdk8u144"* ]] || return 10
+
+	TEST_OUTPUT=$(./jdkw java -fullversion 2>&1)
+	[[ "${TEST_OUTPUT}" == *"1.8.0_144"* ]] || return 20
+}
+
+function test_execute_system_jdk_05() {
+	rm -Rf "${HOME}/.jvm/jdk${SYSTEM_JVM}"
+
+	export JVMW_DEBUG=Y
+	export JVM_VERSION=9.0.1
+
+	TEST_OUTPUT=$(./jdkw info 2>&1)
+	[[ "${TEST_OUTPUT}" == *"/.jvm/jdk9.0.1"* ]] || return 10
+
+	TEST_OUTPUT=$(./jdkw java -fullversion 2>&1)
+	[[ "${TEST_OUTPUT}" == *"9.0.1"* ]] || return 20
 }
 
 function run_test() {
