@@ -7,7 +7,7 @@ OS=$(uname | tr '[:upper:]' '[:lower:]')
 ARCH=$([[ "$(uname -m)" == "x86_64" ]] && echo "x64" || echo "i586")
 ARCHIVE_EXT=$([[ "${OS}" == "darwin" ]] && echo "dmg" || echo "tar.gz")
 #
-REQUIRED_COMMANDS_CORE='awk tr grep head rm mv cd curl readlink dirname'
+REQUIRED_COMMANDS_CORE='awk tr head rm mv cd curl readlink dirname'
 REQUIRED_COMMANDS_DARWIN='hdiutil xar cpio shasum'
 REQUIRED_COMMANDS_LINUX='sha256sum tar'
 
@@ -178,13 +178,14 @@ function otn_login() {
 }
 
 function otn_page_latest_version_jdk_page_parser() {
-	JVM_PAGE_URL=http://www.oracle.com$(curl -s http://www.oracle.com/technetwork/java/javase/downloads/index.html | tr '"' $'\n' | grep "jdk${JVM_VERSION_MAJOR}-downloads" | head -1)
+	JVM_PAGE_URL=http://www.oracle.com$(curl -s http://www.oracle.com/technetwork/java/javase/downloads/index.html | awk 'match($0, /(\/technetwork\/java\/javase\/downloads\/jdk'"${JVM_VERSION_MAJOR}"'-downloads-[^\"]+)/) { print substr($0, RSTART, RLENGTH) }' | head -1)
 	otn_page_archive_jdk_parser
 }
 
 function otn_page_archive_page_url_parser() {
-	local -r url_archive=http://www.oracle.com$(curl -sS http://www.oracle.com/technetwork/java/javase/downloads/index.html | tr '"' $'\n' | grep "/archive-" | head -1)
-	JVM_PAGE_URL=http://www.oracle.com$(curl -sS "${url_archive}" | tr '"' $'\n' | grep "/java-archive.*-javase${JVM_VERSION_MAJOR}-" | head -1)
+	local -r url_archive=http://www.oracle.com$(curl -sS http://www.oracle.com/technetwork/java/javase/downloads/index.html | awk 'match($0, /(\/technetwork\/java\/javase\/archive-[^\"]+)/) { print substr($0, RSTART, RLENGTH) }' | head -1)
+
+	JVM_PAGE_URL=http://www.oracle.com$(curl -sS "${url_archive}" | awk 'match($0, /(\/technetwork\/java\/javase\/downloads\/java-archive-[^'"${JVM_VERSION_MAJOR}"']+'"${JVM_VERSION_MAJOR}"'-[^\"]+)/) { print substr($0, RSTART, RLENGTH) }' 2>&1 | head -1)
 	otn_page_archive_jdk_parser
 }
 
