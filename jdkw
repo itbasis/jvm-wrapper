@@ -180,11 +180,16 @@ function otn_login() {
 function otn_page_latest_version_jdk_page_parser() {
 	JVM_PAGE_URL=http://www.oracle.com$(curl -s http://www.oracle.com/technetwork/java/javase/downloads/index.html | awk 'match($0, /(\/technetwork\/java\/javase\/downloads\/jdk'"${JVM_VERSION_MAJOR}"'-downloads-[^\"]+)/) { print substr($0, RSTART, RLENGTH) }' | head -1)
 
-	if [[ "${JVM_PAGE_URL}" == "http://www.oracle.com" ]]; then
-		local -r url_archive=http://www.oracle.com$(curl -sS http://www.oracle.com/technetwork/java/javase/downloads/index.html | awk 'match($0, /(\/technetwork\/java\/javase\/archive-[^\"]+)/) { print substr($0, RSTART, RLENGTH) }' | head -1)
-
-		JVM_PAGE_URL=http://www.oracle.com$(curl -sS "${url_archive}" | awk 'match($0, /(\/technetwork\/java\/javase\/downloads\/java-archive-[^'"${JVM_VERSION_MAJOR}"']+'"${JVM_VERSION_MAJOR}"'-[^\"]+)/) { print substr($0, RSTART, RLENGTH) }' 2>&1 | head -1)
+	if [[ "${JVM_PAGE_URL}" != "http://www.oracle.com" ]]; then
+		otn_page_archive_jdk_parser
+		if [[ ! -z "${ARCHIVE_JVM_URL}" ]]; then
+			return 0
+		fi
 	fi
+
+	local -r url_archive=http://www.oracle.com$(curl -sS http://www.oracle.com/technetwork/java/javase/downloads/index.html | awk 'match($0, /(\/technetwork\/java\/javase\/archive-[^\"]+)/) { print substr($0, RSTART, RLENGTH) }' | head -1)
+
+	JVM_PAGE_URL=http://www.oracle.com$(curl -sS "${url_archive}" | awk 'match($0, /(\/technetwork\/java\/javase\/downloads\/java-archive-[^'"${JVM_VERSION_MAJOR}"']+'"${JVM_VERSION_MAJOR}"'-[^\"]+)/) { print substr($0, RSTART, RLENGTH) }' 2>&1 | head -1)
 
 	otn_page_archive_jdk_parser
 }
