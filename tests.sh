@@ -9,6 +9,7 @@ TEST_FULL_VERSION=${TEST_FULL_VERSION}
 #
 
 function before_test() {
+	after_test
 	while read -r line; do
 		eval "export ${line}"
 	done <<<"$(grep 'TEST_' jvmw.properties)"
@@ -16,9 +17,6 @@ function before_test() {
 	c=$(grep -v -e 'TEST_' -e '^#' jvmw.properties)
 	echo "${c}" > jvmw.properties
 	export USE_SYSTEM_JDK=N
-
-	rm -f "${HOME}/.jvm/${TEST_JDK_LAST_UPDATE_FILE}"
-	rm -Rf "${HOME}/.jvm/${TEST_JAVA_HOME}"
 }
 
 function after_test() {
@@ -29,6 +27,9 @@ function after_test() {
 }
 
 function test_execute_jvm_00() {
+	rm -f "${HOME}/.jvm/${TEST_JDK_LAST_UPDATE_FILE}"
+	rm -Rf "${HOME}/.jvm/${TEST_JAVA_HOME}"
+
 	TEST_OUTPUT=$(./jdkw info 2>&1)
 	[[ "${TEST_OUTPUT}" == *"/.jvm/${TEST_JAVA_HOME}"* ]] || return 10
 	[[ "${TEST_OUTPUT}" != *"//"* ]] || return 20
@@ -41,6 +42,9 @@ function test_execute_jvm_00() {
 }
 
 function test_execute_jvm_01() {
+	rm -f "${HOME}/.jvm/${TEST_JDK_LAST_UPDATE_FILE}"
+	rm -Rf "${HOME}/.jvm/${TEST_JAVA_HOME}"
+
 	export JVMW_DEBUG=Y
 
 	[[ ! -f "${HOME}/.jvm/${TEST_JDK_LAST_UPDATE_FILE}" ]] || return 10
@@ -70,6 +74,9 @@ function test_execute_jvm_01() {
 }
 
 function test_execute_jvm_02() {
+	rm -f "${HOME}/.jvm/${TEST_JDK_LAST_UPDATE_FILE}"
+	rm -Rf "${HOME}/.jvm/${TEST_JAVA_HOME}"
+
 	export JVMW_DEBUG=Y
 	export REQUIRED_UPDATE=N
 
@@ -88,7 +95,7 @@ function test_execute_jvm_02() {
 }
 
 function test_execute_jdk_00() {
-	cp ../test/Test.java ./test/
+	cp ../tests/Test.java ./test/
 
 	TEST_OUTPUT=$(./jdkw javac -d ./test test/Test.java 2>&1)
 	[[ -f "test/Test.class" ]] || return 10;
@@ -97,8 +104,41 @@ function test_execute_jdk_00() {
 	[[ "${TEST_OUTPUT}" == "${TEST_FULL_VERSION}" ]] || return 20
 }
 
+function test_execute_jdk_01() {
+	cp -R ../tests/gradle/ ./
+
+	TEST_OUTPUT=$(./jdkw gradlew clean build 2>&1)
+	[[ "${TEST_OUTPUT}" == *"/.jvm/${TEST_JAVA_HOME}"* ]] || return 10
+	[[ -f "build/libs/test.jar" ]] || return 20;
+
+	TEST_OUTPUT=$(./jdkw java -jar build/libs/test.jar 2>&1)
+	[[ "${TEST_OUTPUT}" == "${TEST_FULL_VERSION}" ]] || return 30
+}
+
+function test_execute_jdk_02() {
+	cp -R ../tests/gradle/ ./
+
+	TEST_OUTPUT=$(./jdkw ./gradlew clean build 2>&1)
+	[[ "${TEST_OUTPUT}" == *"/.jvm/${TEST_JAVA_HOME}"* ]] || return 10
+	[[ -f "build/libs/test.jar" ]] || return 20;
+
+	TEST_OUTPUT=$(./jdkw java -jar build/libs/test.jar 2>&1)
+	[[ "${TEST_OUTPUT}" == "${TEST_FULL_VERSION}" ]] || return 30
+}
+
+function test_execute_jdk_03() {
+	cp ../tests/Test.java ./test/
+
+	TEST_OUTPUT=$(./jdkw ./javac -d ./test test/Test.java 2>&1)
+	[[ -f "test/Test.class" ]] || return 10;
+
+	TEST_OUTPUT=$(./jdkw java -cp ./test/ Test 2>&1)
+	[[ "${TEST_OUTPUT}" == "${TEST_FULL_VERSION}" ]] || return 20
+}
+
 function test_execute_system_jdk_00() {
 	rm -Rf "${HOME}/.jvm/jdk${SYSTEM_JVM}"
+	rm -f "${HOME}/.jvm/jdk${SYSTEM_JVM}.last_update"
 
 	export USE_SYSTEM_JDK=Y
 
@@ -112,6 +152,7 @@ function test_execute_system_jdk_00() {
 
 function test_execute_system_jdk_01() {
 	rm -Rf "${HOME}/.jvm/jdk${SYSTEM_JVM}"
+	rm -f "${HOME}/.jvm/jdk${SYSTEM_JVM}.last_update"
 
 	export USE_SYSTEM_JDK=Y
 	export JVMW_DEBUG=Y
@@ -128,6 +169,7 @@ function test_execute_system_jdk_01() {
 
 function test_execute_system_jdk_02() {
 	rm -Rf "${HOME}/.jvm/jdk${SYSTEM_JVM}"
+	rm -f "${HOME}/.jvm/jdk${SYSTEM_JVM}.last_update"
 
 	export USE_SYSTEM_JDK=N
 
@@ -140,6 +182,7 @@ function test_execute_system_jdk_02() {
 
 function test_execute_system_jdk_03() {
 	rm -Rf "${HOME}/.jvm/jdk${SYSTEM_JVM}"
+	rm -f "${HOME}/.jvm/jdk${SYSTEM_JVM}.last_update"
 
 	export JVMW_DEBUG=Y
 	export JVM_VERSION=7u80
@@ -156,6 +199,7 @@ function test_execute_system_jdk_03() {
 
 function test_execute_system_jdk_04() {
 	rm -Rf "${HOME}/.jvm/jdk${SYSTEM_JVM}"
+	rm -f "${HOME}/.jvm/jdk${SYSTEM_JVM}.last_update"
 
 	export JVMW_DEBUG=Y
 	export JVM_VERSION=8u144
@@ -172,6 +216,7 @@ function test_execute_system_jdk_04() {
 
 function test_execute_system_jdk_05() {
 	rm -Rf "${HOME}/.jvm/jdk${SYSTEM_JVM}"
+	rm -f "${HOME}/.jvm/jdk${SYSTEM_JVM}.last_update"
 
 	export JVMW_DEBUG=Y
 	export JVM_VERSION=9.0.1

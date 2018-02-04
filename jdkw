@@ -26,11 +26,14 @@ OTN_USER_AGENT='Mozilla/5.0 https://github.com/itbasis/jvm-wrapper'
 mkdir -p "${JVMW_HOME}"
 
 function log_2() {
-	printf "[%s] [%s" "$1" "${BASH_SOURCE[1]}"
-	for i in "${!FUNCNAME[@]}"; do
-		printf ":%s(%s)" "${FUNCNAME[$i]}" "${BASH_LINENO[$i]}"
-	done
-	printf "] %s\\n" "${*:2}"
+	if [[ ! -z "$1" ]]; then
+		printf "[%s] [%s" "$1" "${BASH_SOURCE[1]}"
+		for i in "${!FUNCNAME[@]}"; do
+			printf ":%s(%s)" "${FUNCNAME[$i]}" "${BASH_LINENO[$i]}"
+		done
+		printf "]"
+	fi
+	printf "%s\\n" "${*:2}"
 }
 
 function debug() {
@@ -48,10 +51,12 @@ function die() {
 }
 
 function print_debug_info() {
-	printf ''
-	for key in OS ARCH JVMW_HOME ARCHIVE_EXT JVM_VERSION_MAJOR JVM_VERSION_SECURITY JVM_VERSION JDK_FULL_NAME JDK_ROOT_DIR JDK_HOME_DIR JAVA_HOME_DIR JVM_PAGE_URL ARCHIVE_JVM_URL ARCHIVE_JVM_CHECKSUM ARCHIVE_FILE LAST_UPDATE_FILE REQUIRED_UPDATE JVMW_DEBUG USE_SYSTEM_JDK; do
-		>&2 debug "${key}=${!key}";
-	done
+	if [[ "${JVMW_DEBUG}" == "Y" ]]; then
+		printf ''
+		for key in OS ARCH JVMW_HOME ARCHIVE_EXT JVM_VERSION_MAJOR JVM_VERSION_SECURITY JVM_VERSION JDK_FULL_NAME JDK_ROOT_DIR JDK_HOME_DIR JAVA_HOME_DIR JVM_PAGE_URL ARCHIVE_JVM_URL ARCHIVE_JVM_CHECKSUM ARCHIVE_FILE LAST_UPDATE_FILE REQUIRED_UPDATE JVMW_DEBUG USE_SYSTEM_JDK; do
+			>&2 log_2 '' "${key}=${!key}";
+		done
+	fi
 }
 
 function system_check_program_exists() {
@@ -323,7 +328,8 @@ function download_jdk() {
 		if [[ ${JVM_VERSION_MAJOR} -lt 8 ]]; then
 			rm -f "${ARCHIVE_FILE}"
 		elif check_checksum; then
-			return
+			eval "unpack_${OS}"
+			return 0
 		fi
 	fi
 	#
@@ -431,8 +437,8 @@ if [[ "${USE_SYSTEM_JDK}" -eq "Y" ]]; then
 	JVM_HOME_DIR="${JDK_HOME_DIR}"
 fi
 
-JDK_HOME=${JDK_HOME_DIR}
-JAVA_HOME=${JVM_HOME_DIR}
+export JDK_HOME=${JDK_HOME_DIR}
+export JAVA_HOME=${JVM_HOME_DIR}
 
 if [[ -z "$1" ]] || [[ "$1" == "info" ]]; then
 	print_debug_info
@@ -448,14 +454,15 @@ else
 
 	print_debug_info
 
-	#	PATH=.:${JDK_HOME_DIR}/bin:$PATH
-
 	if [[ "$1" == "javac" ]] && [[ "${USE_SYSTEM_JDK}" != "Y" ]]; then
-		EXEC_PATH="${JDK_HOME}/bin/$1"
+		PATH=.:${JDK_HOME}/bin:$PATH
+		EXEC_PATH=${JDK_HOME}/bin/$1
 	elif [[ "$1" == "java" ]] && [[ "${USE_SYSTEM_JDK}" != "Y" ]]; then
-		EXEC_PATH="${JAVA_HOME}/bin/$1"
+		PATH=.:${JAVA_HOME}/bin:$PATH
+		EXEC_PATH=${JDK_HOME}/bin/$1
 	else
-		EXEC_PATH=$(whereis "$1")
+		PATH=.:$PATH
+		EXEC_PATH=$(whereis $1)
 	fi
 	CMD="${EXEC_PATH} ${@:2}"
 
