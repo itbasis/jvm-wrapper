@@ -122,7 +122,7 @@ function test_execute_jdk_01() {
 	[[ -f "build/libs/test.jar" ]] || return 20;
 
 	TEST_OUTPUT=$(./jdkw java -jar build/libs/test.jar 2>&1)
-	[[ "${TEST_OUTPUT}" == "${TEST_FULL_VERSION}" ]] || return 30
+	[[ "${TEST_OUTPUT}" == *"${TEST_FULL_VERSION}"* ]] || return 30
 }
 
 function test_execute_jdk_02() {
