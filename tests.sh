@@ -113,7 +113,9 @@ function test_execute_jdk_00() {
 }
 
 function test_execute_jdk_01() {
-	cp -R ../tests/gradle/ ./
+	cp -R ../tests/gradle/* ./
+
+	export JVMW_DEBUG=Y
 
 	TEST_OUTPUT=$(./jdkw gradlew clean build 2>&1)
 	[[ "${TEST_OUTPUT}" == *"/.jvm/${TEST_JAVA_HOME}"* ]] || return 10
@@ -124,7 +126,7 @@ function test_execute_jdk_01() {
 }
 
 function test_execute_jdk_02() {
-	cp -R ../tests/gradle/ ./
+	cp -R ../tests/gradle/* ./
 
 	TEST_OUTPUT=$(./jdkw ./gradlew clean build 2>&1)
 	[[ "${TEST_OUTPUT}" == *"/.jvm/${TEST_JAVA_HOME}"* ]] || return 10
@@ -269,15 +271,15 @@ function run_test() {
 }
 
 # shellcheck disable=SC2002
-test_jvm_names="$(cat "$0" | awk 'match($0, /function test_execute_jvm_([^(]+)/) { print substr($0, RSTART+22, RLENGTH-22) }')"
+test_jvm_names="$(cat "$0" | awk 'match($0, /^function test_execute_jvm_([^(]+)/) { print substr($0, RSTART+22, RLENGTH-22) }')"
 # shellcheck disable=SC2002
-test_jdk_names="$(cat "$0" | awk 'match($0, /function test_execute_jdk_([^(]+)/) { print substr($0, RSTART+22, RLENGTH-22) }')"
+test_jdk_names="$(cat "$0" | awk 'match($0, /^function test_execute_jdk_([^(]+)/) { print substr($0, RSTART+22, RLENGTH-22) }')"
 # shellcheck disable=SC2002
-test_system_names="$(cat "$0" | awk 'match($0, /function test_execute_system_([^(]+)/) { print substr($0, RSTART+22, RLENGTH-22) }')"
+test_system_names="$(cat "$0" | awk 'match($0, /^function test_execute_system_([^(]+)/) { print substr($0, RSTART+22, RLENGTH-22) }')"
 
 rm -Rf ./build/* && mkdir -p ./build/ && cd ./build/
 
- test system jvm
+# test system jvm
 if [[ "${OS}" == "darwin" ]]; then
 	for test_suffix in ${test_system_names}; do
 		run_test "../samples.properties/jvmw.${SYSTEM_JVM}.properties" "test_execute_${test_suffix}"
@@ -285,13 +287,13 @@ if [[ "${OS}" == "darwin" ]]; then
 fi
 
 for p_file in $(find "../samples.properties" -mindepth 1 -maxdepth 1 -type f | sort -r); do
-		for test_suffix in ${test_jvm_names}; do
-			run_test "${p_file}" "test_execute_${test_suffix}"
-		done
+#		for test_suffix in ${test_jvm_names}; do
+#			run_test "${p_file}" "test_execute_${test_suffix}"
+#		done
 	for test_suffix in ${test_jdk_names}; do
 		run_test "${p_file}" "test_execute_${test_suffix}"
 	done
 done
 
 # clean
-rm -Rf ./build/
+cd .. && rm -Rf ./build/
