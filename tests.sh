@@ -287,9 +287,9 @@ if [[ "${OS}" == "darwin" ]]; then
 fi
 
 for p_file in $(find "../samples.properties" -mindepth 1 -maxdepth 1 -type f | sort -r); do
-#		for test_suffix in ${test_jvm_names}; do
-#			run_test "${p_file}" "test_execute_${test_suffix}"
-#		done
+		for test_suffix in ${test_jvm_names}; do
+			run_test "${p_file}" "test_execute_${test_suffix}"
+		done
 	for test_suffix in ${test_jdk_names}; do
 		run_test "${p_file}" "test_execute_${test_suffix}"
 	done
