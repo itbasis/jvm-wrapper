@@ -9,7 +9,12 @@ TEST_FULL_VERSION=${TEST_FULL_VERSION}
 #
 
 function before_test() {
+	rm -Rf ./*
+	cp ../jdkw ./
+	cp "$1" ./jvmw.properties
+
 	after_test
+
 	while read -r line; do
 		eval "export ${line}"
 	done <<<"$(grep 'TEST_' jvmw.properties)"
@@ -95,13 +100,16 @@ function test_execute_jvm_02() {
 }
 
 function test_execute_jdk_00() {
+	mkdir -p ./test
 	cp ../tests/Test.java ./test/
 
+	[[ -f "test/Test.java" ]] || return 10;
+
 	TEST_OUTPUT=$(./jdkw javac -d ./test test/Test.java 2>&1)
-	[[ -f "test/Test.class" ]] || return 10;
+	[[ -f "test/Test.class" ]] || return 20;
 
 	TEST_OUTPUT=$(./jdkw java -cp ./test/ Test 2>&1)
-	[[ "${TEST_OUTPUT}" == "${TEST_FULL_VERSION}" ]] || return 20
+	[[ "${TEST_OUTPUT}" == "${TEST_FULL_VERSION}" ]] || return 30
 }
 
 function test_execute_jdk_01() {
@@ -127,6 +135,7 @@ function test_execute_jdk_02() {
 }
 
 function test_execute_jdk_03() {
+	mkdir -p ./test
 	cp ../tests/Test.java ./test/
 
 	TEST_OUTPUT=$(./jdkw ./javac -d ./test test/Test.java 2>&1)
@@ -232,11 +241,9 @@ function test_execute_system_jdk_05() {
 }
 
 function run_test() {
-	cp -f "${1}" jvmw.properties
+	before_test "${1}"
 
 	printf ":: execute '%s' from '%s'..." "${2}" "${1}"
-
-	before_test
 
 	# shellcheck disable=SC2015
 	${2} && {
@@ -268,20 +275,19 @@ test_jdk_names="$(cat "$0" | awk 'match($0, /function test_execute_jdk_([^(]+)/)
 # shellcheck disable=SC2002
 test_system_names="$(cat "$0" | awk 'match($0, /function test_execute_system_([^(]+)/) { print substr($0, RSTART+22, RLENGTH-22) }')"
 
-rm -Rf ./build/*
-mkdir -p ./build/test && cd ./build/ && cp ../jdkw ./
+rm -Rf ./build/* && mkdir -p ./build/ && cd ./build/
 
 # test system jvm
-if [[ "${OS}" == "darwin" ]]; then
-	for test_suffix in ${test_system_names}; do
-		run_test "../samples.properties/jvmw.${SYSTEM_JVM}.properties" "test_execute_${test_suffix}"
-	done
-fi
+#if [[ "${OS}" == "darwin" ]]; then
+#	for test_suffix in ${test_system_names}; do
+#		run_test "../samples.properties/jvmw.${SYSTEM_JVM}.properties" "test_execute_${test_suffix}"
+#	done
+#fi
 
 for p_file in $(find "../samples.properties" -mindepth 1 -maxdepth 1 -type f | sort -r); do
-	for test_suffix in ${test_jvm_names}; do
-		run_test "${p_file}" "test_execute_${test_suffix}"
-	done
+	#	for test_suffix in ${test_jvm_names}; do
+	#		run_test "${p_file}" "test_execute_${test_suffix}"
+	#	done
 	for test_suffix in ${test_jdk_names}; do
 		run_test "${p_file}" "test_execute_${test_suffix}"
 	done
