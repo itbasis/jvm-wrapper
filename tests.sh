@@ -29,8 +29,11 @@ function after_test() {
 }
 
 function test_execute_jvm_00() {
-
 	TEST_OUTPUT=$(./jdkw info 2>&1)
+	[[ "${TEST_OUTPUT}" == *"/.jvm/${TEST_JAVA_HOME}"* ]] || return 10
+	[[ "${TEST_OUTPUT}" != *"//"* ]] || return 20
+
+	TEST_OUTPUT=$(./jdkw 2>&1)
 	[[ "${TEST_OUTPUT}" == *"/.jvm/${TEST_JAVA_HOME}"* ]] || return 10
 	[[ "${TEST_OUTPUT}" != *"//"* ]] || return 20
 
@@ -116,6 +119,9 @@ function test_execute_system_jdk_01() {
 	TEST_OUTPUT=$(./jdkw info 2>&1)
 	[[ "${TEST_OUTPUT}" == *"USE_SYSTEM_JDK=Y"* ]] || return 10
 
+	TEST_OUTPUT=$(./jdkw 2>&1)
+	[[ "${TEST_OUTPUT}" == *"USE_SYSTEM_JDK=Y"* ]] || return 10
+
 	TEST_OUTPUT=$(./jdkw java -fullversion 2>&1)
 	[[ "${TEST_OUTPUT}" == *"${TEST_FULL_VERSION}"* ]] || return 20
 }
@@ -141,6 +147,9 @@ function test_execute_system_jdk_03() {
 	TEST_OUTPUT=$(./jdkw info 2>&1)
 	[[ "${TEST_OUTPUT}" == *"/.jvm/jdk7u80"* ]] || return 10
 
+	TEST_OUTPUT=$(./jdkw 2>&1)
+	[[ "${TEST_OUTPUT}" == *"/.jvm/jdk7u80"* ]] || return 10
+
 	TEST_OUTPUT=$(./jdkw java -fullversion 2>&1)
 	[[ "${TEST_OUTPUT}" == *"1.7.0_80"* ]] || return 20
 }
@@ -154,6 +163,9 @@ function test_execute_system_jdk_04() {
 	TEST_OUTPUT=$(./jdkw info 2>&1)
 	[[ "${TEST_OUTPUT}" == *"/.jvm/jdk8u144"* ]] || return 10
 
+	TEST_OUTPUT=$(./jdkw 2>&1)
+	[[ "${TEST_OUTPUT}" == *"/.jvm/jdk8u144"* ]] || return 10
+
 	TEST_OUTPUT=$(./jdkw java -fullversion 2>&1)
 	[[ "${TEST_OUTPUT}" == *"1.8.0_144"* ]] || return 20
 }
@@ -165,6 +177,9 @@ function test_execute_system_jdk_05() {
 	export JVM_VERSION=9.0.1
 
 	TEST_OUTPUT=$(./jdkw info 2>&1)
+	[[ "${TEST_OUTPUT}" == *"/.jvm/jdk9.0.1"* ]] || return 10
+
+	TEST_OUTPUT=$(./jdkw 2>&1)
 	[[ "${TEST_OUTPUT}" == *"/.jvm/jdk9.0.1"* ]] || return 10
 
 	TEST_OUTPUT=$(./jdkw java -fullversion 2>&1)
