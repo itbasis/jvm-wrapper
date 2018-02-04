@@ -277,17 +277,17 @@ test_system_names="$(cat "$0" | awk 'match($0, /function test_execute_system_([^
 
 rm -Rf ./build/* && mkdir -p ./build/ && cd ./build/
 
-# test system jvm
-#if [[ "${OS}" == "darwin" ]]; then
-#	for test_suffix in ${test_system_names}; do
-#		run_test "../samples.properties/jvmw.${SYSTEM_JVM}.properties" "test_execute_${test_suffix}"
-#	done
-#fi
+ test system jvm
+if [[ "${OS}" == "darwin" ]]; then
+	for test_suffix in ${test_system_names}; do
+		run_test "../samples.properties/jvmw.${SYSTEM_JVM}.properties" "test_execute_${test_suffix}"
+	done
+fi
 
 for p_file in $(find "../samples.properties" -mindepth 1 -maxdepth 1 -type f | sort -r); do
-	#	for test_suffix in ${test_jvm_names}; do
-	#		run_test "${p_file}" "test_execute_${test_suffix}"
-	#	done
+		for test_suffix in ${test_jvm_names}; do
+			run_test "${p_file}" "test_execute_${test_suffix}"
+		done
 	for test_suffix in ${test_jdk_names}; do
 		run_test "${p_file}" "test_execute_${test_suffix}"
 	done
