@@ -462,9 +462,9 @@ else
 		EXEC_PATH=${JDK_HOME}/bin/$1
 	else
 		PATH=.:$PATH
-		EXEC_PATH=$(whereis $1)
+		EXEC_PATH=$(whereis "$1")
 	fi
-	CMD="${EXEC_PATH} ${@:2}"
+	CMD=${EXEC_PATH} "${@:2}"
 
 	# execute program
 	debug "command: ${CMD}"
