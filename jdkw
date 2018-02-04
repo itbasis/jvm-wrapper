@@ -464,9 +464,8 @@ else
 		PATH=.:$PATH
 		EXEC_PATH=$(whereis "$1")
 	fi
-	CMD=${EXEC_PATH} "${@:2}"
 
 	# execute program
-	debug "command: ${CMD}"
-	eval "${CMD}"
+	debug "command: ${EXEC_PATH}" "${@:2}"
+	eval "${EXEC_PATH}" "${@:2}"
 fi
