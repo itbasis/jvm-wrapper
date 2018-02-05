@@ -462,7 +462,7 @@ else
 		EXEC_PATH=${JDK_HOME}/bin/$1
 	else
 		PATH=.:$PATH
-		EXEC_PATH=$(whereis "$1")
+		EXEC_PATH=$([[ "${1:0:2}" == "./" ]] && echo "$1" || echo "$(whereis "$1")")
 	fi
 
 	# execute program

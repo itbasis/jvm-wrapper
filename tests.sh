@@ -99,6 +99,13 @@ function test_execute_jvm_02() {
 	[[ ! "$(echo "${TEST_OUTPUT}" | grep "prev_date=")" ]] || return 40
 }
 
+function test_execute_jvm_03() {
+	TEST_OUTPUT=$(./jdkw -fullversion 2>&1)
+	[[ "${TEST_OUTPUT}" == *"No such file or directory"* ]] || return 10
+
+	return 0
+}
+
 function test_execute_jdk_00() {
 	mkdir -p ./test
 	cp ../tests/Test.java ./test/
@@ -134,19 +141,6 @@ function test_execute_jdk_02() {
 
 	TEST_OUTPUT=$(./jdkw java -jar build/libs/test.jar 2>&1)
 	[[ "${TEST_OUTPUT}" == "${TEST_FULL_VERSION}" ]] || return 30
-}
-
-function test_execute_jdk_03() {
-	mkdir -p ./test
-	cp ../tests/Test.java ./test/
-
-	export JVMW_DEBUG=Y
-
-	TEST_OUTPUT=$(./jdkw ./javac -d ./test test/Test.java 2>&1)
-	[[ -f "test/Test.class" ]] || return 10;
-
-	TEST_OUTPUT=$(./jdkw java -cp ./test/ Test 2>&1)
-	[[ "${TEST_OUTPUT}" == "${TEST_FULL_VERSION}" ]] || return 20
 }
 
 function test_execute_system_jdk_00() {
@@ -289,9 +283,9 @@ if [[ "${OS}" == "darwin" ]]; then
 fi
 
 for p_file in $(find "../samples.properties" -mindepth 1 -maxdepth 1 -type f | sort -r); do
-		for test_suffix in ${test_jvm_names}; do
-			run_test "${p_file}" "test_execute_${test_suffix}"
-		done
+#		for test_suffix in ${test_jvm_names}; do
+#			run_test "${p_file}" "test_execute_${test_suffix}"
+#		done
 	for test_suffix in ${test_jdk_names}; do
 		run_test "${p_file}" "test_execute_${test_suffix}"
 	done
