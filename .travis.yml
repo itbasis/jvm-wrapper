@@ -30,7 +30,6 @@ matrix:
         apt:
           packages:
             - oracle-java9-installer
-            - oracle-java9-set-default
     - os: linux
       dist: trusty
       sudo: required
@@ -38,7 +37,6 @@ matrix:
         apt:
           packages:
             - oracle-java9-installer
-            - oracle-java9-set-default
     - os: linux
       dist: precise
       sudo: required
@@ -46,7 +44,6 @@ matrix:
         apt:
           packages:
             - oracle-java9-installer
-            - oracle-java9-set-default
 
     - os: linux
       env:
