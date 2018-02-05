@@ -140,6 +140,8 @@ function test_execute_jdk_03() {
 	mkdir -p ./test
 	cp ../tests/Test.java ./test/
 
+	export JVMW_DEBUG=Y
+
 	TEST_OUTPUT=$(./jdkw ./javac -d ./test test/Test.java 2>&1)
 	[[ -f "test/Test.class" ]] || return 10;
 
