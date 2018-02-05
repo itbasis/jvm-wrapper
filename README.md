@@ -22,6 +22,12 @@ download file [jdkw](jdkw) in `~/.jvm/` or project directory
 
 Instead of `java` or `javac`, you can use any command from `$JAVA_HOME/bin/`
 
+## Commands
+
+|command|description|
+|---|---|
+|`info` or empty|Prints information about paths to `JDK_HOME`, `JAVA_HOME`|
+
 ## Properties
 Order of reading variables: environment, `~/jvmw.properties`, `./jvmw.properties`. The last read value is set for the variable
 

@@ -1,0 +1,10 @@
+apply plugin: 'java'
+
+println org.gradle.internal.jvm.Jvm.current().getJavaHome()
+
+jar {
+    archiveName = 'test.jar'
+    manifest {
+        attributes 'Main-Class': 'test.Test'
+    }
+}

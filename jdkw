@@ -26,11 +26,14 @@ OTN_USER_AGENT='Mozilla/5.0 https://github.com/itbasis/jvm-wrapper'
 mkdir -p "${JVMW_HOME}"
 
 function log_2() {
-	printf "[%s] [%s" "$1" "${BASH_SOURCE[1]}"
-	for i in "${!FUNCNAME[@]}"; do
-		printf ":%s(%s)" "${FUNCNAME[$i]}" "${BASH_LINENO[$i]}"
-	done
-	printf "] %s\\n" "${*:2}"
+	if [[ ! -z "$1" ]]; then
+		printf "[%s] [%s" "$1" "${BASH_SOURCE[1]}"
+		for i in "${!FUNCNAME[@]}"; do
+			printf ":%s(%s)" "${FUNCNAME[$i]}" "${BASH_LINENO[$i]}"
+		done
+		printf "]"
+	fi
+	printf "%s\\n" "${*:2}"
 }
 
 function debug() {
@@ -39,7 +42,7 @@ function debug() {
 	fi
 }
 
-function error() {
+function die() {
 	rm -f "${OTN_HEADERS_FILE}" "${OTN_CONTENT_FILE}" "${OTN_COOKIE_FILE}"
 	JVMW_DEBUG=Y
 	print_debug_info
@@ -48,17 +51,19 @@ function error() {
 }
 
 function print_debug_info() {
-	printf ''
-	for key in OS ARCH JVMW_HOME ARCHIVE_EXT JVM_VERSION_MAJOR JVM_VERSION_SECURITY JVM_VERSION JDK_FULL_NAME JDK_ROOT_DIR JDK_HOME_DIR JAVA_HOME_DIR JVM_PAGE_URL ARCHIVE_JVM_URL ARCHIVE_JVM_CHECKSUM ARCHIVE_FILE LAST_UPDATE_FILE REQUIRED_UPDATE JVMW_DEBUG USE_SYSTEM_JDK; do
-		>&2 debug "${key}=${!key}";
-	done
+	if [[ "${JVMW_DEBUG}" == "Y" ]]; then
+		printf ''
+		for key in OS ARCH JVMW_HOME ARCHIVE_EXT JVM_VERSION_MAJOR JVM_VERSION_SECURITY JVM_VERSION JDK_FULL_NAME JDK_ROOT_DIR JDK_HOME_DIR JAVA_HOME_DIR JVM_PAGE_URL ARCHIVE_JVM_URL ARCHIVE_JVM_CHECKSUM ARCHIVE_FILE LAST_UPDATE_FILE REQUIRED_UPDATE JVMW_DEBUG USE_SYSTEM_JDK; do
+			>&2 log_2 '' "${key}=${!key}";
+		done
+	fi
 }
 
 function system_check_program_exists() {
 	# shellcheck disable=SC2068
 	for cmd in $@; do
 		if [[ "$("$cmd" --version 2>&1)" == *"command not found"* ]]; then
-			error "command not found: ${cmd}"
+			die "command not found: ${cmd}"
 		fi
 	done
 }
@@ -156,7 +161,7 @@ function otn_curl_redirect() {
 
 function otn_login() {
 	if [[ -z "${ORACLE_USER}" ]] || [[ -z "${ORACLE_PASSWORD}" ]]; then
-		error 'no values were found in ORACLE_USER and ORACLE_PASSWORD'
+		die 'no values were found in ORACLE_USER and ORACLE_PASSWORD'
 	fi
 
 	debug "login OTN as '${ORACLE_USER}'"
@@ -245,29 +250,29 @@ function check_checksum() {
 
 function unpack_darwin() {
 	hdiutil detach "/Volumes/${JDK_FULL_NAME}" -quiet -force 2> /dev/null
-	hdiutil attach "${ARCHIVE_FILE}" -mountpoint "/Volumes/${JDK_FULL_NAME}" 2>&1 || error
+	hdiutil attach "${ARCHIVE_FILE}" -mountpoint "/Volumes/${JDK_FULL_NAME}" 2>&1 || die
 	local -r PKG_FILE_NAME=$(find "/Volumes/${JDK_FULL_NAME}" -mindepth 1 -maxdepth 1 -name '*.pkg')
 	local -r tmp_dir=$(mktemp -d -t "${JDK_FULL_NAME}.XXXXXX")
 	cd "${tmp_dir}/" || { rm -Rf "${tmp_dir}";
-		error "can't change directory: ${tmp_dir}/"; }
-	xar -xf "${PKG_FILE_NAME}" . &> /dev/null || error
+		die "can't change directory: ${tmp_dir}/"; }
+	xar -xf "${PKG_FILE_NAME}" . &> /dev/null || die
 	for dir in ./*jdk*; do
 		cpio -i <"${dir}/Payload" || exit 1
 	done
-	mv Contents "${JDK_ROOT_DIR}" 1> /dev/null 2>&1 || error
-	cd - || error
+	mv Contents "${JDK_ROOT_DIR}" 1> /dev/null 2>&1 || die
+	cd - || die
 	rm -Rf "${tmp_dir}" "${ARCHIVE_FILE}"
 	#
-	hdiutil detach "/Volumes/${JDK_FULL_NAME}" -force || error
+	hdiutil detach "/Volumes/${JDK_FULL_NAME}" -force || die
 }
 
 function unpack_linux() {
 	local -r tmp_dir=$(mktemp -d -t "${JDK_FULL_NAME}.XXXXXX")
 	debug "tmp_dir=${tmp_dir}"
 	tar xf "${ARCHIVE_FILE}" -C "${tmp_dir}" || { rm -Rf "${tmp_dir}";
-		error 'error unpack archive...'; }
+		die 'error unpack archive...'; }
 	mv "$(find "${tmp_dir}" -mindepth 1 -maxdepth 1 -type d)" "${JDK_ROOT_DIR}" || { rm -Rf "${tmp_dir}";
-		error 'error move unpacked jdk...'; }
+		die 'error move unpacked jdk...'; }
 	rm -Rf "${tmp_dir}" "${ARCHIVE_FILE}"
 }
 
@@ -312,7 +317,7 @@ function download_jdk() {
 	fi
 
 	if [[ -z "${ARCHIVE_JVM_URL}" ]]; then
-		error "empty ARCHIVE_JVM_URL. Use page '${JVM_PAGE_URL}'"
+		die "empty ARCHIVE_JVM_URL. Use page '${JVM_PAGE_URL}'"
 	fi
 	#
 	if [[ -f "${LAST_UPDATE_FILE}" ]] && [[ "${ARCHIVE_JVM_URL}" == "$(head -2 <"${LAST_UPDATE_FILE}" | tail -1)" ]]; then
@@ -323,7 +328,8 @@ function download_jdk() {
 		if [[ ${JVM_VERSION_MAJOR} -lt 8 ]]; then
 			rm -f "${ARCHIVE_FILE}"
 		elif check_checksum; then
-			return
+			eval "unpack_${OS}"
+			return 0
 		fi
 	fi
 	#
@@ -340,7 +346,7 @@ function download_jdk() {
 	curl -kL -A "${OTN_USER_AGENT}" -b "${OTN_COOKIE_FILE}" -o "${ARCHIVE_FILE}" --cookie "oraclelicense=accept-securebackup-cookie" "${ARCHIVE_JVM_URL}"
 
 	if ! check_checksum; then
-		error
+		die
 	fi
 
 	eval "unpack_${OS}"
@@ -417,42 +423,49 @@ function detect_system_jdk() {
 	return 0
 }
 
-function main() {
-	if [[ "${OS}" == "darwin" ]]; then
-		system_check_program_exists "${REQUIRED_COMMANDS_CORE}" "${REQUIRED_COMMANDS_DARWIN}"
-	else
-		system_check_program_exists "${REQUIRED_COMMANDS_CORE}" "${REQUIRED_COMMANDS_LINUX}"
-	fi
-	main_properties
-	if [[ "${USE_SYSTEM_JDK}" == "Y" ]]; then
-		detect_system_jdk
-	fi
+if [[ "${OS}" == "darwin" ]]; then
+	system_check_program_exists "${REQUIRED_COMMANDS_CORE}" "${REQUIRED_COMMANDS_DARWIN}"
+else
+	system_check_program_exists "${REQUIRED_COMMANDS_CORE}" "${REQUIRED_COMMANDS_LINUX}"
+fi
+main_properties
+if [[ "${USE_SYSTEM_JDK}" == "Y" ]]; then
+	detect_system_jdk
+fi
 
-	if [[ "${USE_SYSTEM_JDK}" -eq "Y" ]]; then
-		JVM_HOME_DIR="${JDK_HOME_DIR}"
-	fi
+if [[ "${USE_SYSTEM_JDK}" -eq "Y" ]]; then
+	JVM_HOME_DIR="${JDK_HOME_DIR}"
+fi
 
-	if [[ "$1" == "info" ]]; then
-		print_debug_info
-		echo "JDK_HOME=${JDK_HOME_DIR}"
-		echo "JAVA_HOME=${JVM_HOME_DIR}"
-		return 0
-	fi
+export JDK_HOME=${JDK_HOME_DIR}
+export JAVA_HOME=${JVM_HOME_DIR}
 
+if [[ -z "$1" ]] || [[ "$1" == "info" ]]; then
+	print_debug_info
+	echo "JDK_HOME=${JDK_HOME}"
+	echo "JAVA_HOME=${JAVA_HOME}"
+
+else
 	download_jdk
 
-	if [[ -z "${JDK_HOME_DIR}" ]]; then
-		error "can't JDK_HOME_DIR"
-
-	elif [[ -z "$1" ]]; then
-		error "command is empty"
-
-	else
-		# execute program
-		print_debug_info
-		debug "command: ${JDK_HOME_DIR}/bin/$1" "${@:2}"
-		eval "${JDK_HOME_DIR}/bin/$1" "${@:2}"
+	if [[ -z "${JVM_HOME_DIR}" ]]; then
+		die "can't JVM_HOME_DIR"
 	fi
-}
 
-main "$@"
+	print_debug_info
+
+	if [[ "$1" == "javac" ]] && [[ "${USE_SYSTEM_JDK}" != "Y" ]]; then
+		PATH=.:${JDK_HOME}/bin:$PATH
+		EXEC_PATH=${JDK_HOME}/bin/$1
+	elif [[ "$1" == "java" ]] && [[ "${USE_SYSTEM_JDK}" != "Y" ]]; then
+		PATH=.:${JAVA_HOME}/bin:$PATH
+		EXEC_PATH=${JDK_HOME}/bin/$1
+	else
+		PATH=.:$PATH
+		EXEC_PATH=$([[ "${1:0:2}" == "./" ]] && echo "$1" || echo "$(whereis "$1")")
+	fi
+
+	# execute program
+	debug "command: ${EXEC_PATH}" "${@:2}"
+	eval "${EXEC_PATH}" "${@:2}"
+fi
