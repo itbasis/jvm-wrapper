@@ -428,44 +428,49 @@ if [[ "${OS}" == "darwin" ]]; then
 else
 	system_check_program_exists "${REQUIRED_COMMANDS_CORE}" "${REQUIRED_COMMANDS_LINUX}"
 fi
-main_properties
-if [[ "${USE_SYSTEM_JDK}" == "Y" ]]; then
-	detect_system_jdk
-fi
 
-if [[ "${USE_SYSTEM_JDK}" -eq "Y" ]]; then
-	JVM_HOME_DIR="${JDK_HOME_DIR}"
-fi
-
-export JDK_HOME=${JDK_HOME_DIR}
-export JAVA_HOME=${JVM_HOME_DIR}
-
-if [[ -z "$1" ]] || [[ "$1" == "info" ]]; then
-	print_debug_info
-	echo "JDK_HOME=${JDK_HOME}"
-	echo "JAVA_HOME=${JAVA_HOME}"
-
+if [[ "$1" == "upgrade" ]]; then
+	curl -sS https://raw.githubusercontent.com/itbasis/jvm-wrapper/master/jdkw > "$0"
 else
-	download_jdk
-
-	if [[ -z "${JVM_HOME_DIR}" ]]; then
-		die "can't JVM_HOME_DIR"
+	main_properties
+	if [[ "${USE_SYSTEM_JDK}" == "Y" ]]; then
+		detect_system_jdk
 	fi
 
-	print_debug_info
+	if [[ "${USE_SYSTEM_JDK}" -eq "Y" ]]; then
+		JVM_HOME_DIR="${JDK_HOME_DIR}"
+	fi
 
-	if [[ "$1" == "javac" ]] && [[ "${USE_SYSTEM_JDK}" != "Y" ]]; then
-		PATH=.:${JDK_HOME}/bin:$PATH
-		EXEC_PATH=${JDK_HOME}/bin/$1
-	elif [[ "$1" == "java" ]] && [[ "${USE_SYSTEM_JDK}" != "Y" ]]; then
-		PATH=.:${JAVA_HOME}/bin:$PATH
-		EXEC_PATH=${JDK_HOME}/bin/$1
+	export JDK_HOME=${JDK_HOME_DIR}
+	export JAVA_HOME=${JVM_HOME_DIR}
+
+	if [[ -z "$1" ]] || [[ "$1" == "info" ]]; then
+		print_debug_info
+		echo "JDK_HOME=${JDK_HOME}"
+		echo "JAVA_HOME=${JAVA_HOME}"
+
 	else
-		PATH=.:$PATH
-		EXEC_PATH=$([[ "${1:0:2}" == "./" ]] && echo "$1" || echo "$(whereis "$1")")
-	fi
+		download_jdk
 
-	# execute program
-	debug "command: ${EXEC_PATH}" "${@:2}"
-	eval "${EXEC_PATH}" "${@:2}"
+		if [[ -z "${JVM_HOME_DIR}" ]]; then
+			die "can't JVM_HOME_DIR"
+		fi
+
+		print_debug_info
+
+		if [[ "$1" == "javac" ]] && [[ "${USE_SYSTEM_JDK}" != "Y" ]]; then
+			PATH=.:${JDK_HOME}/bin:$PATH
+			EXEC_PATH=${JDK_HOME}/bin/$1
+		elif [[ "$1" == "java" ]] && [[ "${USE_SYSTEM_JDK}" != "Y" ]]; then
+			PATH=.:${JAVA_HOME}/bin:$PATH
+			EXEC_PATH=${JDK_HOME}/bin/$1
+		else
+			PATH=.:$PATH
+			EXEC_PATH=$([[ "${1:0:2}" == "./" ]] && echo "$1" || echo "$(whereis "$1")")
+		fi
+
+		# execute program
+		debug "command: ${EXEC_PATH}" "${@:2}"
+		eval "${EXEC_PATH}" "${@:2}"
+	fi
 fi

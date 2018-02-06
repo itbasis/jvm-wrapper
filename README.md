@@ -16,17 +16,21 @@
 download file [jdkw](jdkw) in `~/.jvm/` or project directory
 
 ## Usage
-`./jdkw java commands` or `~/.jvm/jdkw java commands`
 
-`./jdkw javac commands` or `~/.jvm/jdkw javac commands`
+|command line|Description|
+|---|---|
+|`./jdkw jvm_wrapper_commands` or `~/.jvm/jdkw jvm_wrapper_commands`|Execute the internal JVM Wrapper commands. This does not check and update the JVM|
+|`./jdkw java arguments` or `~/.jvm/jdkw java arguments`|Running JVM commands. In this case, the computed JVM Wrapper path is used as the path. Currently, only the `java` and `javac` commands are supported|
+|`./jdkw command arguments` or `~/.jvm/jdkw command arguments`<br/>`./jdkw ./command arguments` or `~/.jvm/jdkw ./command arguments`|Running external commands |
 
 Instead of `java` or `javac`, you can use any command from `$JAVA_HOME/bin/`
 
-## Commands
+## JVM Wrapper Commands
 
 |command|description|
 |---|---|
 |`info` or empty|Prints information about paths to `JDK_HOME`, `JAVA_HOME`|
+|`upgrade`|Update JVM Wrapper with GitHub. Updating the running script (self-update)|
 
 ## Properties
 Order of reading variables: environment, `~/jvmw.properties`, `./jvmw.properties`. The last read value is set for the variable
