@@ -97,10 +97,13 @@ function properties_build() {
 	fi
 
 	JDK_FULL_NAME="jdk${JVM_VERSION}"
+
 	JDK_ROOT_DIR=${JVMW_HOME}/${JDK_FULL_NAME}
-	JDK_HOME_DIR=${JDK_ROOT_DIR}$([[ "${OS}" == 'darwin' ]] && echo '/Home')
+
 	ARCHIVE_FILE=${JDK_ROOT_DIR}.${ARCHIVE_EXT}
 	LAST_UPDATE_FILE=${JDK_ROOT_DIR}.last_update
+
+	JDK_HOME_DIR=${JDK_ROOT_DIR}/$([[ "${OS}" == 'darwin' ]] && echo 'Home/')
 }
 
 function otn_curl_send_request() {
@@ -402,7 +405,7 @@ function get_system_path() {
 	if [[ -f "${jvm_dir}/java_home" ]]; then
 		jvm_dir=$("${jvm_dir}/java_home")
 	fi
-	eval "${1}='${jvm_dir}'"
+	eval "${1}='${jvm_dir}/'"
 }
 
 function detect_system_jdk() {
@@ -441,8 +444,8 @@ else
 		JVM_HOME_DIR="${JDK_HOME_DIR}"
 	fi
 
-	export JDK_HOME=${JDK_HOME_DIR}/
-	export JAVA_HOME=${JVM_HOME_DIR}/
+	export JDK_HOME=${JDK_HOME_DIR}
+	export JAVA_HOME=${JVM_HOME_DIR}
 
 	if [[ -z "$1" ]] || [[ "$1" == "info" ]]; then
 		print_debug_info
