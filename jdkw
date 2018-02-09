@@ -31,7 +31,7 @@ function log_2() {
 		for i in "${!FUNCNAME[@]}"; do
 			printf ":%s(%s)" "${FUNCNAME[$i]}" "${BASH_LINENO[$i]}"
 		done
-		printf "]"
+		printf "] "
 	fi
 	printf "%s\\n" "${*:2}"
 }
@@ -430,7 +430,7 @@ else
 fi
 
 if [[ "$1" == "upgrade" ]]; then
-	curl -sS https://raw.githubusercontent.com/itbasis/jvm-wrapper/master/jdkw > "$0"
+	curl -sS https://raw.githubusercontent.com/itbasis/jvm-wrapper/master/jdkw >"$0"
 else
 	main_properties
 	if [[ "${USE_SYSTEM_JDK}" == "Y" ]]; then
@@ -467,6 +467,10 @@ else
 		else
 			PATH=.:$PATH
 			EXEC_PATH=$([[ "${1:0:2}" == "./" ]] && echo "$1" || echo "$(whereis "$1")")
+		fi
+
+		if [[ -z "${EXEC_PATH}" ]]; then
+			die "No program found to execute: $1"
 		fi
 
 		# execute program

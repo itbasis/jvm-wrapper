@@ -104,8 +104,8 @@ function test_execute_jvm_02() {
 }
 
 function test_execute_jvm_03() {
-	TEST_OUTPUT=$(./jdkw java -fullversion 2>&1)
-	[[ "${TEST_OUTPUT}" == *"No such file or directory"* ]] || return 10
+	TEST_OUTPUT=$(./jdkw -fullversion 2>&1)
+	[[ "${TEST_OUTPUT}" == *"No program found to execute: -fullversion"* ]] || return 10
 
 	return 0
 }
