@@ -97,8 +97,8 @@ function properties_build() {
 	fi
 
 	JDK_FULL_NAME="jdk${JVM_VERSION}"
-	JDK_ROOT_DIR=${JVMW_HOME}/${JDK_FULL_NAME}
-	JDK_HOME_DIR=${JDK_ROOT_DIR}$([[ "${OS}" == 'darwin' ]] && echo '/Home')
+	JDK_ROOT_DIR=${JVMW_HOME}/${JDK_FULL_NAME}/
+	JDK_HOME_DIR=${JDK_ROOT_DIR}$([[ "${OS}" == 'darwin' ]] && echo 'Home')/
 	ARCHIVE_FILE=${JDK_ROOT_DIR}.${ARCHIVE_EXT}
 	LAST_UPDATE_FILE=${JDK_ROOT_DIR}.last_update
 }
@@ -252,7 +252,7 @@ function unpack_darwin() {
 	hdiutil detach "/Volumes/${JDK_FULL_NAME}" -quiet -force 2> /dev/null
 	hdiutil attach "${ARCHIVE_FILE}" -mountpoint "/Volumes/${JDK_FULL_NAME}" 2>&1 || die
 	local -r PKG_FILE_NAME=$(find "/Volumes/${JDK_FULL_NAME}" -mindepth 1 -maxdepth 1 -name '*.pkg')
-	local -r tmp_dir=$(mktemp -d -t "${JDK_FULL_NAME}.XXXXXX")
+	local -r tmp_dir=$(mktemp -d -t "${JDK_FULL_NAME}.XXXXXX")/
 	cd "${tmp_dir}/" || { rm -Rf "${tmp_dir}";
 		die "can't change directory: ${tmp_dir}/"; }
 	xar -xf "${PKG_FILE_NAME}" . &> /dev/null || die
@@ -267,7 +267,7 @@ function unpack_darwin() {
 }
 
 function unpack_linux() {
-	local -r tmp_dir=$(mktemp -d -t "${JDK_FULL_NAME}.XXXXXX")
+	local -r tmp_dir=$(mktemp -d -t "${JDK_FULL_NAME}.XXXXXX")/
 	debug "tmp_dir=${tmp_dir}"
 	tar xf "${ARCHIVE_FILE}" -C "${tmp_dir}" || { rm -Rf "${tmp_dir}";
 		die 'error unpack archive...'; }
@@ -402,7 +402,7 @@ function get_system_path() {
 	if [[ -f "${jvm_dir}/java_home" ]]; then
 		jvm_dir=$("${jvm_dir}/java_home")
 	fi
-	eval "${1}='${jvm_dir}'"
+	eval "${1}='${jvm_dir}/'"
 }
 
 function detect_system_jdk() {
@@ -438,7 +438,7 @@ else
 	fi
 
 	if [[ "${USE_SYSTEM_JDK}" -eq "Y" ]]; then
-		JVM_HOME_DIR="${JDK_HOME_DIR}"
+		JVM_HOME_DIR="${JDK_HOME_DIR}/"
 	fi
 
 	export JDK_HOME=${JDK_HOME_DIR}
