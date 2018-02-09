@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+echo "HOME=${HOME}"
+echo "pwd=$(pwd)"
+
 OS=$(uname | tr '[:upper:]' '[:lower:]')
 SYSTEM_JVM=9.0.4
 # Hack for code verification
