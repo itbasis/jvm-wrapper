@@ -1,6 +1,7 @@
 apply plugin: 'java'
 
-println org.gradle.internal.jvm.Jvm.current().getJavaHome()/
+print org.gradle.internal.jvm.Jvm.current().getJavaHome()
+println '/'
 
 jar {
     archiveName = 'test.jar'
