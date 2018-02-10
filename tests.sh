@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+echo "JVM_VERSION='${JVM_VERSION}', JVMW_FILE_PROPERTIES='${JVMW_FILE_PROPERTIES}', TEST_REUSE_JAVA_VERSION='${TEST_REUSE_JAVA_VERSION}'"
+exit
 OS=$(uname | tr '[:upper:]' '[:lower:]')
 SYSTEM_JVM=9.0.4
 # Hack for code verification
