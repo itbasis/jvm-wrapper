@@ -1,8 +1,5 @@
 #!/usr/bin/env bash
 
-echo "HOME=${HOME}"
-echo "pwd=$(pwd)"
-
 OS=$(uname | tr '[:upper:]' '[:lower:]')
 SYSTEM_JVM=9.0.4
 # Hack for code verification
@@ -242,7 +239,7 @@ function test_execute_system_jdk_05() {
 	[[ "${TEST_OUTPUT}" == *"9.0.1"* ]] || return 20
 }
 
-function test_execute_reuse_jdk_00(){
+function test_execute_reuse_jdk_00() {
 	export JVMW_DEBUG=Y
 	export USE_SYSTEM_JDK=N
 
@@ -302,19 +299,19 @@ if [[ "${OS}" == "darwin" ]]; then
 fi
 
 for p_file in $(find "../samples.properties" -mindepth 1 -maxdepth 1 -type f | sort -r); do
-		for test_suffix in ${test_jvm_names}; do
-			run_test "${p_file}" "test_execute_${test_suffix}"
-		done
+	for test_suffix in ${test_jvm_names}; do
+		run_test "${p_file}" "test_execute_${test_suffix}"
+	done
 	for test_suffix in ${test_jdk_names}; do
 		run_test "${p_file}" "test_execute_${test_suffix}"
 	done
 done
 
-#for p_file in $(find "../samples.properties" -name "jvmw.?.properties" -mindepth 1 -maxdepth 1 -type f | sort -r); do
-#		for test_suffix in ${test_reuse_names}; do
-#			run_test "${p_file}" "test_execute_${test_suffix}"
-#		done
-#done
+for p_file in $(find "../samples.properties" -name "jvmw.?.properties" -mindepth 1 -maxdepth 1 -type f | sort -r); do
+	for test_suffix in ${test_reuse_names}; do
+		run_test "${p_file}" "test_execute_${test_suffix}"
+	done
+done
 
 # clean
 cd .. && rm -Rf ./build/

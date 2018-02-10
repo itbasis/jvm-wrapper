@@ -53,7 +53,7 @@ function die() {
 function print_debug_info() {
 	if [[ "${JVMW_DEBUG}" == "Y" ]]; then
 		printf ''
-		for key in OS ARCH JVMW_HOME ARCHIVE_EXT JVM_VERSION_MAJOR JVM_VERSION_SECURITY JVM_VERSION JDK_FULL_NAME JDK_ROOT_DIR JDK_HOME_DIR JAVA_HOME_DIR JVM_PAGE_URL ARCHIVE_JVM_URL ARCHIVE_JVM_CHECKSUM ARCHIVE_FILE LAST_UPDATE_FILE REQUIRED_UPDATE JVMW_DEBUG USE_SYSTEM_JDK; do
+		for key in OS ARCH JVMW_HOME ARCHIVE_EXT JVM_VERSION JVM_VERSION_MAJOR JVM_VERSION_SECURITY JDK_ROOT_DIR JDK_HOME_DIR JAVA_HOME_DIR JVM_PAGE_URL ARCHIVE_JVM_URL ARCHIVE_JVM_CHECKSUM ARCHIVE_FILE LAST_UPDATE_FILE REQUIRED_UPDATE JVMW_DEBUG USE_SYSTEM_JDK; do
 			>&2 log_2 '' "${key}=${!key}";
 		done
 	fi
@@ -96,9 +96,9 @@ function properties_build() {
 		unset JVM_VERSION_SECURITY
 	fi
 
-	JDK_FULL_NAME="jdk${JVM_VERSION}"
+	JVM_FULL_NAME="jdk${JVM_VERSION}"
 
-	JDK_ROOT_DIR=${JVMW_HOME}/${JDK_FULL_NAME}
+	JDK_ROOT_DIR=${JVMW_HOME}/${JVM_FULL_NAME}
 
 	ARCHIVE_FILE=${JDK_ROOT_DIR}.${ARCHIVE_EXT}
 	LAST_UPDATE_FILE=${JDK_ROOT_DIR}.last_update
@@ -252,10 +252,10 @@ function check_checksum() {
 }
 
 function unpack_darwin() {
-	hdiutil detach "/Volumes/${JDK_FULL_NAME}" -quiet -force 2> /dev/null
-	hdiutil attach "${ARCHIVE_FILE}" -mountpoint "/Volumes/${JDK_FULL_NAME}" 2>&1 || die
-	local -r PKG_FILE_NAME=$(find "/Volumes/${JDK_FULL_NAME}" -mindepth 1 -maxdepth 1 -name '*.pkg')
-	local -r tmp_dir=$(mktemp -d -t "${JDK_FULL_NAME}.XXXXXX")/
+	hdiutil detach "/Volumes/${JVM_FULL_NAME}" -quiet -force 2> /dev/null
+	hdiutil attach "${ARCHIVE_FILE}" -mountpoint "/Volumes/${JVM_FULL_NAME}" 2>&1 || die
+	local -r PKG_FILE_NAME=$(find "/Volumes/${JVM_FULL_NAME}" -mindepth 1 -maxdepth 1 -name '*.pkg')
+	local -r tmp_dir=$(mktemp -d -t "${JVM_FULL_NAME}.XXXXXX")/
 	cd "${tmp_dir}/" || { rm -Rf "${tmp_dir}";
 		die "can't change directory: ${tmp_dir}/"; }
 	xar -xf "${PKG_FILE_NAME}" . &> /dev/null || die
@@ -266,11 +266,11 @@ function unpack_darwin() {
 	cd - || die
 	rm -Rf "${tmp_dir}" "${ARCHIVE_FILE}"
 	#
-	hdiutil detach "/Volumes/${JDK_FULL_NAME}" -force || die
+	hdiutil detach "/Volumes/${JVM_FULL_NAME}" -force || die
 }
 
 function unpack_linux() {
-	local -r tmp_dir=$(mktemp -d -t "${JDK_FULL_NAME}.XXXXXX")/
+	local -r tmp_dir=$(mktemp -d -t "${JVM_FULL_NAME}.XXXXXX")/
 	debug "tmp_dir=${tmp_dir}"
 	tar xf "${ARCHIVE_FILE}" -C "${tmp_dir}" || { rm -Rf "${tmp_dir}";
 		die 'error unpack archive...'; }
@@ -426,6 +426,25 @@ function detect_system_jdk() {
 	return 0
 }
 
+function detect_reuse_jdk() {
+	local -r jvm_root_dir=${JVMW_HOME}/jdk${JVM_VERSION_MAJOR}/$([[ "${OS}" == 'darwin' ]] && echo 'Home/')
+	if [[ ! -d "${jvm_root_dir}" ]]; then
+		return 0;
+	fi
+	local -r jdk_output="$(${jvm_root_dir}/bin/java -fullversion 2>&1)"
+
+	if [[ "${jdk_output}" != *"java full version \"${JVM_VERSION_MAJOR}.0.${JVM_VERSION_SECURITY}+"* && "${jdk_output}" != *"java full version \"1.${JVM_VERSION_MAJOR}.0_${JVM_VERSION_SECURITY}-"* ]]; then
+		return 0
+	fi
+
+	JVM_FULL_NAME="jdk${JVM_VERSION_MAJOR}"
+	JDK_ROOT_DIR=${JVMW_HOME}/${JVM_FULL_NAME}
+	JDK_HOME_DIR=${JDK_ROOT_DIR}/$([[ "${OS}" == 'darwin' ]] && echo 'Home/')
+	REQUIRED_UPDATE=N
+
+	return 0
+}
+
 if [[ "${OS}" == "darwin" ]]; then
 	system_check_program_exists "${REQUIRED_COMMANDS_CORE}" "${REQUIRED_COMMANDS_DARWIN}"
 else
@@ -438,6 +457,8 @@ else
 	main_properties
 	if [[ "${USE_SYSTEM_JDK}" == "Y" ]]; then
 		detect_system_jdk
+	else
+		detect_reuse_jdk
 	fi
 
 	if [[ "${USE_SYSTEM_JDK}" -eq "Y" ]]; then
