@@ -1,0 +1,85 @@
+sudo: false
+language: generic
+
+services:
+  - docker
+
+#install:
+#  - if [[ "$TRAVIS_OS_NAME" == "osx" ]] && [[ "$SKIP_SHELLCHECK" != "yes" ]] ; then brew update && brew reinstall shellcheck && brew cask reinstall java; fi
+#  - chmod +x ./travis_scripts/*.sh
+
+#before_script:
+#  - if [[ "$TRAVIS_OS_NAME" == "osx" ]] && [[ "$SKIP_SHELLCHECK" != "yes" ]] ; then find . \( -name 'jdkw' -o -name 'script_*.sh' \) -exec shellcheck {} \; ; fi
+#  - if [[ ! -z "$DOCKER_IMAGE" ]]; then sudo docker pull $DOCKER_IMAGE:$DOCKER_TAG; fi
+
+script:
+  - env
+#  - if [[ -z "$DOCKER_IMAGE" ]]; then ./tests.sh 2>&1; fi
+#  - if [[ ! -z "$DOCKER_IMAGE" ]]; then ./travis_scripts/script_docker.$DOCKER_IMAGE.sh 2>&1; fi
+
+env:
+  - JVM_VERSION=9 TEST_FULL_VERSION=9.0.4+11 TEST_REUSE_JAVA_VERSION=9.0.4
+  - JVM_VERSION=9.0.4 TEST_FULL_VERSION=9.0.4+11
+
+matrix:
+  include:
+    - os: osx
+#    - os: osx
+#      osx_image: xcode9.2
+#    - os: osx
+#      osx_image: xcode8.3
+#
+    - os: linux
+#      sudo: required
+#      addons:
+#        apt:
+#          packages:
+#            - oracle-java9-installer
+#    - os: linux
+#      dist: trusty
+#      sudo: required
+#      addons:
+#        apt:
+#          packages:
+#            - oracle-java9-installer
+#    - os: linux
+#      dist: precise
+#      sudo: required
+#      addons:
+#        apt:
+#          packages:
+#            - oracle-java9-installer
+#
+#    - os: linux
+#      env:
+#        - DOCKER_IMAGE: centos
+#        - DOCKER_TAG: centos6
+#    - os: linux
+#      env:
+#        - DOCKER_IMAGE: centos
+#        - DOCKER_TAG: centos7
+#      env:
+#        - DOCKER_IMAGE: centos
+#        - DOCKER_TAG: centos6
+#    - os: linux
+#      env:
+#        - DOCKER_IMAGE: debian
+#        - DOCKER_TAG: wheezy
+#    - os: linux
+#      env:
+#        - DOCKER_IMAGE: debian
+#        - DOCKER_TAG: jessie
+#    - os: linux
+#      env:
+#        - DOCKER_IMAGE: ubuntu
+#        - DOCKER_TAG: trusty
+#    - os: linux
+#      env:
+#        - DOCKER_IMAGE: opensuse
+#        - DOCKER_TAG: latest
+#    - os: linux
+#      env:
+#        - DOCKER_IMAGE: base/arch
+#        - DOCKER_TAG: latest
+#      script:
+#        - ./travis_scripts/script_docker.sh 2>&1
