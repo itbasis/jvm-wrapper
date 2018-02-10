@@ -19,7 +19,7 @@ script:
 
 env:
   - JVM_VERSION=9 TEST_FULL_VERSION=9.0.4+11 TEST_REUSE_JAVA_VERSION=9.0.4
-  - JVM_VERSION=9.0.4 TEST_FULL_VERSION=9.0.4+11 TEST_REUSE_JAVA_VERSION=
+  - JVM_VERSION=9.0.4 TEST_FULL_VERSION=9.0.4+11
 
 matrix:
   include:
@@ -30,11 +30,11 @@ matrix:
 #      osx_image: xcode8.3
 #
     - os: linux
-      sudo: required
-      addons:
-        apt:
-          packages:
-            - oracle-java9-installer
+#      sudo: required
+#      addons:
+#        apt:
+#          packages:
+#            - oracle-java9-installer
 #    - os: linux
 #      dist: trusty
 #      sudo: required
