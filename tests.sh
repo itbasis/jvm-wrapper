@@ -221,6 +221,7 @@ function test_execute_reuse_jdk_00() {
 	TEST_OUTPUT=$(./jdkw info 2>&1)
 	[[ "${TEST_OUTPUT}" == *"${HOME}/.jvm/${TEST_JAVA_HOME}/"* ]] || return 10
 
+	./jdkw java -fullversion 2>&1
 	export JVM_VERSION=${TEST_REUSE_JAVA_VERSION}
 
 	TEST_OUTPUT=$(./jdkw info 2>&1)
@@ -273,6 +274,12 @@ if [[ "${OS}" == "darwin" ]]; then
 	done
 fi
 
+for p_file in $(find "../samples.properties" -name "jvmw.?.properties" -mindepth 1 -maxdepth 1 -type f | sort -r); do
+	for test_suffix in ${test_reuse_names}; do
+		run_test "${p_file}" "test_execute_${test_suffix}"
+	done
+done
+
 for p_file in $(find "../samples.properties" -mindepth 1 -maxdepth 1 -type f | sort -r); do
 	for test_suffix in ${test_jvm_names}; do
 		run_test "${p_file}" "test_execute_${test_suffix}"
@@ -282,11 +289,11 @@ for p_file in $(find "../samples.properties" -mindepth 1 -maxdepth 1 -type f | s
 	done
 done
 
-for p_file in $(find "../samples.properties" -name "jvmw.?.properties" -mindepth 1 -maxdepth 1 -type f | sort -r); do
-	for test_suffix in ${test_reuse_names}; do
-		run_test "${p_file}" "test_execute_${test_suffix}"
-	done
-done
+#for p_file in $(find "../samples.properties" -name "jvmw.?.properties" -mindepth 1 -maxdepth 1 -type f | sort -r); do
+#	for test_suffix in ${test_reuse_names}; do
+#		run_test "${p_file}" "test_execute_${test_suffix}"
+#	done
+#done
 
 # clean
 cd .. && rm -Rf ./build/
