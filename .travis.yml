@@ -18,10 +18,16 @@ script:
 #  - if [[ ! -z "$DOCKER_IMAGE" ]]; then ./travis_scripts/script_docker.$DOCKER_IMAGE.sh 2>&1; fi
 
 env:
-  - JVM_VERSION=9
-  - JVM_VERSION=9.0.4
-  - JVM_VERSION=9.0.1
-  - JVM_VERSION=8
+  JVM_VERSION:
+    - 9
+    - 9.0.4
+#  - JVM_VERSION=9.0.4
+#  - JVM_VERSION=9.0.1
+#  - JVM_VERSION=8
+#  - JVM_VERSION=8u161
+#  - JVM_VERSION=8u162
+#  - JVM_VERSION=8u144
+#  - JVM_VERSION=7u80
 
 os:
   - osx
