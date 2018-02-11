@@ -17,48 +17,54 @@ script:
 #  - if [[ -z "$DOCKER_IMAGE" ]]; then ./tests.sh 2>&1; fi
 #  - if [[ ! -z "$DOCKER_IMAGE" ]]; then ./travis_scripts/script_docker.$DOCKER_IMAGE.sh 2>&1; fi
 
-os:
-  - osx
-  - linux
+env:
+  - JVM_VERSION=9
+  - JVM_VERSION=9.0.4
+  - JVM_VERSION=9.0.1
+  - JVM_VERSION=8
 
-osx_image:
-  - xcode9.3beta
-  - xcode9.2
-  - xcodde8.3
-
-addons:
-  apt:
-    packages:
-      - oracle-java9-installer
-
-#matrix:
-#  include:
-#    - os: osx
-#    - os: osx
-#      osx_image: xcode9.2
-#    - os: osx
-#      osx_image: xcode8.3
+#os:
+#  - osx
+#  - linux
 #
-#    - os: linux
-#      sudo: required
-#      addons:
-#        apt:
-#          packages:
-#            - oracle-java9-installer
-#    - os: linux
-#      dist: trusty
-#      sudo: required
-#      addons:
-#        apt:
-#          packages:
-#            - oracle-java9-installer
-#    - os: linux
-#      dist: precise
-#      sudo: required
-#      addons:
-#        apt:
-#          packages:
-#            - oracle-java9-installer
+#osx_image:
+#  - xcode9.3beta
+#  - xcode9.2
+#  - xcodde8.3
+#
+#addons:
+#  apt:
+#    packages:
+#      - oracle-java9-installer
+
+matrix:
+  include:
+    - os: osx
+    - os: osx
+      osx_image: xcode9.2
+    - os: osx
+      osx_image: xcode8.3
+
+    - os: linux
+      sudo: required
+      addons:
+        apt:
+          packages:
+            - oracle-java9-installer
+    - os: linux
+      dist: trusty
+      sudo: required
+      addons:
+        apt:
+          packages:
+            - oracle-java9-installer
+    - os: linux
+      dist: precise
+      sudo: required
+      addons:
+        apt:
+          packages:
+            - oracle-java9-installer
 #
 #    - os: linux
 #      env:
