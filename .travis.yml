@@ -23,9 +23,10 @@ env:
   - JVM_VERSION=9.0.1
   - JVM_VERSION=8
 
-#os:
-#  - osx
-#  - linux
+os:
+  - osx
+  - linux
+
 #
 #osx_image:
 #  - xcode9.3beta
@@ -37,34 +38,34 @@ env:
 #    packages:
 #      - oracle-java9-installer
 
-matrix:
-  include:
-    - os: osx
-    - os: osx
-      osx_image: xcode9.2
-    - os: osx
-      osx_image: xcode8.3
-
-    - os: linux
-      sudo: required
-      addons:
-        apt:
-          packages:
-            - oracle-java9-installer
-    - os: linux
-      dist: trusty
-      sudo: required
-      addons:
-        apt:
-          packages:
-            - oracle-java9-installer
-    - os: linux
-      dist: precise
-      sudo: required
-      addons:
-        apt:
-          packages:
-            - oracle-java9-installer
+#matrix:
+#  include:
+#    - os: osx
+#    - os: osx
+#      osx_image: xcode9.2
+#    - os: osx
+#      osx_image: xcode8.3
+#
+#    - os: linux
+#      sudo: required
+#      addons:
+#        apt:
+#          packages:
+#            - oracle-java9-installer
+#    - os: linux
+#      dist: trusty
+#      sudo: required
+#      addons:
+#        apt:
+#          packages:
+#            - oracle-java9-installer
+#    - os: linux
+#      dist: precise
+#      sudo: required
+#      addons:
+#        apt:
+#          packages:
+#            - oracle-java9-installer
 #
 #    - os: linux
 #      env:
