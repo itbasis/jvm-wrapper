@@ -10,7 +10,7 @@ install:
 
 before_script:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]] && [[ "$SKIP_SHELLCHECK" != "yes" ]] ; then find . \( -name 'jdkw' -o -name 'script_*.sh' \) -exec shellcheck {} \; ; fi
-  - if [[ ! -z "$DOCKER_IMAGE" ]]; then sudo docker pull $DOCKER_IMAGE:$DOCKER_TAG; fi
+#  - if [[ ! -z "$DOCKER_IMAGE" ]]; then sudo docker pull $DOCKER_IMAGE:$DOCKER_TAG; fi
 
 script:
   - env
@@ -18,16 +18,23 @@ script:
 #  - if [[ ! -z "$DOCKER_IMAGE" ]]; then ./travis_scripts/script_docker.$DOCKER_IMAGE.sh 2>&1; fi
 
 env:
-  JVM_VERSION:
-    - 9
-    - 9.0.4
-#  - JVM_VERSION=9.0.4
-#  - JVM_VERSION=9.0.1
-#  - JVM_VERSION=8
-#  - JVM_VERSION=8u161
-#  - JVM_VERSION=8u162
-#  - JVM_VERSION=8u144
-#  - JVM_VERSION=7u80
+  - JVM_VERSION=9     TEST_FULL_VERSION=9.0.4+11      TEST_REUSE_JAVA_VERSION=9.0.4
+  - JVM_VERSION=9.0.4 TEST_FULL_VERSION=9.0.4+11
+  - JVM_VERSION=9.0.1 TEST_FULL_VERSION=9.0.1+11
+  - JVM_VERSION=8     TEST_FULL_VERSION=1.8.0_161-b12 TEST_REUSE_JAVA_VERSION=8u161
+  - JVM_VERSION=8u161 TEST_FULL_VERSION=1.8.0_161-b12
+  - JVM_VERSION=8u162 TEST_FULL_VERSION=1.8.0_162-b12
+  - JVM_VERSION=8u144 TEST_FULL_VERSION=1.8.0_144-b01
+  - JVM_VERSION=7     TEST_FULL_VERSION=1.7.0_80-b15  TEST_REUSE_JAVA_VERSION=7u80
+  - JVM_VERSION=7u80  TEST_FULL_VERSION=1.7.0_80-b15
+  - DOCKER_IMAGE
+    - centos:centos6
+    - centos:centos7
+    - debian:wheezy
+    - debian:jessie
+    - ubuntu:trusty
+    - opensuse:latest
+    - base/arch:latest
 
 os:
   - osx
