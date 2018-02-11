@@ -19,7 +19,7 @@ script:
 
 env:
   global:
-    DOCKER_IMAGE
+    DOCKER_IMAGE:
       - centos:centos6
       - centos:centos7
       - debian:wheezy
