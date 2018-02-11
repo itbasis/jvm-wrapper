@@ -39,10 +39,18 @@ env:
     - JVM_VERSION=7u80    TEST_FULL_VERSION=1.7.0_80-b15
 
 
-os:
-  - osx
-  - linux
+#os:
+#  - osx
+#  - linux
 
+matrix:
+  include:
+    - os: osx
+    - os: osx
+      osx_image: xcode9.2
+    - os: osx
+      osx_image: xcode8.3
+    - os: linux
 #
 #osx_image:
 #  - xcode9.3beta
