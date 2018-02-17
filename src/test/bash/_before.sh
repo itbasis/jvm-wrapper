@@ -1,0 +1,45 @@
+#!/usr/bin/env bash
+
+TEST_TYPE=${TEST_TYPE:?}
+TEST_JVM_TYPE=${TEST_JVM_TYPE:?}
+
+# Hack for code verification
+USE_SYSTEM_JDK=${USE_SYSTEM_JDK}
+JVMW_DEBUG=${JVMW_DEBUG}
+REQUIRED_UPDATE=${REQUIRED_UPDATE}
+TEST_OUTPUT=${TEST_OUTPUT}
+#
+# shellcheck disable=SC2034
+export TEST_JVM_HOME="${HOME}/.jvm/${TEST_JVM_TYPE}${TEST_JVM_VERSION}/"
+
+function before_test() {
+	rm -Rf "${HOME}"/.jvm/jdk*
+	rm -Rf "${HOME}"/.jvm/jvm*
+	cp ../jdkw ./
+	cp "../samples.properties/jvmw.${TEST_JVM_VERSION}.properties" ./jvmw.properties
+}
+
+function after_test() {
+	unset USE_SYSTEM_JDK JVMW_DEBUG REQUIRED_UPDATE
+	for env_test in $(env | grep TEST_); do
+		unset "${env_test%%=*}"
+	done
+}
+
+function die() {
+	echo '----- TEST ENVIRONMENTS :: begin -----'
+	env | grep TEST_
+	echo '----- TEST ENVIRONMENTS :: end -----'
+	echo '----- TEST CONFIGURATION FILE :: begin -----'
+	cat jvmw.properties
+	echo "USE_SYSTEM_JDK=${USE_SYSTEM_JDK}"
+	echo "JVMW_DEBUG=${JVMW_DEBUG}"
+	echo "REQUIRED_UPDATE=${REQUIRED_UPDATE}"
+	echo '----- TEST CONFIGURATION FILE :: end -----'
+	echo '----- OUTPUT :: begin -----'
+	echo "${TEST_OUTPUT}"
+	echo '----- OUTPUT :: end -----'
+	echo "error line: ${BASH_LINENO[0]}"
+	after_test
+	exit 1
+}

@@ -14,11 +14,14 @@ before_script:
 
 script:
   - env
+  - ./src/test/bash/_test_suite.sh
 #  - if [[ -z "$DOCKER_IMAGE" ]]; then ./tests.sh 2>&1; fi
 #  - if [[ ! -z "$DOCKER_IMAGE" ]]; then ./travis_scripts/script_docker.$DOCKER_IMAGE.sh 2>&1; fi
 
 env:
   global:
+    TEST_TYPE=jvm
+    TEST_JVM_TYPE=jdk
     DOCKER_IMAGE:
       - centos:centos6
       - centos:centos7
@@ -28,34 +31,26 @@ env:
       - opensuse:latest
       - base/arch:latest
   matrix:
-    - JVM_VERSION=9       TEST_FULL_VERSION=9.0.4+11        TEST_REUSE_JAVA_VERSION=9.0.4
-    - JVM_VERSION=9.0.4   TEST_FULL_VERSION=9.0.4+11
-    - JVM_VERSION=9.0.1   TEST_FULL_VERSION=9.0.1+11
-    - JVM_VERSION=8       TEST_FULL_VERSION=1.8.0_161-b12   TEST_REUSE_JAVA_VERSION=8u161
-    - JVM_VERSION=8u161   TEST_FULL_VERSION=1.8.0_161-b12
-    - JVM_VERSION=8u162   TEST_FULL_VERSION=1.8.0_162-b12
-    - JVM_VERSION=8u144   TEST_FULL_VERSION=1.8.0_144-b01
-    - JVM_VERSION=7       TEST_FULL_VERSION=1.7.0_80-b15    TEST_REUSE_JAVA_VERSION=7u80
-    - JVM_VERSION=7u80    TEST_FULL_VERSION=1.7.0_80-b15
+    - TEST_JVM_VERSION=9       TEST_FULL_VERSION=9.0.4+11        TEST_REUSE_JAVA_VERSION=9.0.4
+    - TEST_JVM_VERSION=9.0.4   TEST_FULL_VERSION=9.0.4+11
+    - TEST_JVM_VERSION=9.0.1   TEST_FULL_VERSION=9.0.1+11
+    - TEST_JVM_VERSION=8       TEST_FULL_VERSION=1.8.0_161-b12   TEST_REUSE_JAVA_VERSION=8u161
+    - TEST_JVM_VERSION=8u161   TEST_FULL_VERSION=1.8.0_161-b12
+    - TEST_JVM_VERSION=8u162   TEST_FULL_VERSION=1.8.0_162-b12
+    - TEST_JVM_VERSION=8u144   TEST_FULL_VERSION=1.8.0_144-b01
+    - TEST_JVM_VERSION=7       TEST_FULL_VERSION=1.7.0_80-b15    TEST_REUSE_JAVA_VERSION=7u80
+    - TEST_JVM_VERSION=7u80    TEST_FULL_VERSION=1.7.0_80-b15
 
 
-#os:
-#  - osx
-#  - linux
+os:
+  - osx
+  - linux
 
-matrix:
-  include:
-    - os: osx
-    - os: osx
-      osx_image: xcode9.2
-    - os: osx
-      osx_image: xcode8.3
-    - os: linux
 #
 #osx_image:
 #  - xcode9.3beta
 #  - xcode9.2
-#  - xcodde8.3
+#  - xcode8.3
 #
 #addons:
 #  apt:

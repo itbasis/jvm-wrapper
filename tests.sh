@@ -16,6 +16,7 @@ function before_test() {
 	cp ../jdkw ./
 	cp "$1" ./jvmw.properties
 
+	./test/src/bash/_after.sh
 	after_test
 
 	while read -r line; do
@@ -34,17 +35,17 @@ function after_test() {
 	done
 }
 
-function test_execute_jvm_00() {
-	TEST_OUTPUT=$(./jdkw info 2>&1)
-	[[ "${TEST_OUTPUT}" == *"${HOME}/.jvm/${TEST_JAVA_HOME}/"* ]] || return 10
-	[[ "${TEST_OUTPUT}" != *"//"* ]] || return 20
-
-	TEST_OUTPUT=$(./jdkw 2>&1)
-	[[ "${TEST_OUTPUT}" == *"${HOME}/.jvm/${TEST_JAVA_HOME}/"* ]] || return 10
-	[[ "${TEST_OUTPUT}" != *"//"* ]] || return 20
-
-	return 0
-}
+#function test_execute_jvm_00() {
+#	TEST_OUTPUT=$(./jdkw info 2>&1)
+#	[[ "${TEST_OUTPUT}" == *"${HOME}/.jvm/${TEST_JAVA_HOME}/"* ]] || return 10
+#	[[ "${TEST_OUTPUT}" != *"//"* ]] || return 20
+#
+#	TEST_OUTPUT=$(./jdkw 2>&1)
+#	[[ "${TEST_OUTPUT}" == *"${HOME}/.jvm/${TEST_JAVA_HOME}/"* ]] || return 10
+#	[[ "${TEST_OUTPUT}" != *"//"* ]] || return 20
+#
+#	return 0
+#}
 
 function test_execute_jvm_01() {
 	export JVMW_DEBUG=Y
@@ -268,26 +269,26 @@ test_reuse_names="$(cat "$0" | awk 'match($0, /^function test_execute_reuse_([^(
 rm -Rf ./build/* && mkdir -p ./build/ && cd ./build/
 
 # test system jvm
-if [[ "${OS}" == "darwin" ]]; then
-	for test_suffix in ${test_system_names}; do
-		run_test "../samples.properties/jvmw.${SYSTEM_JVM}.properties" "test_execute_${test_suffix}"
-	done
-fi
-
-for p_file in $(find "../samples.properties" -name "jvmw.?.properties" -mindepth 1 -maxdepth 1 -type f | sort -r); do
-	for test_suffix in ${test_reuse_names}; do
-		run_test "${p_file}" "test_execute_${test_suffix}"
-	done
-done
-
-for p_file in $(find "../samples.properties" -mindepth 1 -maxdepth 1 -type f | sort -r); do
-	for test_suffix in ${test_jvm_names}; do
-		run_test "${p_file}" "test_execute_${test_suffix}"
-	done
-	for test_suffix in ${test_jdk_names}; do
-		run_test "${p_file}" "test_execute_${test_suffix}"
-	done
-done
+#if [[ "${OS}" == "darwin" ]]; then
+#	for test_suffix in ${test_system_names}; do
+#		run_test "../samples.properties/jvmw.${SYSTEM_JVM}.properties" "test_execute_${test_suffix}"
+#	done
+#fi
+#
+#for p_file in $(find "../samples.properties" -name "jvmw.?.properties" -mindepth 1 -maxdepth 1 -type f | sort -r); do
+#	for test_suffix in ${test_reuse_names}; do
+#		run_test "${p_file}" "test_execute_${test_suffix}"
+#	done
+#done
+#
+#for p_file in $(find "../samples.properties" -mindepth 1 -maxdepth 1 -type f | sort -r); do
+#	for test_suffix in ${test_jvm_names}; do
+#		run_test "${p_file}" "test_execute_${test_suffix}"
+#	done
+#	for test_suffix in ${test_jdk_names}; do
+#		run_test "${p_file}" "test_execute_${test_suffix}"
+#	done
+#done
 
 #for p_file in $(find "../samples.properties" -name "jvmw.?.properties" -mindepth 1 -maxdepth 1 -type f | sort -r); do
 #	for test_suffix in ${test_reuse_names}; do
