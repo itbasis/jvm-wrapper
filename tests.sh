@@ -138,40 +138,40 @@ function after_test() {
 #	[[ "${TEST_OUTPUT}" == "${TEST_FULL_VERSION}" ]] || return 30
 #}
 
-function test_execute_system_jdk_00() {
-	export USE_SYSTEM_JDK=Y
+#function test_execute_system_jdk_00() {
+#	export USE_SYSTEM_JDK=Y
+#
+#	TEST_OUTPUT=$(./jdkw info 2>&1)
+#	[[ "${TEST_OUTPUT}" != *"${HOME}/.jvm/${TEST_JAVA_HOME}/"* ]] || return 10
+#
+#	TEST_OUTPUT=$(./jdkw java -fullversion 2>&1)
+#	[[ "${TEST_OUTPUT}" == *"${TEST_FULL_VERSION}"* ]] || return 20
+#
+#}
 
-	TEST_OUTPUT=$(./jdkw info 2>&1)
-	[[ "${TEST_OUTPUT}" != *"${HOME}/.jvm/${TEST_JAVA_HOME}/"* ]] || return 10
+#function test_execute_system_jdk_01() {
+#	export USE_SYSTEM_JDK=Y
+#	export JVMW_DEBUG=Y
+#
+#	TEST_OUTPUT=$(./jdkw info 2>&1)
+#	[[ "${TEST_OUTPUT}" == *"USE_SYSTEM_JDK=Y"* ]] || return 10
+#
+#	TEST_OUTPUT=$(./jdkw 2>&1)
+#	[[ "${TEST_OUTPUT}" == *"USE_SYSTEM_JDK=Y"* ]] || return 10
+#
+#	TEST_OUTPUT=$(./jdkw java -fullversion 2>&1)
+#	[[ "${TEST_OUTPUT}" == *"${TEST_FULL_VERSION}"* ]] || return 20
+#}
 
-	TEST_OUTPUT=$(./jdkw java -fullversion 2>&1)
-	[[ "${TEST_OUTPUT}" == *"${TEST_FULL_VERSION}"* ]] || return 20
-
-}
-
-function test_execute_system_jdk_01() {
-	export USE_SYSTEM_JDK=Y
-	export JVMW_DEBUG=Y
-
-	TEST_OUTPUT=$(./jdkw info 2>&1)
-	[[ "${TEST_OUTPUT}" == *"USE_SYSTEM_JDK=Y"* ]] || return 10
-
-	TEST_OUTPUT=$(./jdkw 2>&1)
-	[[ "${TEST_OUTPUT}" == *"USE_SYSTEM_JDK=Y"* ]] || return 10
-
-	TEST_OUTPUT=$(./jdkw java -fullversion 2>&1)
-	[[ "${TEST_OUTPUT}" == *"${TEST_FULL_VERSION}"* ]] || return 20
-}
-
-function test_execute_system_jdk_02() {
-	export USE_SYSTEM_JDK=N
-
-	TEST_OUTPUT=$(./jdkw info 2>&1)
-	[[ "${TEST_OUTPUT}" == *"${HOME}/.jvm/${TEST_JAVA_HOME}/"* ]] || return 10
-
-	TEST_OUTPUT=$(./jdkw java -fullversion 2>&1)
-	[[ "${TEST_OUTPUT}" == *"${TEST_FULL_VERSION}"* ]] || return 20
-}
+#function test_execute_system_jdk_02() {
+#	export USE_SYSTEM_JDK=N
+#
+#	TEST_OUTPUT=$(./jdkw info 2>&1)
+#	[[ "${TEST_OUTPUT}" == *"${HOME}/.jvm/${TEST_JAVA_HOME}/"* ]] || return 10
+#
+#	TEST_OUTPUT=$(./jdkw java -fullversion 2>&1)
+#	[[ "${TEST_OUTPUT}" == *"${TEST_FULL_VERSION}"* ]] || return 20
+#}
 
 function test_execute_system_jdk_03() {
 	export JVMW_DEBUG=Y
