@@ -31,6 +31,9 @@ function die() {
 	echo '----- TEST ENVIRONMENTS :: begin -----'
 	env | grep TEST_
 	echo '----- TEST ENVIRONMENTS :: end -----'
+	echo '----- SYSTEM JVM :: bein -----'
+	java -fullversion
+	echo '----- SYSTEM JVM :: end -----'
 	echo '----- TEST CONFIGURATION FILE :: begin -----'
 	cat jvmw.properties
 	echo "USE_SYSTEM_JDK=${USE_SYSTEM_JDK}"

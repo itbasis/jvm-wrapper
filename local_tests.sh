@@ -10,7 +10,7 @@ function run_test() {
 	export TEST_TYPE=$1
 	export TEST_JVM_VERSION=$2
 	export TEST_FULL_VERSION=$3
-	export TEST_REUSE_JAVA_VERSION=$4
+	export TEST_REUSE_JVM_VERSION=$4
 	export TEST_JVM_TYPE=$5
 	export TEST_JVMW_FILE_PROPERTIES=./samples.properties/jvmw.${TEST_JVM_VERSION}.properties
 
