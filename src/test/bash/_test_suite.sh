@@ -16,7 +16,7 @@ export CUR_DIR
 
 for test_script in $(find "${CUR_DIR}" -name "${TEST_TYPE}.*.sh" -type f | sort); do
 	echo ":: execute '${test_script}'..."
-#	${test_script} || exit 1
+	${test_script} || exit 1
 
 	for DOCKER_IMAGE in ${DOCKER_IMAGES}; do
 		docker_image=${DOCKER_IMAGE%%:*}
