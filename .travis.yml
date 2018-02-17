@@ -10,8 +10,7 @@ install:
 #  - chmod +x ./src/test/bash/*.sh
 
 before_script:
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then find . \( -name 'jdkw' -o -name '*.sh' \) -exec shellcheck {} \; ; fi
-  - for DOCKER_IMAGE in ${DOCKER_IMAGES}; do docker pull "${DOCKER_IMAGE}"; done
+  - shellcheck -e SC1090 -x ./jdkw ./src/test/bash/*.sh
 
 #  - if [[ ! -z "$DOCKER_IMAGE" ]]; then sudo docker pull $DOCKER_IMAGE:$DOCKER_TAG; fi
 
