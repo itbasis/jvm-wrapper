@@ -10,7 +10,7 @@ TEST_FULL_VERSION=${TEST_FULL_VERSION:?}
 #
 before_test
 export USE_SYSTEM_JDK=Y
-export JVMW_DEBUG=Y
+export JVMW_DEBUG=N
 
 #
 TEST_OUTPUT=$(./jdkw info 2>&1)
