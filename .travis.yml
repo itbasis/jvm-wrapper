@@ -24,14 +24,7 @@ script:
 
 env:
   global:
-    DOCKER_IMAGES:
-      - centos:centos6
-      - centos:centos7
-      - debian:wheezy
-      - debian:jessie
-      - ubuntu:trusty
-      - opensuse:latest
-      - base/arch:latest
+    - DOCKER_IMAGES=centos:centos6 centos:centos7 debian:wheezy debian:jessie ubuntu:trusty opensuse:latest base/arch:latest
   matrix:
 # JVM
     - TEST_TYPE=jvm TEST_JVM_TYPE=jdk TEST_JVM_VERSION=9       TEST_FULL_VERSION=9.0.4+11        TEST_REUSE_JAVA_VERSION=9.0.4  TEST_USE_SYSTEM=Y
