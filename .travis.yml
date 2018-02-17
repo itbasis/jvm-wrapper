@@ -5,7 +5,7 @@ services:
   - docker
 
 before_install:
-  - for docker_image in ${DOCKER_IMAGE}; do docker pull "${docker_image}"; done
+  - for DOCKER_IMAGE in ${DOCKER_IMAGES}; do docker pull "${DOCKER_IMAGE}"; done
 
 install:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update && brew reinstall shellcheck && brew cask reinstall java; fi
