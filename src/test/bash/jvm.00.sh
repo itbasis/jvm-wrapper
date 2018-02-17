@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 CUR_DIR=$(dirname "$0")
-source "${CUR_DIR}/_before.sh"
+source "${CUR_DIR}/_test_core.sh"
 
 # Hack for code verification
 TEST_JVM_HOME=${TEST_JVM_HOME:?}
