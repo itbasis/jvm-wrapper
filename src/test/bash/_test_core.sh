@@ -15,7 +15,7 @@ export TEST_JVM_HOME="${HOME}/.jvm/${TEST_JVM_TYPE}${TEST_JVM_VERSION}/"
 
 function before_test() {
 	rm -Rf "${HOME}"/.jvm/jdk*
-	rm -Rf "${HOME}"/.jvm/jvm*
+	rm -Rf "${HOME}"/.jvm/jre*
 	cp ../jdkw ./
 	cp "../samples.properties/jvmw.${TEST_JVM_VERSION}.properties" ./jvmw.properties
 }

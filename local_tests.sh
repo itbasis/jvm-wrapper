@@ -4,7 +4,15 @@ chmod +x ./src/test/bash/*.sh
 shellcheck -e SC1090 -x src/test/bash/*.sh local_tests.sh
 
 # shellcheck disable=SC2034
-DOCKER_IMAGE='centos:centos6 centos:centos7 debian:wheezy debian:jessie ubuntu:trusty opensuse:latest base/arch:latest'
+export DOCKER_IMAGES='centos:centos6 centos:centos7 debian:wheezy debian:jessie ubuntu:trusty opensuse:latest base/arch:latest'
+
+#for DOCKER_IMAGE in ${DOCKER_IMAGES}; do
+#	docker pull "${DOCKER_IMAGE}"
+#done
+
+while read -r line; do
+	eval "export ${line}"
+done < "${HOME}/.jvm/jvmw.properties"
 
 function run_test() {
 	export TEST_TYPE=$1

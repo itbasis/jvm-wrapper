@@ -1,14 +1,18 @@
-sudo: true
+sudo: required
 language: generic
 
 services:
   - docker
+
+before_install:
+  - for docker_image in ${DOCKER_IMAGE}; do docker pull "${docker_image}"; done
 
 install:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update && brew reinstall shellcheck && brew cask reinstall java; fi
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get update && sudo apt-get install -y shellcheck oracle-java9-installer oracle-java9-set-default; fi
   - chmod +x ./travis_scripts/*.sh
   - chmod +x ./src/test/bash/*.sh
+  -
 
 before_script:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then find . \( -name 'jdkw' -o -name '*.sh' \) -exec shellcheck {} \; ; fi
@@ -22,7 +26,7 @@ script:
 
 env:
   global:
-    DOCKER_IMAGE:
+    DOCKER_IMAGES:
       - centos:centos6
       - centos:centos7
       - debian:wheezy
