@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+TEST_JVM_VERSION=${TEST_JVM_VERSION:?}
 TEST_TYPE=${TEST_TYPE:?}
 TEST_JVM_TYPE=${TEST_JVM_TYPE:?}
 
