@@ -9,7 +9,7 @@ TEST_FULL_VERSION=${TEST_FULL_VERSION:?}
 #
 before_test
 export USE_SYSTEM_JDK=N
-export JVMW_DEBUG=Y
+export JVMW_DEBUG=N
 #
 cp -R ../src/test/resources/gradle/* ./
 
