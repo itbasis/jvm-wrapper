@@ -6,7 +6,7 @@ services:
 
 install:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update && brew reinstall shellcheck && brew cask reinstall java; fi
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get update && sudo apt-get install -y shellcheck oracle-java9-installer; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get update && sudo apt-get install -y shellcheck oracle-java9-installer oracle-java9-set-default; fi
   - chmod +x ./travis_scripts/*.sh
   - chmod +x ./src/test/bash/*.sh
 

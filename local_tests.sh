@@ -12,13 +12,14 @@ function run_test() {
 	export TEST_FULL_VERSION=$3
 	export TEST_REUSE_JVM_VERSION=$4
 	export TEST_JVM_TYPE=$5
+	export TEST_USE_SYSTEM=$6
 	export TEST_JVMW_FILE_PROPERTIES=./samples.properties/jvmw.${TEST_JVM_VERSION}.properties
 
 	./src/test/bash/_test_suite.sh || exit $?
 }
 
-#run_test 'jvm' '9' '9.0.4+11' '9.0.4' 'jdk'
-#run_test 'jvm' '9.0.4' '9.0.4+11' '' 'jdk'
+#run_test 'jvm' '9' '9.0.4+11' '9.0.4' 'jdk' Y
+#run_test 'jvm' '9.0.4' '9.0.4+11' '' 'jdk' Y
 #run_test 'jvm' '9.0.1' '9.0.1+11' '' 'jdk'
 #run_test 'jvm' '8' '1.8.0_161-b12' '8u161' 'jdk'
 #run_test 'jvm' '8u161' '1.8.0_161-b12' '' 'jdk'
