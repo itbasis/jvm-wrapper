@@ -20,8 +20,8 @@ script:
 
 env:
   global:
-    TEST_TYPE=jvm
-    TEST_JVM_TYPE=jdk
+    - TEST_TYPE=jvm
+    - TEST_JVM_TYPE=jdk
     DOCKER_IMAGE:
       - centos:centos6
       - centos:centos7
