@@ -21,13 +21,14 @@ export JVMW_DEBUG=N
 TEST_OUTPUT=$(./jdkw info 2>&1)
 [[ "${TEST_OUTPUT}" == *"${TEST_JVM_HOME}"* ]] || die
 
+./jdkw info 2>&1
 ./jdkw java -fullversion 2>&1
 
 export JVM_VERSION=${TEST_REUSE_JVM_VERSION}
 
 TEST_OUTPUT=$(./jdkw info 2>&1)
-[[ "${TEST_OUTPUT}" != *"${TEST_JVM_HOME}"* ]] || die
-export TEST_JVM_HOME="${HOME}/.jvm/${TEST_JVM_TYPE}${TEST_JVM_VERSION}/"
 [[ "${TEST_OUTPUT}" == *"${TEST_JVM_HOME}"* ]] || die
+export TEST_JVM_HOME="${HOME}/.jvm/${TEST_JVM_TYPE}${TEST_REUSE_JVM_VERSION}/"
+[[ "${TEST_OUTPUT}" != *"${TEST_JVM_HOME}"* ]] || die
 #
 after_test

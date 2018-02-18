@@ -36,9 +36,11 @@ function die() {
 	echo '----- SYSTEM JVM :: end -----'
 	echo '----- TEST CONFIGURATION FILE :: begin -----'
 	cat jvmw.properties
-	echo "USE_SYSTEM_JDK=${USE_SYSTEM_JDK}"
-	echo "JVMW_DEBUG=${JVMW_DEBUG}"
-	echo "REQUIRED_UPDATE=${REQUIRED_UPDATE}"
+	echo
+	echo "env.USE_SYSTEM_JDK=${USE_SYSTEM_JDK}"
+	echo "env.JVMW_DEBUG=${JVMW_DEBUG}"
+	echo "env.REQUIRED_UPDATE=${REQUIRED_UPDATE}"
+	echo "env.JVM_VERSION=${JVM_VERSION}"
 	echo '----- TEST CONFIGURATION FILE :: end -----'
 	echo '----- OUTPUT :: begin -----'
 	echo "${TEST_OUTPUT}"
