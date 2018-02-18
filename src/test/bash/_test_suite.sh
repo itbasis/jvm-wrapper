@@ -14,7 +14,7 @@ cd ./build/ || exit 1
 CUR_DIR=./../$(dirname "$0")
 export CUR_DIR
 
-for test_script in $(find "${CUR_DIR}" -name "${TEST_TYPE}.*.sh" -type f | sort); do
+for test_script in $(find "${CUR_DIR}" -name "${TEST_TYPE}.04.*.sh" -type f | sort); do
 	echo ":: execute '${test_script}'..."
 	${test_script} || exit 1
 done
