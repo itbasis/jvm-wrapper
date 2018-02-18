@@ -215,19 +215,19 @@ function test_execute_system_jdk_05() {
 	[[ "${TEST_OUTPUT}" == *"9.0.1"* ]] || return 20
 }
 
-function test_execute_reuse_jdk_00() {
-	export JVMW_DEBUG=Y
-	export USE_SYSTEM_JDK=N
-
-	TEST_OUTPUT=$(./jdkw info 2>&1)
-	[[ "${TEST_OUTPUT}" == *"${HOME}/.jvm/${TEST_JAVA_HOME}/"* ]] || return 10
-
-	./jdkw java -fullversion 2>&1
-	export JVM_VERSION=${TEST_REUSE_JAVA_VERSION}
-
-	TEST_OUTPUT=$(./jdkw info 2>&1)
-	[[ "${TEST_OUTPUT}" == *"${HOME}/.jvm/${TEST_JAVA_HOME}/"* ]] || return 20
-}
+#function test_execute_reuse_jdk_00() {
+#	export JVMW_DEBUG=Y
+#	export USE_SYSTEM_JDK=N
+#
+#	TEST_OUTPUT=$(./jdkw info 2>&1)
+#	[[ "${TEST_OUTPUT}" == *"${HOME}/.jvm/${TEST_JAVA_HOME}/"* ]] || return 10
+#
+#	./jdkw java -fullversion 2>&1
+#	export JVM_VERSION=${TEST_REUSE_JAVA_VERSION}
+#
+#	TEST_OUTPUT=$(./jdkw info 2>&1)
+#	[[ "${TEST_OUTPUT}" == *"${HOME}/.jvm/${TEST_JAVA_HOME}/"* ]] || return 20
+#}
 
 function run_test() {
 	before_test "${1}"
