@@ -8,7 +8,7 @@ install:
   - docker --version
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update && brew reinstall shellcheck && brew cask reinstall java; fi
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get update && sudo apt-get install -y shellcheck oracle-java9-installer oracle-java9-set-default; fi
-  - for DOCKER_IMAGE in ${DOCKER_IMAGES}; do docker pull "${DOCKER_IMAGE}"; done
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then for DOCKER_IMAGE in ${DOCKER_IMAGES}; do docker pull "${DOCKER_IMAGE}"; done; fi
 
 before_script:
   - find . \( -name 'jdkw' -o -name '*.sh' \) -exec shellcheck -e SC1090 -x {} \;
@@ -16,6 +16,7 @@ before_script:
 script:
   - env
   - ./src/test/bash/_test_suite.sh
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then ./src/test/bash/_test_docker_suite.sh; fi
 
 env:
   global:
