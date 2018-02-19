@@ -16,6 +16,7 @@ function before_test() {
 	cp ../jdkw ./
 	cp "$1" ./jvmw.properties
 
+	./test/src/bash/_after.sh
 	after_test
 
 	while read -r line; do
@@ -34,143 +35,143 @@ function after_test() {
 	done
 }
 
-function test_execute_jvm_00() {
-	TEST_OUTPUT=$(./jdkw info 2>&1)
-	[[ "${TEST_OUTPUT}" == *"${HOME}/.jvm/${TEST_JAVA_HOME}/"* ]] || return 10
-	[[ "${TEST_OUTPUT}" != *"//"* ]] || return 20
+#function test_execute_jvm_00() {
+#	TEST_OUTPUT=$(./jdkw info 2>&1)
+#	[[ "${TEST_OUTPUT}" == *"${HOME}/.jvm/${TEST_JAVA_HOME}/"* ]] || return 10
+#	[[ "${TEST_OUTPUT}" != *"//"* ]] || return 20
+#
+#	TEST_OUTPUT=$(./jdkw 2>&1)
+#	[[ "${TEST_OUTPUT}" == *"${HOME}/.jvm/${TEST_JAVA_HOME}/"* ]] || return 10
+#	[[ "${TEST_OUTPUT}" != *"//"* ]] || return 20
+#
+#	return 0
+#}
 
-	TEST_OUTPUT=$(./jdkw 2>&1)
-	[[ "${TEST_OUTPUT}" == *"${HOME}/.jvm/${TEST_JAVA_HOME}/"* ]] || return 10
-	[[ "${TEST_OUTPUT}" != *"//"* ]] || return 20
+#function test_execute_jvm_01() {
+#	export JVMW_DEBUG=Y
+#
+#	[[ ! -f "${HOME}/.jvm/${TEST_JDK_LAST_UPDATE_FILE}" ]] || return 10
+#	TEST_OUTPUT=$(./jdkw java -fullversion 2>&1)
+#	[[ -f "${HOME}/.jvm/${TEST_JDK_LAST_UPDATE_FILE}" ]] || return 20
+#	[[ "$(echo "${TEST_OUTPUT}" | grep 'LAST_UPDATE_FILE=')" == *"${HOME}/.jvm/${TEST_JDK_LAST_UPDATE_FILE}"* ]] || return 30
+#	# shellcheck disable=SC2143
+#	[[ ! "$(echo "${TEST_OUTPUT}" | grep "prev_date=")" ]] || return 40
+#	# shellcheck disable=SC2143
+#	[[ ! "$(echo "${TEST_OUTPUT}" | grep "ARCHIVE_JVM_URL=$")" ]] || return 50
+#	# shellcheck disable=SC2143
+#	[[ "$(echo "${TEST_OUTPUT}" | grep "ARCHIVE_JVM_URL=")" ]] || return 60
+#	# shellcheck disable=SC2143
+#	[[ "${TEST_OUTPUT}" == *"${TEST_FULL_VERSION}"* ]] || return 70
+#
+#	[[ -f "${HOME}/.jvm/${TEST_JDK_LAST_UPDATE_FILE}" ]] || return 80
+#	TEST_OUTPUT=$(./jdkw java -fullversion 2>&1)
+#	[[ -f "${HOME}/.jvm/${TEST_JDK_LAST_UPDATE_FILE}" ]] || return 90
+#	[[ "$(echo "${TEST_OUTPUT}" | grep 'LAST_UPDATE_FILE=')" == *"${HOME}/.jvm/${TEST_JDK_LAST_UPDATE_FILE}"* ]] || return 100
+#	# shellcheck disable=SC2143
+#	[[ "$(echo "${TEST_OUTPUT}" | grep "prev_date=")" ]] || return 110
+#	# shellcheck disable=SC2143
+#	[[ "$(echo "${TEST_OUTPUT}" | grep "ARCHIVE_JVM_URL=$")" ]] || return 120
+#	[[ "${TEST_OUTPUT}" == *"${TEST_FULL_VERSION}"* ]] || return 130
+#
+#	return 0
+#}
 
-	return 0
-}
+#function test_execute_jvm_02() {
+#	export JVMW_DEBUG=Y
+#	export REQUIRED_UPDATE=N
+#
+#	# shellcheck disable=SC2005
+#	fake_date=$([[ "${OS}" == "darwin" ]] && echo "$(date -v -2d +"%F %R")" || echo "$(date --date="-2 days" '+%F %R')")
+#	printf "%s" "${fake_date}" >"${HOME}/.jvm/${TEST_JDK_LAST_UPDATE_FILE}"
+#
+#	TEST_OUTPUT=$(./jdkw java -fullversion 2>&1)
+#	[[ -f "${HOME}/.jvm/${TEST_JDK_LAST_UPDATE_FILE}" ]] || return 10
+#	# shellcheck disable=SC2143
+#	[[ "${TEST_OUTPUT}" == *"No such file or directory"* ]] || return 20
+#	# shellcheck disable=SC2143
+#	[[ "$(echo "${TEST_OUTPUT}" | grep "ARCHIVE_JVM_URL=$")" ]] || return 30
+#	# shellcheck disable=SC2143
+#	[[ ! "$(echo "${TEST_OUTPUT}" | grep "prev_date=")" ]] || return 40
+#}
 
-function test_execute_jvm_01() {
-	export JVMW_DEBUG=Y
+#function test_execute_jvm_03() {
+#	TEST_OUTPUT=$(./jdkw -fullversion 2>&1)
+#	[[ "${TEST_OUTPUT}" == *"No program found to execute: -fullversion"* ]] || return 10
+#
+#	return 0
+#}
 
-	[[ ! -f "${HOME}/.jvm/${TEST_JDK_LAST_UPDATE_FILE}" ]] || return 10
-	TEST_OUTPUT=$(./jdkw java -fullversion 2>&1)
-	[[ -f "${HOME}/.jvm/${TEST_JDK_LAST_UPDATE_FILE}" ]] || return 20
-	[[ "$(echo "${TEST_OUTPUT}" | grep 'LAST_UPDATE_FILE=')" == *"${HOME}/.jvm/${TEST_JDK_LAST_UPDATE_FILE}"* ]] || return 30
-	# shellcheck disable=SC2143
-	[[ ! "$(echo "${TEST_OUTPUT}" | grep "prev_date=")" ]] || return 40
-	# shellcheck disable=SC2143
-	[[ ! "$(echo "${TEST_OUTPUT}" | grep "ARCHIVE_JVM_URL=$")" ]] || return 50
-	# shellcheck disable=SC2143
-	[[ "$(echo "${TEST_OUTPUT}" | grep "ARCHIVE_JVM_URL=")" ]] || return 60
-	# shellcheck disable=SC2143
-	[[ "${TEST_OUTPUT}" == *"${TEST_FULL_VERSION}"* ]] || return 70
+#function test_execute_jdk_00() {
+#	mkdir -p ./test
+#	cp ../tests/Test.java ./test/
+#
+#	[[ -f "test/Test.java" ]] || return 10;
+#
+#	TEST_OUTPUT=$(./jdkw javac -d ./test test/Test.java 2>&1)
+#	[[ -f "test/Test.class" ]] || return 20;
+#
+#	TEST_OUTPUT=$(./jdkw java -cp ./test/ Test 2>&1)
+#	[[ "${TEST_OUTPUT}" == "${TEST_FULL_VERSION}" ]] || return 30
+#}
 
-	[[ -f "${HOME}/.jvm/${TEST_JDK_LAST_UPDATE_FILE}" ]] || return 80
-	TEST_OUTPUT=$(./jdkw java -fullversion 2>&1)
-	[[ -f "${HOME}/.jvm/${TEST_JDK_LAST_UPDATE_FILE}" ]] || return 90
-	[[ "$(echo "${TEST_OUTPUT}" | grep 'LAST_UPDATE_FILE=')" == *"${HOME}/.jvm/${TEST_JDK_LAST_UPDATE_FILE}"* ]] || return 100
-	# shellcheck disable=SC2143
-	[[ "$(echo "${TEST_OUTPUT}" | grep "prev_date=")" ]] || return 110
-	# shellcheck disable=SC2143
-	[[ "$(echo "${TEST_OUTPUT}" | grep "ARCHIVE_JVM_URL=$")" ]] || return 120
-	[[ "${TEST_OUTPUT}" == *"${TEST_FULL_VERSION}"* ]] || return 130
+#function test_execute_jdk_01() {
+#	cp -R ../tests/gradle/* ./
+#
+#	export JVMW_DEBUG=Y
+#
+#	TEST_OUTPUT=$(./jdkw gradlew clean build 2>&1)
+#	[[ "${TEST_OUTPUT}" == *"${HOME}/.jvm/${TEST_JAVA_HOME}/"* ]] || return 10
+#	[[ -f "build/libs/test.jar" ]] || return 20;
+#
+#	TEST_OUTPUT=$(./jdkw java -jar build/libs/test.jar 2>&1)
+#	[[ "${TEST_OUTPUT}" == *"${TEST_FULL_VERSION}"* ]] || return 30
+#}
 
-	return 0
-}
+#function test_execute_jdk_02() {
+#	cp -R ../tests/gradle/* ./
+#
+#	TEST_OUTPUT=$(./jdkw ./gradlew clean build 2>&1)
+#	[[ "${TEST_OUTPUT}" == *"${HOME}/.jvm/${TEST_JAVA_HOME}/"* ]] || return 10
+#	[[ -f "build/libs/test.jar" ]] || return 20;
+#
+#	TEST_OUTPUT=$(./jdkw java -jar build/libs/test.jar 2>&1)
+#	[[ "${TEST_OUTPUT}" == "${TEST_FULL_VERSION}" ]] || return 30
+#}
 
-function test_execute_jvm_02() {
-	export JVMW_DEBUG=Y
-	export REQUIRED_UPDATE=N
+#function test_execute_system_jdk_00() {
+#	export USE_SYSTEM_JDK=Y
+#
+#	TEST_OUTPUT=$(./jdkw info 2>&1)
+#	[[ "${TEST_OUTPUT}" != *"${HOME}/.jvm/${TEST_JAVA_HOME}/"* ]] || return 10
+#
+#	TEST_OUTPUT=$(./jdkw java -fullversion 2>&1)
+#	[[ "${TEST_OUTPUT}" == *"${TEST_FULL_VERSION}"* ]] || return 20
+#
+#}
 
-	# shellcheck disable=SC2005
-	fake_date=$([[ "${OS}" == "darwin" ]] && echo "$(date -v -2d +"%F %R")" || echo "$(date --date="-2 days" '+%F %R')")
-	printf "%s" "${fake_date}" >"${HOME}/.jvm/${TEST_JDK_LAST_UPDATE_FILE}"
+#function test_execute_system_jdk_01() {
+#	export USE_SYSTEM_JDK=Y
+#	export JVMW_DEBUG=Y
+#
+#	TEST_OUTPUT=$(./jdkw info 2>&1)
+#	[[ "${TEST_OUTPUT}" == *"USE_SYSTEM_JDK=Y"* ]] || return 10
+#
+#	TEST_OUTPUT=$(./jdkw 2>&1)
+#	[[ "${TEST_OUTPUT}" == *"USE_SYSTEM_JDK=Y"* ]] || return 10
+#
+#	TEST_OUTPUT=$(./jdkw java -fullversion 2>&1)
+#	[[ "${TEST_OUTPUT}" == *"${TEST_FULL_VERSION}"* ]] || return 20
+#}
 
-	TEST_OUTPUT=$(./jdkw java -fullversion 2>&1)
-	[[ -f "${HOME}/.jvm/${TEST_JDK_LAST_UPDATE_FILE}" ]] || return 10
-	# shellcheck disable=SC2143
-	[[ "${TEST_OUTPUT}" == *"No such file or directory"* ]] || return 20
-	# shellcheck disable=SC2143
-	[[ "$(echo "${TEST_OUTPUT}" | grep "ARCHIVE_JVM_URL=$")" ]] || return 30
-	# shellcheck disable=SC2143
-	[[ ! "$(echo "${TEST_OUTPUT}" | grep "prev_date=")" ]] || return 40
-}
-
-function test_execute_jvm_03() {
-	TEST_OUTPUT=$(./jdkw -fullversion 2>&1)
-	[[ "${TEST_OUTPUT}" == *"No program found to execute: -fullversion"* ]] || return 10
-
-	return 0
-}
-
-function test_execute_jdk_00() {
-	mkdir -p ./test
-	cp ../tests/Test.java ./test/
-
-	[[ -f "test/Test.java" ]] || return 10;
-
-	TEST_OUTPUT=$(./jdkw javac -d ./test test/Test.java 2>&1)
-	[[ -f "test/Test.class" ]] || return 20;
-
-	TEST_OUTPUT=$(./jdkw java -cp ./test/ Test 2>&1)
-	[[ "${TEST_OUTPUT}" == "${TEST_FULL_VERSION}" ]] || return 30
-}
-
-function test_execute_jdk_01() {
-	cp -R ../tests/gradle/* ./
-
-	export JVMW_DEBUG=Y
-
-	TEST_OUTPUT=$(./jdkw gradlew clean build 2>&1)
-	[[ "${TEST_OUTPUT}" == *"${HOME}/.jvm/${TEST_JAVA_HOME}/"* ]] || return 10
-	[[ -f "build/libs/test.jar" ]] || return 20;
-
-	TEST_OUTPUT=$(./jdkw java -jar build/libs/test.jar 2>&1)
-	[[ "${TEST_OUTPUT}" == *"${TEST_FULL_VERSION}"* ]] || return 30
-}
-
-function test_execute_jdk_02() {
-	cp -R ../tests/gradle/* ./
-
-	TEST_OUTPUT=$(./jdkw ./gradlew clean build 2>&1)
-	[[ "${TEST_OUTPUT}" == *"${HOME}/.jvm/${TEST_JAVA_HOME}/"* ]] || return 10
-	[[ -f "build/libs/test.jar" ]] || return 20;
-
-	TEST_OUTPUT=$(./jdkw java -jar build/libs/test.jar 2>&1)
-	[[ "${TEST_OUTPUT}" == "${TEST_FULL_VERSION}" ]] || return 30
-}
-
-function test_execute_system_jdk_00() {
-	export USE_SYSTEM_JDK=Y
-
-	TEST_OUTPUT=$(./jdkw info 2>&1)
-	[[ "${TEST_OUTPUT}" != *"${HOME}/.jvm/${TEST_JAVA_HOME}/"* ]] || return 10
-
-	TEST_OUTPUT=$(./jdkw java -fullversion 2>&1)
-	[[ "${TEST_OUTPUT}" == *"${TEST_FULL_VERSION}"* ]] || return 20
-
-}
-
-function test_execute_system_jdk_01() {
-	export USE_SYSTEM_JDK=Y
-	export JVMW_DEBUG=Y
-
-	TEST_OUTPUT=$(./jdkw info 2>&1)
-	[[ "${TEST_OUTPUT}" == *"USE_SYSTEM_JDK=Y"* ]] || return 10
-
-	TEST_OUTPUT=$(./jdkw 2>&1)
-	[[ "${TEST_OUTPUT}" == *"USE_SYSTEM_JDK=Y"* ]] || return 10
-
-	TEST_OUTPUT=$(./jdkw java -fullversion 2>&1)
-	[[ "${TEST_OUTPUT}" == *"${TEST_FULL_VERSION}"* ]] || return 20
-}
-
-function test_execute_system_jdk_02() {
-	export USE_SYSTEM_JDK=N
-
-	TEST_OUTPUT=$(./jdkw info 2>&1)
-	[[ "${TEST_OUTPUT}" == *"${HOME}/.jvm/${TEST_JAVA_HOME}/"* ]] || return 10
-
-	TEST_OUTPUT=$(./jdkw java -fullversion 2>&1)
-	[[ "${TEST_OUTPUT}" == *"${TEST_FULL_VERSION}"* ]] || return 20
-}
+#function test_execute_system_jdk_02() {
+#	export USE_SYSTEM_JDK=N
+#
+#	TEST_OUTPUT=$(./jdkw info 2>&1)
+#	[[ "${TEST_OUTPUT}" == *"${HOME}/.jvm/${TEST_JAVA_HOME}/"* ]] || return 10
+#
+#	TEST_OUTPUT=$(./jdkw java -fullversion 2>&1)
+#	[[ "${TEST_OUTPUT}" == *"${TEST_FULL_VERSION}"* ]] || return 20
+#}
 
 function test_execute_system_jdk_03() {
 	export JVMW_DEBUG=Y
@@ -214,19 +215,19 @@ function test_execute_system_jdk_05() {
 	[[ "${TEST_OUTPUT}" == *"9.0.1"* ]] || return 20
 }
 
-function test_execute_reuse_jdk_00() {
-	export JVMW_DEBUG=Y
-	export USE_SYSTEM_JDK=N
-
-	TEST_OUTPUT=$(./jdkw info 2>&1)
-	[[ "${TEST_OUTPUT}" == *"${HOME}/.jvm/${TEST_JAVA_HOME}/"* ]] || return 10
-
-	./jdkw java -fullversion 2>&1
-	export JVM_VERSION=${TEST_REUSE_JAVA_VERSION}
-
-	TEST_OUTPUT=$(./jdkw info 2>&1)
-	[[ "${TEST_OUTPUT}" == *"${HOME}/.jvm/${TEST_JAVA_HOME}/"* ]] || return 20
-}
+#function test_execute_reuse_jdk_00() {
+#	export JVMW_DEBUG=Y
+#	export USE_SYSTEM_JDK=N
+#
+#	TEST_OUTPUT=$(./jdkw info 2>&1)
+#	[[ "${TEST_OUTPUT}" == *"${HOME}/.jvm/${TEST_JAVA_HOME}/"* ]] || return 10
+#
+#	./jdkw java -fullversion 2>&1
+#	export JVM_VERSION=${TEST_REUSE_JAVA_VERSION}
+#
+#	TEST_OUTPUT=$(./jdkw info 2>&1)
+#	[[ "${TEST_OUTPUT}" == *"${HOME}/.jvm/${TEST_JAVA_HOME}/"* ]] || return 20
+#}
 
 function run_test() {
 	before_test "${1}"
@@ -268,26 +269,26 @@ test_reuse_names="$(cat "$0" | awk 'match($0, /^function test_execute_reuse_([^(
 rm -Rf ./build/* && mkdir -p ./build/ && cd ./build/
 
 # test system jvm
-if [[ "${OS}" == "darwin" ]]; then
-	for test_suffix in ${test_system_names}; do
-		run_test "../samples.properties/jvmw.${SYSTEM_JVM}.properties" "test_execute_${test_suffix}"
-	done
-fi
-
-for p_file in $(find "../samples.properties" -name "jvmw.?.properties" -mindepth 1 -maxdepth 1 -type f | sort -r); do
-	for test_suffix in ${test_reuse_names}; do
-		run_test "${p_file}" "test_execute_${test_suffix}"
-	done
-done
-
-for p_file in $(find "../samples.properties" -mindepth 1 -maxdepth 1 -type f | sort -r); do
-	for test_suffix in ${test_jvm_names}; do
-		run_test "${p_file}" "test_execute_${test_suffix}"
-	done
-	for test_suffix in ${test_jdk_names}; do
-		run_test "${p_file}" "test_execute_${test_suffix}"
-	done
-done
+#if [[ "${OS}" == "darwin" ]]; then
+#	for test_suffix in ${test_system_names}; do
+#		run_test "../samples.properties/jvmw.${SYSTEM_JVM}.properties" "test_execute_${test_suffix}"
+#	done
+#fi
+#
+#for p_file in $(find "../samples.properties" -name "jvmw.?.properties" -mindepth 1 -maxdepth 1 -type f | sort -r); do
+#	for test_suffix in ${test_reuse_names}; do
+#		run_test "${p_file}" "test_execute_${test_suffix}"
+#	done
+#done
+#
+#for p_file in $(find "../samples.properties" -mindepth 1 -maxdepth 1 -type f | sort -r); do
+#	for test_suffix in ${test_jvm_names}; do
+#		run_test "${p_file}" "test_execute_${test_suffix}"
+#	done
+#	for test_suffix in ${test_jdk_names}; do
+#		run_test "${p_file}" "test_execute_${test_suffix}"
+#	done
+#done
 
 #for p_file in $(find "../samples.properties" -name "jvmw.?.properties" -mindepth 1 -maxdepth 1 -type f | sort -r); do
 #	for test_suffix in ${test_reuse_names}; do
