@@ -5,7 +5,7 @@ services:
   - docker
 
 install:
-  - docker --version
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then docker --version; fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update && brew reinstall shellcheck && brew cask reinstall java; fi
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get update && sudo apt-get install -y shellcheck oracle-java9-installer oracle-java9-set-default; fi
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then for DOCKER_IMAGE in ${DOCKER_IMAGES}; do docker pull "${DOCKER_IMAGE}"; done; fi
