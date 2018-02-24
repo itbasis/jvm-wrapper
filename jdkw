@@ -408,10 +408,10 @@ function detect_system_jdk() {
 
 	jvm_dir=$(dirname "${cmd_path}")
 	if [[ -f "${jvm_dir}/java_home" ]]; then
-		jvm_dir=$("${jvm_dir}/java_home")
+		jvm_dir=$("${jvm_dir}/java_home" 2>&1)
 	fi
 
-	if [[ -z "${jvm_dir}" ]]; then
+	if [[ -z "${jvm_dir}" ]] || [[ "${jvm_dir}" == *"Unable to find any JVMs matching version"* ]]; then
 		USE_SYSTEM_JDK=N
 		return 0
 	fi
