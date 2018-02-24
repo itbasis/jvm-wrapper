@@ -391,25 +391,32 @@ function whereis() {
 	done
 }
 
-function get_system_path() {
-	local cmd_path ls_output jvm_dir
-
-	local -r cmd="${2}"
+function detect_system_jdk() {
+	local -r cmd="javac"
 	cmd_path=$(whereis "${cmd}")
+
+	if [[ -z "${cmd_path}" ]]; then
+		USE_SYSTEM_JDK=N
+		return 0
+	fi
+
 	ls_output="$(ls -l "${cmd_path}")"
 	while [[ "${ls_output}" == *" -> "* ]]; do
 		cmd_path="$(readlink "${cmd_path}")"
 		ls_output="$(ls -l "${cmd_path}")"
 	done
+
 	jvm_dir=$(dirname "${cmd_path}")
 	if [[ -f "${jvm_dir}/java_home" ]]; then
 		jvm_dir=$("${jvm_dir}/java_home")
 	fi
-	eval "${1}='${jvm_dir}/'"
-}
 
-function detect_system_jdk() {
-	local -r jdk_output="$(java -fullversion 2>&1)"
+	if [[ -z "${jvm_dir}" ]]; then
+		USE_SYSTEM_JDK=N
+		return 0
+	fi
+
+	local -r jdk_output="$("${jvm_dir}"/javac -fullversion 2>&1)"
 	if [[ "${jdk_output}" == *"command not found"* ]]; then
 		USE_SYSTEM_JDK=N
 		return 0
@@ -421,7 +428,7 @@ function detect_system_jdk() {
 	fi
 
 	USE_SYSTEM_JDK=Y
-	get_system_path 'JDK_HOME_DIR' 'javac'
+	eval "${JDK_HOME_DIR}='${jvm_dir}/'"
 
 	return 0
 }
