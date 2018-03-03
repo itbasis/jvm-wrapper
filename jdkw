@@ -16,6 +16,7 @@ USE_SYSTEM_JDK="${USE_SYSTEM_JDK}"
 JVMW_DEBUG="${JVMW_DEBUG}"
 REQUIRED_UPDATE="${REQUIRED_UPDATE}"
 JVM_VERSION=${JVM_VERSION}
+JVM_VENDOR=${JVM_VENDOR}
 JVM_VERSION_MAJOR=${JVM_VERSION_MAJOR}
 JVM_VERSION_SECURITY=${JVM_VERSION_SECURITY}
 ORACLE_USER=${ORACLE_USER}
@@ -96,7 +97,7 @@ function properties_build() {
 		unset JVM_VERSION_SECURITY
 	fi
 
-	JVM_FULL_NAME="jdk${JVM_VERSION}"
+	JVM_FULL_NAME="${JVM_VENDOR}-jdk-${JVM_VERSION}"
 
 	JDK_ROOT_DIR=${JVMW_HOME}/${JVM_FULL_NAME}
 
@@ -434,7 +435,7 @@ function detect_system_jdk() {
 }
 
 function detect_reuse_jdk() {
-	local -r jvm_root_dir=${JVMW_HOME}/jdk${JVM_VERSION_MAJOR}/$([[ "${OS}" == 'darwin' ]] && echo 'Home/')
+	local -r jvm_root_dir=${JVMW_HOME}/${JVM_VENDOR}-jdk-${JVM_VERSION_MAJOR}/$([[ "${OS}" == 'darwin' ]] && echo 'Home/')
 	if [[ ! -d "${jvm_root_dir}" ]]; then
 		return 0;
 	fi
@@ -444,7 +445,7 @@ function detect_reuse_jdk() {
 		return 0
 	fi
 
-	JVM_FULL_NAME="jdk${JVM_VERSION_MAJOR}"
+	JVM_FULL_NAME="${JVM_VENDOR}-jdk-${JVM_VERSION_MAJOR}"
 	JDK_ROOT_DIR=${JVMW_HOME}/${JVM_FULL_NAME}
 	JDK_HOME_DIR=${JDK_ROOT_DIR}/$([[ "${OS}" == 'darwin' ]] && echo 'Home/')
 	REQUIRED_UPDATE=N
@@ -462,10 +463,9 @@ if [[ "$1" == "upgrade" ]]; then
 	curl -sS https://raw.githubusercontent.com/itbasis/jvm-wrapper/master/jdkw >"$0"
 else
 	main_properties
+	detect_reuse_jdk
 	if [[ "${USE_SYSTEM_JDK}" == "Y" ]]; then
 		detect_system_jdk
-	else
-		detect_reuse_jdk
 	fi
 
 	if [[ "${USE_SYSTEM_JDK}" -eq "Y" ]]; then
