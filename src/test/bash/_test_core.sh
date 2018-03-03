@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 TEST_JVM_VERSION=${TEST_JVM_VERSION:?}
+TEST_JVM_VENDOR=${TEST_JVM_VENDOR:?}
 TEST_TYPE=${TEST_TYPE:?}
 TEST_JVM_TYPE=${TEST_JVM_TYPE:?}
 
@@ -10,15 +11,16 @@ JVMW_DEBUG=${JVMW_DEBUG}
 REQUIRED_UPDATE=${REQUIRED_UPDATE}
 TEST_OUTPUT=${TEST_OUTPUT}
 JVM_VERSION=${JVM_VERSION}
+JVM_VENDOR=${JVM_VENDOR}
 #
 # shellcheck disable=SC2034
-export TEST_JVM_HOME="${HOME}/.jvm/${TEST_JVM_TYPE}${TEST_JVM_VERSION}/"
+export TEST_JVM_HOME="${HOME}/.jvm/${TEST_JVM_VENDOR}-${TEST_JVM_TYPE}-${TEST_JVM_VERSION}/"
 
 function before_test() {
-	rm -Rf "${HOME}"/.jvm/jdk*
-	rm -Rf "${HOME}"/.jvm/jre*
+	rm -Rf "${HOME}"/.jvm/oracle-jdk-*
+	rm -Rf "${HOME}"/.jvm/oracle-jre-*
 	cp ../jdkw ./
-	cp "../samples.properties/jvmw.${TEST_JVM_VERSION}.properties" ./jvmw.properties
+	cp "../samples.properties/${TEST_JVM_VENDOR}-${TEST_JVM_VERSION}.properties" ./jvmw.properties
 }
 
 function after_test() {
@@ -32,8 +34,8 @@ function die() {
 	echo '----- TEST ENVIRONMENTS :: begin -----'
 	env | grep TEST_
 	echo '----- TEST ENVIRONMENTS :: end -----'
-	echo '----- SYSTEM JVM :: bein -----'
-	java -fullversion
+	echo '----- SYSTEM JVM :: begin -----'
+#	java -fullversion
 	echo '----- SYSTEM JVM :: end -----'
 	echo '----- TEST CONFIGURATION FILE :: begin -----'
 	cat jvmw.properties
@@ -42,6 +44,7 @@ function die() {
 	echo "env.JVMW_DEBUG=${JVMW_DEBUG}"
 	echo "env.REQUIRED_UPDATE=${REQUIRED_UPDATE}"
 	echo "env.JVM_VERSION=${JVM_VERSION}"
+	echo "env.JVM_VENDOR=${JVM_VENDOR}"
 	echo '----- TEST CONFIGURATION FILE :: end -----'
 	echo '----- OUTPUT :: begin -----'
 	echo "${TEST_OUTPUT}"

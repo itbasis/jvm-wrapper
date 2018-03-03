@@ -6,6 +6,7 @@
       <w>centos</w>
       <w>cmds</w>
       <w>cpio</w>
+      <w>debian</w>
       <w>fullversion</w>
       <w>funcname</w>
       <w>hdiutil</w>
@@ -17,6 +18,7 @@
       <w>mountpoint</w>
       <w>nexturl</w>
       <w>nfake</w>
+      <w>opensuse</w>
       <w>oraclelicense</w>
       <w>pycodestyle</w>
       <w>readlink</w>

@@ -5,13 +5,14 @@ source "${CUR_DIR}/_test_core.sh"
 
 # Hack for code verification
 TEST_JVM_VERSION=${TEST_JVM_VERSION:?}
+TEST_JVM_VENDOR=${TEST_JVM_VENDOR:?}
 TEST_FULL_VERSION=${TEST_FULL_VERSION:?}
 #
 before_test
 export USE_SYSTEM_JDK=N
 export JVMW_DEBUG=Y
 
-export TEST_JDK_LAST_UPDATE_FILE=${HOME}/.jvm/jdk${TEST_JVM_VERSION}.last_update
+export TEST_JDK_LAST_UPDATE_FILE=${HOME}/.jvm/${TEST_JVM_VENDOR}-jdk-${TEST_JVM_VERSION}.last_update
 
 #
 [[ ! -f "${TEST_JDK_LAST_UPDATE_FILE}" ]] || die

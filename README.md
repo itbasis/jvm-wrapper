@@ -37,9 +37,10 @@ Order of reading variables: environment, `~/jvmw.properties`, `./jvmw.properties
 
 #### jvmw.properties
 
-|property name|default|examples||
+|property name|default|examples|description|
 |---|:---:|---|---|
 |JVM_VERSION| |[see examples of configuration files](samples.properties)||
+|JVM_VENDOR| |`oracle`|`oracle` = [Oracle Site](http://www.oracle.com/technetwork/java/javase/downloads/index.html)||
 |ORACLE_USER| |ORACLE_USER=user@example.com|
 |ORACLE_PASSWORD| |ORACLE_PASSWORD=password|
 |JVMW_DEBUG|`N`|`Y`, `N`|If `JVMW_DEBUG`=`Y`, debugging information will be displayed in stderr|
