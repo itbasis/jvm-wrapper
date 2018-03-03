@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 #
+export JVMW=true
 JVMW_HOME=${HOME}/.jvm
 JVMW_PROPERTY_FILE="${JVMW_PROPERTY_FILE:-./jvmw.properties}"
 OS=$(uname | tr '[:upper:]' '[:lower:]')
@@ -461,55 +462,56 @@ fi
 
 if [[ "$1" == "upgrade" ]]; then
 	curl -sS https://raw.githubusercontent.com/itbasis/jvm-wrapper/master/jdkw >"$0"
+	exit 0
+fi
+
+main_properties
+detect_reuse_jdk
+if [[ "${USE_SYSTEM_JDK}" == "Y" ]]; then
+	detect_system_jdk
+fi
+
+if [[ "${USE_SYSTEM_JDK}" -eq "Y" ]]; then
+	JVM_HOME_DIR="${JDK_HOME_DIR}"
+fi
+
+export JDK_HOME=${JDK_HOME_DIR}
+export JAVA_HOME=${JVM_HOME_DIR}
+
+if [[ -z "$1" ]] || [[ "$1" == "info" ]]; then
+	print_debug_info
+	echo "JDK_HOME=${JDK_HOME}"
+	echo "JAVA_HOME=${JAVA_HOME}"
+
 else
-	main_properties
-	detect_reuse_jdk
-	if [[ "${USE_SYSTEM_JDK}" == "Y" ]]; then
-		detect_system_jdk
+	download_jdk
+
+	if [[ -z "${JVM_HOME_DIR}" ]]; then
+		die "can't JVM_HOME_DIR"
 	fi
 
-	if [[ "${USE_SYSTEM_JDK}" -eq "Y" ]]; then
-		JVM_HOME_DIR="${JDK_HOME_DIR}"
-	fi
+	print_debug_info
 
-	export JDK_HOME=${JDK_HOME_DIR}
-	export JAVA_HOME=${JVM_HOME_DIR}
-
-	if [[ -z "$1" ]] || [[ "$1" == "info" ]]; then
-		print_debug_info
-		echo "JDK_HOME=${JDK_HOME}"
-		echo "JAVA_HOME=${JAVA_HOME}"
-
+	if [[ "$1" == "javac" ]] && [[ "${USE_SYSTEM_JDK}" != "Y" ]]; then
+		PATH=.:${JDK_HOME}/bin:$PATH
+		EXEC_PATH=${JDK_HOME}/bin/$1
+	elif [[ "$1" == "java" ]] && [[ "${USE_SYSTEM_JDK}" != "Y" ]]; then
+		PATH=.:${JAVA_HOME}/bin:$PATH
+		EXEC_PATH=${JDK_HOME}/bin/$1
 	else
-		download_jdk
-
-		if [[ -z "${JVM_HOME_DIR}" ]]; then
-			die "can't JVM_HOME_DIR"
-		fi
-
-		print_debug_info
-
-		if [[ "$1" == "javac" ]] && [[ "${USE_SYSTEM_JDK}" != "Y" ]]; then
-			PATH=.:${JDK_HOME}/bin:$PATH
-			EXEC_PATH=${JDK_HOME}/bin/$1
-		elif [[ "$1" == "java" ]] && [[ "${USE_SYSTEM_JDK}" != "Y" ]]; then
-			PATH=.:${JAVA_HOME}/bin:$PATH
-			EXEC_PATH=${JDK_HOME}/bin/$1
+		PATH=.:$PATH
+		if [[ "${1:0:2}" == "./" ]]; then
+			EXEC_PATH="$1"
 		else
-			PATH=.:$PATH
-			if [[ "${1:0:2}" == "./" ]]; then
-				EXEC_PATH="$1"
-			else
-				EXEC_PATH=$(whereis "$1")
-			fi
+			EXEC_PATH=$(whereis "$1")
 		fi
-
-		if [[ -z "${EXEC_PATH}" ]]; then
-			die "No program found to execute: $1"
-		fi
-
-		# execute program
-		debug "command: ${EXEC_PATH}" "${@:2}"
-		eval "${EXEC_PATH}" "${@:2}"
 	fi
+
+	if [[ -z "${EXEC_PATH}" ]]; then
+		die "No program found to execute: $1"
+	fi
+
+	# execute program
+	debug "command: ${EXEC_PATH}" "${@:2}"
+	eval "${EXEC_PATH}" "${@:2}"
 fi
