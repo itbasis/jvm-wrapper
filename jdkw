@@ -253,7 +253,7 @@ function check_checksum() {
 	return 0
 }
 
-function unpack_darwin() {
+function oracle_unpack_darwin() {
 	hdiutil detach "/Volumes/${JVM_FULL_NAME}" -quiet -force 2> /dev/null
 	hdiutil attach "${ARCHIVE_FILE}" -mountpoint "/Volumes/${JVM_FULL_NAME}" 2>&1 || die
 	local -r PKG_FILE_NAME=$(find "/Volumes/${JVM_FULL_NAME}" -mindepth 1 -maxdepth 1 -name '*.pkg')
@@ -271,7 +271,7 @@ function unpack_darwin() {
 	hdiutil detach "/Volumes/${JVM_FULL_NAME}" -force || die
 }
 
-function unpack_linux() {
+function oracle_unpack_linux() {
 	local -r tmp_dir=$(mktemp -d -t "${JVM_FULL_NAME}.XXXXXX")/
 	debug "tmp_dir=${tmp_dir}"
 	tar xf "${ARCHIVE_FILE}" -C "${tmp_dir}" || { rm -Rf "${tmp_dir}";
@@ -291,7 +291,7 @@ function write_last_update() {
 	fi
 }
 
-function check_the_need_for_downloading() {
+function oracle_check_the_need_for_downloading() {
 	if [[ "${REQUIRED_UPDATE}" != "Y" ]]; then
 		return 0
 	fi
@@ -314,8 +314,18 @@ function check_the_need_for_downloading() {
 	fi
 }
 
+function oracle_download_jdk() {
+	[[ "${ARCHIVE_JVM_URL}" != *'/otn-pub/'* ]] && otn_login
+	curl -kL -A "${OTN_USER_AGENT}" -b "${OTN_COOKIE_FILE}" -o "${ARCHIVE_FILE}" --cookie "oraclelicense=accept-securebackup-cookie" "${ARCHIVE_JVM_URL}"
+
+	if ! check_checksum; then
+		die
+	fi
+}
+
 function download_jdk() {
-	check_the_need_for_downloading
+	eval "${JVM_VENDOR}_check_the_need_for_downloading"
+
 	debug "REQUIRED_UPDATE=${REQUIRED_UPDATE}"
 	if [[ "${REQUIRED_UPDATE}" != "Y" ]]; then
 		return 0
@@ -333,7 +343,7 @@ function download_jdk() {
 		if [[ ${JVM_VERSION_MAJOR} -lt 8 ]]; then
 			rm -f "${ARCHIVE_FILE}"
 		elif check_checksum; then
-			eval "unpack_${OS}"
+			eval "${JVM_VENDOR}_unpack_${OS}"
 			return 0
 		fi
 	fi
@@ -345,16 +355,8 @@ function download_jdk() {
 		fi
 	fi
 	#
-	if [[ "${ARCHIVE_JVM_URL}" != *'/otn-pub/'* ]]; then
-		otn_login
-	fi
-	curl -kL -A "${OTN_USER_AGENT}" -b "${OTN_COOKIE_FILE}" -o "${ARCHIVE_FILE}" --cookie "oraclelicense=accept-securebackup-cookie" "${ARCHIVE_JVM_URL}"
-
-	if ! check_checksum; then
-		die
-	fi
-
-	eval "unpack_${OS}"
+	eval "${JVM_VENDOR}_download_jdk"
+	eval "${JVM_VENDOR}_unpack_${OS}"
 
 	write_last_update
 }
@@ -418,13 +420,13 @@ function detect_system_jdk() {
 		return 0
 	fi
 
-	local -r jdk_output="$(javac -fullversion 2>&1)"
+	local -r jdk_output="$(java -XshowSettings:properties -version 2>&1)"
 	if [[ "${jdk_output}" == *"command not found"* ]]; then
 		USE_SYSTEM_JDK=N
 		return 0
 	fi
 
-	if [[ "${jdk_output}" != *"javac full version \"${JVM_VERSION_MAJOR}."* && "${jdk_output}" != *"java full version \"1.${JVM_VERSION_MAJOR}."* ]]; then
+	if [[ "${jdk_output}" != *"java.version = ${JVM_VERSION_MAJOR}."* && "${jdk_output}" != *"java.version = 1.${JVM_VERSION_MAJOR}."* ]]; then
 		USE_SYSTEM_JDK=N
 		return 0
 	fi
