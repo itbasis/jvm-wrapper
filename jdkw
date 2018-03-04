@@ -398,6 +398,7 @@ function whereis() {
 function detect_system_jdk() {
 	local -r cmd="javac"
 	cmd_path=$(whereis "${cmd}")
+#die "cmd_path=$cmd_path"
 
 	if [[ -z "${cmd_path}" ]]; then
 		USE_SYSTEM_JDK=N

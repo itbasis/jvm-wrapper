@@ -8,14 +8,15 @@ install:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update; fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew reinstall shellcheck; fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew tap caskroom/versions; fi
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew uninstall java; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew cask uninstall java; fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]] && [[ "x$TEST_USE_SYSTEM" == "x8" ]]; then brew cask install java8; fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]] && [[ "x$TEST_USE_SYSTEM" == "x9" ]]; then brew cask install java; fi
 
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then docker --version; fi
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get update; fi
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install -y shellcheck; fi
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]] && [[ -z "$TEST_USE_SYSTEM" ]]; then sudo apt-get install -y oracle-java$TEST_USE_SYSTEM-installer oracle-java$TEST_USE_SYSTEM-set-default; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]] && [[ "x$TEST_USE_SYSTEM" == "x8" ]]; then sudo apt-get install -y oracle-java8-installer oracle-java8-set-default; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]] && [[ "x$TEST_USE_SYSTEM" == "x9" ]]; then sudo apt-get install -y oracle-java9-installer oracle-java9-set-default; fi
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then for DOCKER_IMAGE in ${DOCKER_IMAGES}; do docker pull "${DOCKER_IMAGE}"; done; fi
 
 before_script:
