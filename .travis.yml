@@ -7,11 +7,16 @@ services:
 install:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update; fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew reinstall shellcheck; fi
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew cask reinstall java; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew tap caskroom/versions; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew cask uninstall java; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]] && [[ "x$TEST_USE_SYSTEM" == "x8" ]]; then brew cask install java8; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]] && [[ "x$TEST_USE_SYSTEM" == "x9" ]]; then brew cask install java; fi
 
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then docker --version; fi
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get update; fi
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install -y shellcheck oracle-java9-installer oracle-java9-set-default; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install -y shellcheck; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]] && [[ "x$TEST_USE_SYSTEM" == "x8" ]]; then sudo apt-get install -y oracle-java8-installer oracle-java8-set-default; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]] && [[ "x$TEST_USE_SYSTEM" == "x9" ]]; then sudo apt-get install -y oracle-java9-installer oracle-java9-set-default; fi
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then for DOCKER_IMAGE in ${DOCKER_IMAGES}; do docker pull "${DOCKER_IMAGE}"; done; fi
 
 before_script:
@@ -37,7 +42,7 @@ matrix:
         - TEST_JVM_TYPE=jdk
         - TEST_FULL_VERSION=9.0.4+11
         - TEST_REUSE_JAVA_VERSION=9.0.4
-        - TEST_USE_SYSTEM=Y
+        - TEST_USE_SYSTEM=9
 
     - os: osx
       env:
@@ -46,7 +51,7 @@ matrix:
         - TEST_TYPE=jvm
         - TEST_JVM_TYPE=jdk
         - TEST_FULL_VERSION=9.0.4+11
-        - TEST_USE_SYSTEM=Y
+        - TEST_USE_SYSTEM=9
 
     - os: osx
       env:
@@ -80,6 +85,7 @@ matrix:
         - TEST_TYPE=jvm
         - TEST_JVM_TYPE=jdk
         - TEST_FULL_VERSION=1.8.0_162-b12
+        - TEST_USE_SYSTEM=8
 
     - os: osx
       env:
@@ -89,14 +95,15 @@ matrix:
         - TEST_JVM_TYPE=jdk
         - TEST_FULL_VERSION=1.8.0_144-b01
 
-#    - os: osx
-#      env:
-#        - TEST_JVM_VENDOR=oracle
-#        - TEST_JVM_VERSION=7
-#        - TEST_TYPE=jvm
-#        - TEST_JVM_TYPE=jdk
-#        - TEST_FULL_VERSION=1.7.0_80-b15
-#        - TEST_REUSE_JAVA_VERSION=7u80
+    - os: osx
+      env:
+        - TEST_JVM_VENDOR=oracle
+        - TEST_JVM_VERSION=7
+        - TEST_TYPE=jvm
+        - TEST_JVM_TYPE=jdk
+        - TEST_FULL_VERSION=1.7.0_80-b15
+        - TEST_REUSE_JAVA_VERSION=7u80
+#        - TEST_USE_SYSTEM=7
 
     - os: osx
       env:
@@ -106,13 +113,13 @@ matrix:
         - TEST_JVM_TYPE=jdk
         - TEST_FULL_VERSION=1.7.0_80-b15
 
-#    - os: osx
-#      env:
-#        - TEST_JVM_VENDOR=oracle
-#        - TEST_JVM_VERSION=7u65
-#        - TEST_TYPE=jvm
-#        - TEST_JVM_TYPE=jdk
-#        - TEST_FULL_VERSION=1.7.0_65-b17
+    - os: osx
+      env:
+        - TEST_JVM_VENDOR=oracle
+        - TEST_JVM_VERSION=7u65
+        - TEST_TYPE=jvm
+        - TEST_JVM_TYPE=jdk
+        - TEST_FULL_VERSION=1.7.0_65-b17
 
 #
 #  OSX, JDK
@@ -124,7 +131,7 @@ matrix:
         - TEST_JVM_TYPE=jdk
         - TEST_FULL_VERSION=9.0.4+11
         - TEST_REUSE_JAVA_VERSION=9.0.4
-        - TEST_USE_SYSTEM=Y
+        - TEST_USE_SYSTEM=9
 
     - os: osx
       env:
@@ -133,7 +140,7 @@ matrix:
         - TEST_TYPE=jdk
         - TEST_JVM_TYPE=jdk
         - TEST_FULL_VERSION=9.0.4+11
-        - TEST_USE_SYSTEM=Y
+        - TEST_USE_SYSTEM=9
 
     - os: osx
       env:
@@ -167,6 +174,7 @@ matrix:
         - TEST_TYPE=jdk
         - TEST_JVM_TYPE=jdk
         - TEST_FULL_VERSION=1.8.0_162-b12
+        - TEST_USE_SYSTEM=8
 
     - os: osx
       env:
@@ -176,14 +184,14 @@ matrix:
         - TEST_JVM_TYPE=jdk
         - TEST_FULL_VERSION=1.8.0_144-b01
 
-#    - os: osx
-#      env:
-#        - TEST_JVM_VENDOR=oracle
-#        - TEST_JVM_VERSION=7
-#        - TEST_TYPE=jdk
-#        - TEST_JVM_TYPE=jdk
-#        - TEST_FULL_VERSION=1.7.0_80-b15
-#        - TEST_REUSE_JAVA_VERSION=7u80
+    - os: osx
+      env:
+        - TEST_JVM_VENDOR=oracle
+        - TEST_JVM_VERSION=7
+        - TEST_TYPE=jdk
+        - TEST_JVM_TYPE=jdk
+        - TEST_FULL_VERSION=1.7.0_80-b15
+        - TEST_REUSE_JAVA_VERSION=7u80
 
     - os: osx
       env:
@@ -193,13 +201,13 @@ matrix:
         - TEST_JVM_TYPE=jdk
         - TEST_FULL_VERSION=1.7.0_80-b15
 
-#    - os: osx
-#      env:
-#        - TEST_JVM_VENDOR=oracle
-#        - TEST_JVM_VERSION=7u65
-#        - TEST_TYPE=jdk
-#        - TEST_JVM_TYPE=jdk
-#        - TEST_FULL_VERSION=1.7.0_65-b17
+    - os: osx
+      env:
+        - TEST_JVM_VENDOR=oracle
+        - TEST_JVM_VERSION=7u65
+        - TEST_TYPE=jdk
+        - TEST_JVM_TYPE=jdk
+        - TEST_FULL_VERSION=1.7.0_65-b17
 
 #  Linux, JVM
     - os: linux
@@ -210,7 +218,7 @@ matrix:
         - TEST_JVM_TYPE=jdk
         - TEST_FULL_VERSION=9.0.4+11
         - TEST_REUSE_JAVA_VERSION=9.0.4
-        - TEST_USE_SYSTEM=Y
+#        - TEST_USE_SYSTEM=9
 
     - os: linux
       env:
@@ -219,7 +227,7 @@ matrix:
         - TEST_TYPE=jvm
         - TEST_JVM_TYPE=jdk
         - TEST_FULL_VERSION=9.0.4+11
-        - TEST_USE_SYSTEM=Y
+#        - TEST_USE_SYSTEM=9
 
     - os: linux
       env:
@@ -262,14 +270,14 @@ matrix:
         - TEST_JVM_TYPE=jdk
         - TEST_FULL_VERSION=1.8.0_144-b01
 
-#    - os: linux
-#      env:
-#        - TEST_JVM_VENDOR=oracle
-#        - TEST_JVM_VERSION=7
-#        - TEST_TYPE=jvm
-#        - TEST_JVM_TYPE=jdk
-#        - TEST_FULL_VERSION=1.7.0_80-b15
-#        - TEST_REUSE_JAVA_VERSION=7u80
+    - os: linux
+      env:
+        - TEST_JVM_VENDOR=oracle
+        - TEST_JVM_VERSION=7
+        - TEST_TYPE=jvm
+        - TEST_JVM_TYPE=jdk
+        - TEST_FULL_VERSION=1.7.0_80-b15
+        - TEST_REUSE_JAVA_VERSION=7u80
 
     - os: linux
       env:
@@ -279,13 +287,13 @@ matrix:
         - TEST_JVM_TYPE=jdk
         - TEST_FULL_VERSION=1.7.0_80-b15
 
-#    - os: linux
-#      env:
-#        - TEST_JVM_VENDOR=oracle
-#        - TEST_JVM_VERSION=7u65
-#        - TEST_TYPE=jvm
-#        - TEST_JVM_TYPE=jdk
-#        - TEST_FULL_VERSION=1.7.0_65-b17
+    - os: linux
+      env:
+        - TEST_JVM_VENDOR=oracle
+        - TEST_JVM_VERSION=7u65
+        - TEST_TYPE=jvm
+        - TEST_JVM_TYPE=jdk
+        - TEST_FULL_VERSION=1.7.0_65-b17
 
 #
 #  Linux, JDK
@@ -297,7 +305,7 @@ matrix:
         - TEST_JVM_TYPE=jdk
         - TEST_FULL_VERSION=9.0.4+11
         - TEST_REUSE_JAVA_VERSION=9.0.4
-        - TEST_USE_SYSTEM=Y
+        - TEST_USE_SYSTEM=9
 
     - os: linux
       env:
@@ -306,7 +314,7 @@ matrix:
         - TEST_TYPE=jdk
         - TEST_JVM_TYPE=jdk
         - TEST_FULL_VERSION=9.0.4+11
-        - TEST_USE_SYSTEM=Y
+        - TEST_USE_SYSTEM=9
 
     - os: linux
       env:
@@ -349,14 +357,14 @@ matrix:
         - TEST_JVM_TYPE=jdk
         - TEST_FULL_VERSION=1.8.0_144-b01
 
-#    - os: linux
-#      env:
-#        - TEST_JVM_VENDOR=oracle
-#        - TEST_JVM_VERSION=7
-#        - TEST_TYPE=jdk
-#        - TEST_JVM_TYPE=jdk
-#        - TEST_FULL_VERSION=1.7.0_80-b15
-#        - TEST_REUSE_JAVA_VERSION=7u80
+    - os: linux
+      env:
+        - TEST_JVM_VENDOR=oracle
+        - TEST_JVM_VERSION=7
+        - TEST_TYPE=jdk
+        - TEST_JVM_TYPE=jdk
+        - TEST_FULL_VERSION=1.7.0_80-b15
+        - TEST_REUSE_JAVA_VERSION=7u80
 
     - os: linux
       env:
@@ -366,10 +374,10 @@ matrix:
         - TEST_JVM_TYPE=jdk
         - TEST_FULL_VERSION=1.7.0_80-b15
 
-#    - os: linux
-#      env:
-#        - TEST_JVM_VENDOR=oracle
-#        - TEST_JVM_VERSION=7u65
-#        - TEST_TYPE=jdk
-#        - TEST_JVM_TYPE=jdk
-#        - TEST_FULL_VERSION=1.7.0_65-b17
+    - os: linux
+      env:
+        - TEST_JVM_VENDOR=oracle
+        - TEST_JVM_VERSION=7u65
+        - TEST_TYPE=jdk
+        - TEST_JVM_TYPE=jdk
+        - TEST_FULL_VERSION=1.7.0_65-b17
