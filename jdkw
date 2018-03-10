@@ -20,6 +20,7 @@ JVM_VERSION=${JVM_VERSION}
 JVM_VENDOR=${JVM_VENDOR}
 JVM_VERSION_MAJOR=${JVM_VERSION_MAJOR}
 JVM_VERSION_SECURITY=${JVM_VERSION_SECURITY}
+JVMW_ORACLE_KEYCHAIN=${JVMW_ORACLE_KEYCHAIN}
 ORACLE_USER=${ORACLE_USER}
 ORACLE_PASSWORD=${ORACLE_PASSWORD}
 #
@@ -55,7 +56,7 @@ function die() {
 function print_debug_info() {
 	if [[ "${JVMW_DEBUG}" == "Y" ]]; then
 		printf ''
-		for key in OS ARCH JVMW_HOME ARCHIVE_EXT JVM_VERSION JVM_VERSION_MAJOR JVM_VERSION_SECURITY JDK_ROOT_DIR JDK_HOME_DIR JAVA_HOME_DIR JVM_PAGE_URL ARCHIVE_JVM_URL ARCHIVE_JVM_CHECKSUM ARCHIVE_FILE LAST_UPDATE_FILE REQUIRED_UPDATE JVMW_DEBUG USE_SYSTEM_JDK; do
+		for key in OS ARCH JVMW_HOME ARCHIVE_EXT JVM_VERSION JVM_VERSION_MAJOR JVM_VERSION_SECURITY JDK_ROOT_DIR JDK_HOME_DIR JAVA_HOME_DIR JVM_PAGE_URL ARCHIVE_JVM_URL ARCHIVE_JVM_CHECKSUM ARCHIVE_FILE LAST_UPDATE_FILE REQUIRED_UPDATE JVMW_DEBUG USE_SYSTEM_JDK JVM_VENDOR ORACLE_USER; do
 			>&2 log_2 '' "${key}=${!key}";
 		done
 	fi
@@ -82,6 +83,7 @@ JVM_VERSION=9
 REQUIRED_UPDATE=Y
 JVMW_DEBUG=N
 USE_SYSTEM_JDK=Y
+JVMW_ORACLE_KEYCHAIN=JVM_WRAPPER_ORACLE
 EOF
 }
 
@@ -164,7 +166,20 @@ function otn_curl_redirect() {
 	otn_curl_send_request "${host}"
 }
 
-function otn_login() {
+function oracle_otn_login() {
+	local output_keychain
+	if [[ -z "${ORACLE_USER}" ]] || [[ -z "${ORACLE_PASSWORD}" ]]; then
+		case "${OS}" in
+			darwin)
+				if [[ ! -z "${JVMW_ORACLE_KEYCHAIN}" ]]; then
+					ORACLE_USER="$(security 2>&1 find-generic-password -l "${JVMW_ORACLE_KEYCHAIN}" | awk 'match($0, /\"acct\"<blob>=\"([^\"]+)/) { print substr($0, RSTART+14, RLENGTH-14) }')"
+				fi
+				if [[ ! -z "${ORACLE_USER}" ]]; then
+					ORACLE_PASSWORD="$(security 2>&1 find-generic-password -g -a "${ORACLE_USER}" | awk 'match($0, /password: \"([^\"]+)/) { print substr($0, RSTART+11, RLENGTH-11) }')"
+				fi
+			;;
+		esac
+	fi
 	if [[ -z "${ORACLE_USER}" ]] || [[ -z "${ORACLE_PASSWORD}" ]]; then
 		die 'no values were found in ORACLE_USER and ORACLE_PASSWORD'
 	fi
@@ -315,7 +330,7 @@ function oracle_check_the_need_for_downloading() {
 }
 
 function oracle_download_jdk() {
-	[[ "${ARCHIVE_JVM_URL}" != *'/otn-pub/'* ]] && otn_login
+	[[ "${ARCHIVE_JVM_URL}" != *'/otn-pub/'* ]] && oracle_otn_login
 	curl -kL -A "${OTN_USER_AGENT}" -b "${OTN_COOKIE_FILE}" -o "${ARCHIVE_FILE}" --cookie "oraclelicense=accept-securebackup-cookie" "${ARCHIVE_JVM_URL}"
 
 	if ! check_checksum; then
@@ -398,7 +413,6 @@ function whereis() {
 function detect_system_jdk() {
 	local -r cmd="javac"
 	cmd_path=$(whereis "${cmd}")
-#die "cmd_path=$cmd_path"
 
 	if [[ -z "${cmd_path}" ]]; then
 		USE_SYSTEM_JDK=N
