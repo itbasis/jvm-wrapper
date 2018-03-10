@@ -31,6 +31,11 @@ env:
   global:
     - DOCKER_IMAGES="centos:centos6 centos:centos7 debian:wheezy debian:jessie ubuntu:trusty opensuse:latest base/arch:latest"
 
+jobs:
+  include:
+    - stage: deploy
+      script: echo Deploy
+
 matrix:
   include:
 #  OSX, JVM
@@ -44,171 +49,171 @@ matrix:
         - TEST_REUSE_JAVA_VERSION=9.0.4
         - TEST_USE_SYSTEM=9
 
-    - os: osx
-      env:
-        - TEST_JVM_VENDOR=oracle
-        - TEST_JVM_VERSION=9.0.4
-        - TEST_TYPE=jvm
-        - TEST_JVM_TYPE=jdk
-        - TEST_FULL_VERSION=9.0.4+11
-        - TEST_USE_SYSTEM=9
-
-    - os: osx
-      env:
-        - TEST_JVM_VENDOR=oracle
-        - TEST_JVM_VERSION=9.0.1
-        - TEST_TYPE=jvm
-        - TEST_JVM_TYPE=jdk
-        - TEST_FULL_VERSION=9.0.1+11
-
-    - os: osx
-      env:
-        - TEST_JVM_VENDOR=oracle
-        - TEST_JVM_VERSION=8
-        - TEST_TYPE=jvm
-        - TEST_JVM_TYPE=jdk
-        - TEST_FULL_VERSION=1.8.0_161-b12
-        - TEST_REUSE_JAVA_VERSION=8u161
-
-    - os: osx
-      env:
-        - TEST_JVM_VENDOR=oracle
-        - TEST_JVM_VERSION=8u161
-        - TEST_TYPE=jvm
-        - TEST_JVM_TYPE=jdk
-        - TEST_FULL_VERSION=1.8.0_161-b12
-
-    - os: osx
-      env:
-        - TEST_JVM_VENDOR=oracle
-        - TEST_JVM_VERSION=8u162
-        - TEST_TYPE=jvm
-        - TEST_JVM_TYPE=jdk
-        - TEST_FULL_VERSION=1.8.0_162-b12
-        - TEST_USE_SYSTEM=8
-
-    - os: osx
-      env:
-        - TEST_JVM_VENDOR=oracle
-        - TEST_JVM_VERSION=8u144
-        - TEST_TYPE=jvm
-        - TEST_JVM_TYPE=jdk
-        - TEST_FULL_VERSION=1.8.0_144-b01
-
-    - os: osx
-      env:
-        - TEST_JVM_VENDOR=oracle
-        - TEST_JVM_VERSION=7
-        - TEST_TYPE=jvm
-        - TEST_JVM_TYPE=jdk
-        - TEST_FULL_VERSION=1.7.0_80-b15
-        - TEST_REUSE_JAVA_VERSION=7u80
-#        - TEST_USE_SYSTEM=7
-
-    - os: osx
-      env:
-        - TEST_JVM_VENDOR=oracle
-        - TEST_JVM_VERSION=7u80
-        - TEST_TYPE=jvm
-        - TEST_JVM_TYPE=jdk
-        - TEST_FULL_VERSION=1.7.0_80-b15
-
-    - os: osx
-      env:
-        - TEST_JVM_VENDOR=oracle
-        - TEST_JVM_VERSION=7u65
-        - TEST_TYPE=jvm
-        - TEST_JVM_TYPE=jdk
-        - TEST_FULL_VERSION=1.7.0_65-b17
-
+#    - os: osx
+#      env:
+#        - TEST_JVM_VENDOR=oracle
+#        - TEST_JVM_VERSION=9.0.4
+#        - TEST_TYPE=jvm
+#        - TEST_JVM_TYPE=jdk
+#        - TEST_FULL_VERSION=9.0.4+11
+#        - TEST_USE_SYSTEM=9
 #
-#  OSX, JDK
-    - os: osx
-      env:
-        - TEST_JVM_VENDOR=oracle
-        - TEST_JVM_VERSION=9
-        - TEST_TYPE=jdk
-        - TEST_JVM_TYPE=jdk
-        - TEST_FULL_VERSION=9.0.4+11
-        - TEST_REUSE_JAVA_VERSION=9.0.4
-        - TEST_USE_SYSTEM=9
-
-    - os: osx
-      env:
-        - TEST_JVM_VENDOR=oracle
-        - TEST_JVM_VERSION=9.0.4
-        - TEST_TYPE=jdk
-        - TEST_JVM_TYPE=jdk
-        - TEST_FULL_VERSION=9.0.4+11
-        - TEST_USE_SYSTEM=9
-
-    - os: osx
-      env:
-        - TEST_JVM_VENDOR=oracle
-        - TEST_JVM_VERSION=9.0.1
-        - TEST_TYPE=jdk
-        - TEST_JVM_TYPE=jdk
-        - TEST_FULL_VERSION=9.0.1+11
-
-    - os: osx
-      env:
-        - TEST_JVM_VENDOR=oracle
-        - TEST_JVM_VERSION=8
-        - TEST_TYPE=jdk
-        - TEST_JVM_TYPE=jdk
-        - TEST_FULL_VERSION=1.8.0_161-b12
-        - TEST_REUSE_JAVA_VERSION=8u161
-
-    - os: osx
-      env:
-        - TEST_JVM_VENDOR=oracle
-        - TEST_JVM_VERSION=8u161
-        - TEST_TYPE=jdk
-        - TEST_JVM_TYPE=jdk
-        - TEST_FULL_VERSION=1.8.0_161-b12
-
-    - os: osx
-      env:
-        - TEST_JVM_VENDOR=oracle
-        - TEST_JVM_VERSION=8u162
-        - TEST_TYPE=jdk
-        - TEST_JVM_TYPE=jdk
-        - TEST_FULL_VERSION=1.8.0_162-b12
-        - TEST_USE_SYSTEM=8
-
-    - os: osx
-      env:
-        - TEST_JVM_VENDOR=oracle
-        - TEST_JVM_VERSION=8u144
-        - TEST_TYPE=jdk
-        - TEST_JVM_TYPE=jdk
-        - TEST_FULL_VERSION=1.8.0_144-b01
-
-    - os: osx
-      env:
-        - TEST_JVM_VENDOR=oracle
-        - TEST_JVM_VERSION=7
-        - TEST_TYPE=jdk
-        - TEST_JVM_TYPE=jdk
-        - TEST_FULL_VERSION=1.7.0_80-b15
-        - TEST_REUSE_JAVA_VERSION=7u80
-
-    - os: osx
-      env:
-        - TEST_JVM_VENDOR=oracle
-        - TEST_JVM_VERSION=7u80
-        - TEST_TYPE=jdk
-        - TEST_JVM_TYPE=jdk
-        - TEST_FULL_VERSION=1.7.0_80-b15
-
-    - os: osx
-      env:
-        - TEST_JVM_VENDOR=oracle
-        - TEST_JVM_VERSION=7u65
-        - TEST_TYPE=jdk
-        - TEST_JVM_TYPE=jdk
-        - TEST_FULL_VERSION=1.7.0_65-b17
-
+#    - os: osx
+#      env:
+#        - TEST_JVM_VENDOR=oracle
+#        - TEST_JVM_VERSION=9.0.1
+#        - TEST_TYPE=jvm
+#        - TEST_JVM_TYPE=jdk
+#        - TEST_FULL_VERSION=9.0.1+11
+#
+#    - os: osx
+#      env:
+#        - TEST_JVM_VENDOR=oracle
+#        - TEST_JVM_VERSION=8
+#        - TEST_TYPE=jvm
+#        - TEST_JVM_TYPE=jdk
+#        - TEST_FULL_VERSION=1.8.0_161-b12
+#        - TEST_REUSE_JAVA_VERSION=8u161
+#
+#    - os: osx
+#      env:
+#        - TEST_JVM_VENDOR=oracle
+#        - TEST_JVM_VERSION=8u161
+#        - TEST_TYPE=jvm
+#        - TEST_JVM_TYPE=jdk
+#        - TEST_FULL_VERSION=1.8.0_161-b12
+#
+#    - os: osx
+#      env:
+#        - TEST_JVM_VENDOR=oracle
+#        - TEST_JVM_VERSION=8u162
+#        - TEST_TYPE=jvm
+#        - TEST_JVM_TYPE=jdk
+#        - TEST_FULL_VERSION=1.8.0_162-b12
+#        - TEST_USE_SYSTEM=8
+#
+#    - os: osx
+#      env:
+#        - TEST_JVM_VENDOR=oracle
+#        - TEST_JVM_VERSION=8u144
+#        - TEST_TYPE=jvm
+#        - TEST_JVM_TYPE=jdk
+#        - TEST_FULL_VERSION=1.8.0_144-b01
+#
+#    - os: osx
+#      env:
+#        - TEST_JVM_VENDOR=oracle
+#        - TEST_JVM_VERSION=7
+#        - TEST_TYPE=jvm
+#        - TEST_JVM_TYPE=jdk
+#        - TEST_FULL_VERSION=1.7.0_80-b15
+#        - TEST_REUSE_JAVA_VERSION=7u80
+##        - TEST_USE_SYSTEM=7
+#
+#    - os: osx
+#      env:
+#        - TEST_JVM_VENDOR=oracle
+#        - TEST_JVM_VERSION=7u80
+#        - TEST_TYPE=jvm
+#        - TEST_JVM_TYPE=jdk
+#        - TEST_FULL_VERSION=1.7.0_80-b15
+#
+#    - os: osx
+#      env:
+#        - TEST_JVM_VENDOR=oracle
+#        - TEST_JVM_VERSION=7u65
+#        - TEST_TYPE=jvm
+#        - TEST_JVM_TYPE=jdk
+#        - TEST_FULL_VERSION=1.7.0_65-b17
+#
+##
+##  OSX, JDK
+#    - os: osx
+#      env:
+#        - TEST_JVM_VENDOR=oracle
+#        - TEST_JVM_VERSION=9
+#        - TEST_TYPE=jdk
+#        - TEST_JVM_TYPE=jdk
+#        - TEST_FULL_VERSION=9.0.4+11
+#        - TEST_REUSE_JAVA_VERSION=9.0.4
+#        - TEST_USE_SYSTEM=9
+#
+#    - os: osx
+#      env:
+#        - TEST_JVM_VENDOR=oracle
+#        - TEST_JVM_VERSION=9.0.4
+#        - TEST_TYPE=jdk
+#        - TEST_JVM_TYPE=jdk
+#        - TEST_FULL_VERSION=9.0.4+11
+#        - TEST_USE_SYSTEM=9
+#
+#    - os: osx
+#      env:
+#        - TEST_JVM_VENDOR=oracle
+#        - TEST_JVM_VERSION=9.0.1
+#        - TEST_TYPE=jdk
+#        - TEST_JVM_TYPE=jdk
+#        - TEST_FULL_VERSION=9.0.1+11
+#
+#    - os: osx
+#      env:
+#        - TEST_JVM_VENDOR=oracle
+#        - TEST_JVM_VERSION=8
+#        - TEST_TYPE=jdk
+#        - TEST_JVM_TYPE=jdk
+#        - TEST_FULL_VERSION=1.8.0_161-b12
+#        - TEST_REUSE_JAVA_VERSION=8u161
+#
+#    - os: osx
+#      env:
+#        - TEST_JVM_VENDOR=oracle
+#        - TEST_JVM_VERSION=8u161
+#        - TEST_TYPE=jdk
+#        - TEST_JVM_TYPE=jdk
+#        - TEST_FULL_VERSION=1.8.0_161-b12
+#
+#    - os: osx
+#      env:
+#        - TEST_JVM_VENDOR=oracle
+#        - TEST_JVM_VERSION=8u162
+#        - TEST_TYPE=jdk
+#        - TEST_JVM_TYPE=jdk
+#        - TEST_FULL_VERSION=1.8.0_162-b12
+#        - TEST_USE_SYSTEM=8
+#
+#    - os: osx
+#      env:
+#        - TEST_JVM_VENDOR=oracle
+#        - TEST_JVM_VERSION=8u144
+#        - TEST_TYPE=jdk
+#        - TEST_JVM_TYPE=jdk
+#        - TEST_FULL_VERSION=1.8.0_144-b01
+#
+#    - os: osx
+#      env:
+#        - TEST_JVM_VENDOR=oracle
+#        - TEST_JVM_VERSION=7
+#        - TEST_TYPE=jdk
+#        - TEST_JVM_TYPE=jdk
+#        - TEST_FULL_VERSION=1.7.0_80-b15
+#        - TEST_REUSE_JAVA_VERSION=7u80
+#
+#    - os: osx
+#      env:
+#        - TEST_JVM_VENDOR=oracle
+#        - TEST_JVM_VERSION=7u80
+#        - TEST_TYPE=jdk
+#        - TEST_JVM_TYPE=jdk
+#        - TEST_FULL_VERSION=1.7.0_80-b15
+#
+#    - os: osx
+#      env:
+#        - TEST_JVM_VENDOR=oracle
+#        - TEST_JVM_VERSION=7u65
+#        - TEST_TYPE=jdk
+#        - TEST_JVM_TYPE=jdk
+#        - TEST_FULL_VERSION=1.7.0_65-b17
+#
 #  Linux, JVM
     - os: linux
       env:
@@ -220,164 +225,164 @@ matrix:
         - TEST_REUSE_JAVA_VERSION=9.0.4
 #        - TEST_USE_SYSTEM=9
 
-    - os: linux
-      env:
-        - TEST_JVM_VENDOR=oracle
-        - TEST_JVM_VERSION=9.0.4
-        - TEST_TYPE=jvm
-        - TEST_JVM_TYPE=jdk
-        - TEST_FULL_VERSION=9.0.4+11
-#        - TEST_USE_SYSTEM=9
-
-    - os: linux
-      env:
-        - TEST_JVM_VENDOR=oracle
-        - TEST_JVM_VERSION=9.0.1
-        - TEST_TYPE=jvm
-        - TEST_JVM_TYPE=jdk
-        - TEST_FULL_VERSION=9.0.1+11
-
-    - os: linux
-      env:
-        - TEST_JVM_VENDOR=oracle
-        - TEST_JVM_VERSION=8
-        - TEST_TYPE=jvm
-        - TEST_JVM_TYPE=jdk
-        - TEST_FULL_VERSION=1.8.0_161-b12
-        - TEST_REUSE_JAVA_VERSION=8u161
-
-    - os: linux
-      env:
-        - TEST_JVM_VENDOR=oracle
-        - TEST_JVM_VERSION=8u161
-        - TEST_TYPE=jvm
-        - TEST_JVM_TYPE=jdk
-        - TEST_FULL_VERSION=1.8.0_161-b12
-
-    - os: linux
-      env:
-        - TEST_JVM_VENDOR=oracle
-        - TEST_JVM_VERSION=8u162
-        - TEST_TYPE=jvm
-        - TEST_JVM_TYPE=jdk
-        - TEST_FULL_VERSION=1.8.0_162-b12
-
-    - os: linux
-      env:
-        - TEST_JVM_VENDOR=oracle
-        - TEST_JVM_VERSION=8u144
-        - TEST_TYPE=jvm
-        - TEST_JVM_TYPE=jdk
-        - TEST_FULL_VERSION=1.8.0_144-b01
-
-    - os: linux
-      env:
-        - TEST_JVM_VENDOR=oracle
-        - TEST_JVM_VERSION=7
-        - TEST_TYPE=jvm
-        - TEST_JVM_TYPE=jdk
-        - TEST_FULL_VERSION=1.7.0_80-b15
-        - TEST_REUSE_JAVA_VERSION=7u80
-
-    - os: linux
-      env:
-        - TEST_JVM_VENDOR=oracle
-        - TEST_JVM_VERSION=7u80
-        - TEST_TYPE=jvm
-        - TEST_JVM_TYPE=jdk
-        - TEST_FULL_VERSION=1.7.0_80-b15
-
-    - os: linux
-      env:
-        - TEST_JVM_VENDOR=oracle
-        - TEST_JVM_VERSION=7u65
-        - TEST_TYPE=jvm
-        - TEST_JVM_TYPE=jdk
-        - TEST_FULL_VERSION=1.7.0_65-b17
-
+#    - os: linux
+#      env:
+#        - TEST_JVM_VENDOR=oracle
+#        - TEST_JVM_VERSION=9.0.4
+#        - TEST_TYPE=jvm
+#        - TEST_JVM_TYPE=jdk
+#        - TEST_FULL_VERSION=9.0.4+11
+##        - TEST_USE_SYSTEM=9
 #
-#  Linux, JDK
-    - os: linux
-      env:
-        - TEST_JVM_VENDOR=oracle
-        - TEST_JVM_VERSION=9
-        - TEST_TYPE=jdk
-        - TEST_JVM_TYPE=jdk
-        - TEST_FULL_VERSION=9.0.4+11
-        - TEST_REUSE_JAVA_VERSION=9.0.4
-        - TEST_USE_SYSTEM=9
-
-    - os: linux
-      env:
-        - TEST_JVM_VENDOR=oracle
-        - TEST_JVM_VERSION=9.0.4
-        - TEST_TYPE=jdk
-        - TEST_JVM_TYPE=jdk
-        - TEST_FULL_VERSION=9.0.4+11
-        - TEST_USE_SYSTEM=9
-
-    - os: linux
-      env:
-        - TEST_JVM_VENDOR=oracle
-        - TEST_JVM_VERSION=9.0.1
-        - TEST_TYPE=jdk
-        - TEST_JVM_TYPE=jdk
-        - TEST_FULL_VERSION=9.0.1+11
-
-    - os: linux
-      env:
-        - TEST_JVM_VENDOR=oracle
-        - TEST_JVM_VERSION=8
-        - TEST_TYPE=jdk
-        - TEST_JVM_TYPE=jdk
-        - TEST_FULL_VERSION=1.8.0_161-b12
-        - TEST_REUSE_JAVA_VERSION=8u161
-
-    - os: linux
-      env:
-        - TEST_JVM_VENDOR=oracle
-        - TEST_JVM_VERSION=8u161
-        - TEST_TYPE=jdk
-        - TEST_JVM_TYPE=jdk
-        - TEST_FULL_VERSION=1.8.0_161-b12
-
-    - os: linux
-      env:
-        - TEST_JVM_VENDOR=oracle
-        - TEST_JVM_VERSION=8u162
-        - TEST_TYPE=jdk
-        - TEST_JVM_TYPE=jdk
-        - TEST_FULL_VERSION=1.8.0_162-b12
-
-    - os: linux
-      env:
-        - TEST_JVM_VENDOR=oracle
-        - TEST_JVM_VERSION=8u144
-        - TEST_TYPE=jdk
-        - TEST_JVM_TYPE=jdk
-        - TEST_FULL_VERSION=1.8.0_144-b01
-
-    - os: linux
-      env:
-        - TEST_JVM_VENDOR=oracle
-        - TEST_JVM_VERSION=7
-        - TEST_TYPE=jdk
-        - TEST_JVM_TYPE=jdk
-        - TEST_FULL_VERSION=1.7.0_80-b15
-        - TEST_REUSE_JAVA_VERSION=7u80
-
-    - os: linux
-      env:
-        - TEST_JVM_VENDOR=oracle
-        - TEST_JVM_VERSION=7u80
-        - TEST_TYPE=jdk
-        - TEST_JVM_TYPE=jdk
-        - TEST_FULL_VERSION=1.7.0_80-b15
-
-    - os: linux
-      env:
-        - TEST_JVM_VENDOR=oracle
-        - TEST_JVM_VERSION=7u65
-        - TEST_TYPE=jdk
-        - TEST_JVM_TYPE=jdk
-        - TEST_FULL_VERSION=1.7.0_65-b17
+#    - os: linux
+#      env:
+#        - TEST_JVM_VENDOR=oracle
+#        - TEST_JVM_VERSION=9.0.1
+#        - TEST_TYPE=jvm
+#        - TEST_JVM_TYPE=jdk
+#        - TEST_FULL_VERSION=9.0.1+11
+#
+#    - os: linux
+#      env:
+#        - TEST_JVM_VENDOR=oracle
+#        - TEST_JVM_VERSION=8
+#        - TEST_TYPE=jvm
+#        - TEST_JVM_TYPE=jdk
+#        - TEST_FULL_VERSION=1.8.0_161-b12
+#        - TEST_REUSE_JAVA_VERSION=8u161
+#
+#    - os: linux
+#      env:
+#        - TEST_JVM_VENDOR=oracle
+#        - TEST_JVM_VERSION=8u161
+#        - TEST_TYPE=jvm
+#        - TEST_JVM_TYPE=jdk
+#        - TEST_FULL_VERSION=1.8.0_161-b12
+#
+#    - os: linux
+#      env:
+#        - TEST_JVM_VENDOR=oracle
+#        - TEST_JVM_VERSION=8u162
+#        - TEST_TYPE=jvm
+#        - TEST_JVM_TYPE=jdk
+#        - TEST_FULL_VERSION=1.8.0_162-b12
+#
+#    - os: linux
+#      env:
+#        - TEST_JVM_VENDOR=oracle
+#        - TEST_JVM_VERSION=8u144
+#        - TEST_TYPE=jvm
+#        - TEST_JVM_TYPE=jdk
+#        - TEST_FULL_VERSION=1.8.0_144-b01
+#
+#    - os: linux
+#      env:
+#        - TEST_JVM_VENDOR=oracle
+#        - TEST_JVM_VERSION=7
+#        - TEST_TYPE=jvm
+#        - TEST_JVM_TYPE=jdk
+#        - TEST_FULL_VERSION=1.7.0_80-b15
+#        - TEST_REUSE_JAVA_VERSION=7u80
+#
+#    - os: linux
+#      env:
+#        - TEST_JVM_VENDOR=oracle
+#        - TEST_JVM_VERSION=7u80
+#        - TEST_TYPE=jvm
+#        - TEST_JVM_TYPE=jdk
+#        - TEST_FULL_VERSION=1.7.0_80-b15
+#
+#    - os: linux
+#      env:
+#        - TEST_JVM_VENDOR=oracle
+#        - TEST_JVM_VERSION=7u65
+#        - TEST_TYPE=jvm
+#        - TEST_JVM_TYPE=jdk
+#        - TEST_FULL_VERSION=1.7.0_65-b17
+#
+##
+##  Linux, JDK
+#    - os: linux
+#      env:
+#        - TEST_JVM_VENDOR=oracle
+#        - TEST_JVM_VERSION=9
+#        - TEST_TYPE=jdk
+#        - TEST_JVM_TYPE=jdk
+#        - TEST_FULL_VERSION=9.0.4+11
+#        - TEST_REUSE_JAVA_VERSION=9.0.4
+#        - TEST_USE_SYSTEM=9
+#
+#    - os: linux
+#      env:
+#        - TEST_JVM_VENDOR=oracle
+#        - TEST_JVM_VERSION=9.0.4
+#        - TEST_TYPE=jdk
+#        - TEST_JVM_TYPE=jdk
+#        - TEST_FULL_VERSION=9.0.4+11
+#        - TEST_USE_SYSTEM=9
+#
+#    - os: linux
+#      env:
+#        - TEST_JVM_VENDOR=oracle
+#        - TEST_JVM_VERSION=9.0.1
+#        - TEST_TYPE=jdk
+#        - TEST_JVM_TYPE=jdk
+#        - TEST_FULL_VERSION=9.0.1+11
+#
+#    - os: linux
+#      env:
+#        - TEST_JVM_VENDOR=oracle
+#        - TEST_JVM_VERSION=8
+#        - TEST_TYPE=jdk
+#        - TEST_JVM_TYPE=jdk
+#        - TEST_FULL_VERSION=1.8.0_161-b12
+#        - TEST_REUSE_JAVA_VERSION=8u161
+#
+#    - os: linux
+#      env:
+#        - TEST_JVM_VENDOR=oracle
+#        - TEST_JVM_VERSION=8u161
+#        - TEST_TYPE=jdk
+#        - TEST_JVM_TYPE=jdk
+#        - TEST_FULL_VERSION=1.8.0_161-b12
+#
+#    - os: linux
+#      env:
+#        - TEST_JVM_VENDOR=oracle
+#        - TEST_JVM_VERSION=8u162
+#        - TEST_TYPE=jdk
+#        - TEST_JVM_TYPE=jdk
+#        - TEST_FULL_VERSION=1.8.0_162-b12
+#
+#    - os: linux
+#      env:
+#        - TEST_JVM_VENDOR=oracle
+#        - TEST_JVM_VERSION=8u144
+#        - TEST_TYPE=jdk
+#        - TEST_JVM_TYPE=jdk
+#        - TEST_FULL_VERSION=1.8.0_144-b01
+#
+#    - os: linux
+#      env:
+#        - TEST_JVM_VENDOR=oracle
+#        - TEST_JVM_VERSION=7
+#        - TEST_TYPE=jdk
+#        - TEST_JVM_TYPE=jdk
+#        - TEST_FULL_VERSION=1.7.0_80-b15
+#        - TEST_REUSE_JAVA_VERSION=7u80
+#
+#    - os: linux
+#      env:
+#        - TEST_JVM_VENDOR=oracle
+#        - TEST_JVM_VERSION=7u80
+#        - TEST_TYPE=jdk
+#        - TEST_JVM_TYPE=jdk
+#        - TEST_FULL_VERSION=1.7.0_80-b15
+#
+#    - os: linux
+#      env:
+#        - TEST_JVM_VENDOR=oracle
+#        - TEST_JVM_VERSION=7u65
+#        - TEST_TYPE=jdk
+#        - TEST_JVM_TYPE=jdk
+#        - TEST_FULL_VERSION=1.7.0_65-b17
