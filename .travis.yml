@@ -31,12 +31,8 @@ env:
   global:
     - DOCKER_IMAGES="centos:centos6 centos:centos7 debian:wheezy debian:jessie ubuntu:trusty opensuse:latest base/arch:latest"
 
-jobs:
-  include:
-    - stage: deploy
-      script: echo Deploy
-
 matrix:
+  fast_finish: true
   include:
 #  OSX, JVM
     - os: osx
@@ -48,6 +44,8 @@ matrix:
         - TEST_FULL_VERSION=9.0.4+11
         - TEST_REUSE_JAVA_VERSION=9.0.4
         - TEST_USE_SYSTEM=9
+      deploy:
+        script: echo Deploy
 
 #    - os: osx
 #      env:
