@@ -37,6 +37,14 @@ matrix:
     - os: osx
       env:
         - TEST_JVM_VENDOR=oracle
+        - TEST_JVM_VERSION=10
+        - TEST_TYPE=jvm
+        - TEST_JVM_TYPE=jdk
+        - TEST_FULL_VERSION=10+46
+
+    - os: osx
+      env:
+        - TEST_JVM_VENDOR=oracle
         - TEST_JVM_VERSION=9
         - TEST_TYPE=jvm
         - TEST_JVM_TYPE=jdk
@@ -123,6 +131,14 @@ matrix:
 
 #
 #  OSX, JDK
+    - os: osx
+      env:
+        - TEST_JVM_VENDOR=oracle
+        - TEST_JVM_VERSION=10
+        - TEST_TYPE=jdk
+        - TEST_JVM_TYPE=jdk
+        - TEST_FULL_VERSION=10+46
+
     - os: osx
       env:
         - TEST_JVM_VENDOR=oracle

@@ -7,9 +7,10 @@
 ![Support Linux](https://img.shields.io/badge/support%20OS-Linux-green.svg?style=flat-square)
 ![Support Mac OS](https://img.shields.io/badge/support%20OS-Mac%20OS-green.svg?style=flat-square)
 
-![Support JDK](https://img.shields.io/badge/support%20JDK-9-green.svg?style=flat-square)
-![Support JDK](https://img.shields.io/badge/support%20JDK-8-green.svg?style=flat-square)
-![Support JDK](https://img.shields.io/badge/support%20JDK-7-green.svg?style=flat-square)
+![Support Oracle JDK 10](https://img.shields.io/badge/support%20Oracle%20JDK-10-green.svg?style=flat-square)
+![Support Oracle JDK 9](https://img.shields.io/badge/support%20Oracle%20JDK-9-green.svg?style=flat-square)
+![Support Oracle JDK 8](https://img.shields.io/badge/support%20Oracle%20JDK-8-green.svg?style=flat-square)
+![Support Oracle JDK 7](https://img.shields.io/badge/support%20Oracle%20JDK-7-green.svg?style=flat-square)
 
 ## Install
 
