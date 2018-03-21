@@ -9,8 +9,10 @@ install:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew reinstall shellcheck; fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew tap caskroom/versions; fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew cask uninstall java; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew cask search java; fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]] && [[ "x$TEST_USE_SYSTEM" == "x8" ]]; then brew cask install java8; fi
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]] && [[ "x$TEST_USE_SYSTEM" == "x9" ]]; then brew cask install java; fi
+#  - if [[ "$TRAVIS_OS_NAME" == "osx" ]] && [[ "x$TEST_USE_SYSTEM" == "x9" ]]; then brew cask install java9; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]] && [[ "x$TEST_USE_SYSTEM" == "x10" ]]; then brew cask install java; fi
 
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then docker --version; fi
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get update; fi
@@ -41,6 +43,7 @@ matrix:
         - TEST_TYPE=jvm
         - TEST_JVM_TYPE=jdk
         - TEST_FULL_VERSION=10+46
+        - TEST_USE_SYSTEM=10
 
     - os: osx
       env:
@@ -50,7 +53,7 @@ matrix:
         - TEST_JVM_TYPE=jdk
         - TEST_FULL_VERSION=9.0.4+11
         - TEST_REUSE_JAVA_VERSION=9.0.4
-        - TEST_USE_SYSTEM=9
+#        - TEST_USE_SYSTEM=9
 
     - os: osx
       env:
@@ -59,7 +62,7 @@ matrix:
         - TEST_TYPE=jvm
         - TEST_JVM_TYPE=jdk
         - TEST_FULL_VERSION=9.0.4+11
-        - TEST_USE_SYSTEM=9
+#        - TEST_USE_SYSTEM=9
 
     - os: osx
       env:
@@ -138,6 +141,7 @@ matrix:
         - TEST_TYPE=jdk
         - TEST_JVM_TYPE=jdk
         - TEST_FULL_VERSION=10+46
+        - TEST_USE_SYSTEM=10
 
     - os: osx
       env:
@@ -147,7 +151,7 @@ matrix:
         - TEST_JVM_TYPE=jdk
         - TEST_FULL_VERSION=9.0.4+11
         - TEST_REUSE_JAVA_VERSION=9.0.4
-        - TEST_USE_SYSTEM=9
+#        - TEST_USE_SYSTEM=9
 
     - os: osx
       env:
@@ -156,7 +160,7 @@ matrix:
         - TEST_TYPE=jdk
         - TEST_JVM_TYPE=jdk
         - TEST_FULL_VERSION=9.0.4+11
-        - TEST_USE_SYSTEM=9
+#        - TEST_USE_SYSTEM=9
 
     - os: osx
       env:
@@ -233,6 +237,7 @@ matrix:
         - TEST_TYPE=jvm
         - TEST_JVM_TYPE=jdk
         - TEST_FULL_VERSION=10+46
+#        - TEST_USE_SYSTEM=10
 
     - os: linux
       env:
@@ -328,6 +333,7 @@ matrix:
         - TEST_TYPE=jdk
         - TEST_JVM_TYPE=jdk
         - TEST_FULL_VERSION=10+46
+        - TEST_USE_SYSTEM=10
 
     - os: linux
       env:
@@ -337,7 +343,7 @@ matrix:
         - TEST_JVM_TYPE=jdk
         - TEST_FULL_VERSION=9.0.4+11
         - TEST_REUSE_JAVA_VERSION=9.0.4
-        - TEST_USE_SYSTEM=9
+#        - TEST_USE_SYSTEM=9
 
     - os: linux
       env:
@@ -346,7 +352,7 @@ matrix:
         - TEST_TYPE=jdk
         - TEST_JVM_TYPE=jdk
         - TEST_FULL_VERSION=9.0.4+11
-        - TEST_USE_SYSTEM=9
+#        - TEST_USE_SYSTEM=9
 
     - os: linux
       env:
