@@ -168,7 +168,6 @@ function otn_curl_redirect() {
 }
 
 function oracle_otn_login() {
-	local output_keychain
 	if [[ -z "${ORACLE_USER}" ]] || [[ -z "${ORACLE_PASSWORD}" ]]; then
 		case "${OS}" in
 			darwin)
