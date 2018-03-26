@@ -28,6 +28,7 @@ function run_test() {
 	./src/test/bash/_test_suite.sh || exit $?
 }
 
+run_test 'jvm' 'oracle' '10' '10+46' '' 'jdk' 10
 #run_test 'jvm' 'oracle' '9' '9.0.4+11' '9.0.4' 'jdk' 9
 #run_test 'jvm' 'oracle' '9.0.4' '9.0.4+11' '' 'jdk' 9
 #run_test 'jvm' 'oracle' '9.0.1' '9.0.1+11' '' 'jdk'
@@ -44,7 +45,7 @@ function run_test() {
 #run_test 'jdk' 'oracle' '8' '1.8.0_161-b12' '8u161' 'jdk'
 #run_test 'jdk' 'oracle' '8u161' '1.8.0_161-b12' '' 'jdk'
 #run_test 'jdk' 'oracle' '8u162' '1.8.0_162-b12' '' 'jdk'
-run_test 'jdk' 'oracle' '8u144' '1.8.0_144-b01' '' 'jdk' 8
+#run_test 'jdk' 'oracle' '8u144' '1.8.0_144-b01' '' 'jdk' 8
 #run_test 'jdk' 'oracle' '7' '1.7.0_80-b15' '' 'jdk'
 #run_test 'jdk' 'oracle' '7u80' '1.7.0_80-b15' '' 'jdk'
 

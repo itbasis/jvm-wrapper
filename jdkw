@@ -453,6 +453,9 @@ function detect_system_jdk() {
 }
 
 function detect_reuse_jdk() {
+	if [[ -z "${JVM_VERSION_SECURITY}" ]]; then
+		return 0;
+	fi
 	local -r jvm_root_dir=${JVMW_HOME}/${JVM_VENDOR}-jdk-${JVM_VERSION_MAJOR}/$([[ "${OS}" == 'darwin' ]] && echo 'Home/')
 	if [[ ! -d "${jvm_root_dir}" ]]; then
 		return 0;
