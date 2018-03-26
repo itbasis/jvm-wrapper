@@ -441,7 +441,7 @@ function detect_system_jdk() {
 		return 0
 	fi
 
-	if [[ "${jdk_output}" != *"java.runtime.version = ${JVM_VERSION_MAJOR}."* && "${jdk_output}" != *"java.runtime.version = 1.${JVM_VERSION_MAJOR}."* ]] && "${jdk_output}" != *"java.runtime.version = ${JVM_VERSION_MAJOR}+"* ]]; then
+	if [[ "${jdk_output}" != *"java.runtime.version = ${JVM_VERSION_MAJOR}."* ]] && [[ "${jdk_output}" != *"java.runtime.version = 1.${JVM_VERSION_MAJOR}."* ]] && [[ "${jdk_output}" != *"java.runtime.version = ${JVM_VERSION_MAJOR}+"* ]]; then
 		USE_SYSTEM_JDK=N
 		return 0
 	fi
