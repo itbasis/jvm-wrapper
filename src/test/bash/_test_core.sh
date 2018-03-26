@@ -31,11 +31,17 @@ function after_test() {
 }
 
 function die() {
+	echo '----- TEST .JVM directory :: begin -----'
+	ls  -la ${HOME}/.jvm/
+	echo '----- TEST .JVM directory :: end -----'
+	echo '----- TEST content "*.last_update" :: begin -----'
+	tail  ${HOME}/.jvm/*.last_update
+	echo '----- TEST content "*.last_update" :: end -----'
 	echo '----- TEST ENVIRONMENTS :: begin -----'
 	env | grep TEST_
 	echo '----- TEST ENVIRONMENTS :: end -----'
 	echo '----- SYSTEM JVM :: begin -----'
-#	java -fullversion
+	java -fullversion
 	echo '----- SYSTEM JVM :: end -----'
 	echo '----- TEST CONFIGURATION FILE :: begin -----'
 	cat jvmw.properties
