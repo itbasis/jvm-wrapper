@@ -459,7 +459,7 @@ function detect_reuse_jdk() {
 	fi
 	local -r jdk_output="$("${jvm_root_dir}/bin/java" -fullversion 2>&1)"
 
-	if [[ "${jdk_output}" != *"java full version \"${JVM_VERSION_MAJOR}.0.${JVM_VERSION_SECURITY}+"* && "${jdk_output}" != *"java full version \"1.${JVM_VERSION_MAJOR}.0_${JVM_VERSION_SECURITY}-"* ]]; then
+	if [[ "${jdk_output}" != *"java full version \"${JVM_VERSION_MAJOR}.0.${JVM_VERSION_SECURITY}+"* ]] && [[ "${jdk_output}" != *"java full version \"1.${JVM_VERSION_MAJOR}.0_${JVM_VERSION_SECURITY}-"* ]] && [[ "${jdk_output}" != *"java full version \"${JVM_VERSION_MAJOR}+"* ]]; then
 		return 0
 	fi
 
