@@ -4,7 +4,6 @@
 
 .gradle/
 build/
-jvmw.properties
 *.log
 *.bak
 tmp.*
@@ -16,3 +15,4 @@ tmp.*
 !.idea/runConfigurations/
 !.idea/dictionaries/
 !.idea/codeStyles/
+!.idea/inspectionProfiles/
