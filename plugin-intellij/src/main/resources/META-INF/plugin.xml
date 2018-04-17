@@ -1,0 +1,12 @@
+<idea-plugin>
+  <name>JVM Wrapper</name>
+  <vendor email="Victor@Alenkov.name">ITBasis</vendor>
+
+  <depends>com.intellij.modules.java</depends>
+
+  <application-components>
+    <component>
+      <implementation-class>ru.itbasis.plugins.intellij.jvmwrapper.JvmWrapperPlugin</implementation-class>
+    </component>
+  </application-components>
+</idea-plugin>

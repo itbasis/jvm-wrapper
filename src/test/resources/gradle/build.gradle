@@ -1,3 +1,5 @@
+package gradle
+
 apply plugin: 'java'
 
 print org.gradle.internal.jvm.Jvm.current().getJavaHome()

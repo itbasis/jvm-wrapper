@@ -4,6 +4,8 @@
 
 .gradle/
 build/
+.sandbox/
+
 *.log
 *.bak
 tmp.*
@@ -16,3 +18,5 @@ tmp.*
 !.idea/dictionaries/
 !.idea/codeStyles/
 !.idea/inspectionProfiles/
+!.idea/compiler.xml
+!.idea/gradle.xml

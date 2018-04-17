@@ -1,4 +1,4 @@
-package ru.itbasis.jvm.wrapper
+package ru.itbasis.plugins.intellij.jvmwrapper
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertThrows
