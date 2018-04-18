@@ -5,7 +5,7 @@
   <!--<category></category>-->
 
   <description>https://github.com/itbasis/jvm-wrapper/</description>
-  
+
   <depends>com.intellij.modules.java</depends>
 
   <project-components>

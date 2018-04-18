@@ -2,6 +2,8 @@ import org.apache.commons.io.FilenameUtils
 import org.gradle.internal.impldep.org.eclipse.jgit.util.Paths
 import org.gradle.plugins.ide.idea.model.IdeaModel
 import org.jetbrains.intellij.IntelliJPluginExtension
+import org.jetbrains.intellij.tasks.PatchPluginXmlTask
+import org.jetbrains.intellij.tasks.PublishTask
 import org.jetbrains.intellij.tasks.VerifyPluginTask
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
@@ -57,11 +59,14 @@ configure<IntelliJPluginExtension> {
   sandboxDirectory = FilenameUtils.concat(rootDir.canonicalPath, ".sandbox")
 
   pluginName = rootProject.name
-
-//  publish.channels("dev")
-  publish.setChannels("dev")
-  publish.username = property("jetbrains.username") as String?
-  publish.password = property("jetbrains.password") as String?
+}
+tasks.withType(PatchPluginXmlTask::class.java).all {
+  untilBuild("181.*")
+}
+tasks.withType(PublishTask::class.java).all {
+  setChannels("dev")
+  setUsername(project.findProperty("jetbrains.username") as String?)
+  setPassword(project.findProperty("jetbrains.password") as String?)
 }
 
 repositories {
