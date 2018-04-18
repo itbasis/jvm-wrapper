@@ -1,5 +1,7 @@
 import com.gradle.scan.plugin.BuildScanExtension
 import org.gradle.plugins.ide.idea.model.IdeaModel
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 tasks.withType<Wrapper> {
   distributionType = Wrapper.DistributionType.BIN
@@ -7,7 +9,6 @@ tasks.withType<Wrapper> {
 }
 
 group = "ru.itbasis.jvm-wrapper"
-version = "20180331_1212"
 
 plugins {
   `build-scan`
@@ -28,4 +29,8 @@ configure<IdeaModel> {
   project {
     vcs = "Git"
   }
+}
+
+allprojects {
+  version = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmm"))
 }

@@ -1,12 +1,17 @@
 <idea-plugin>
   <name>JVM Wrapper</name>
-  <vendor email="Victor@Alenkov.name">ITBasis</vendor>
+  <vendor email="Victor@Alenkov.name" url="https://github.com/itbasis/jvm-wrapper/">ITBasis</vendor>
 
+  <!--<category></category>-->
+
+  <description>https://github.com/itbasis/jvm-wrapper/</description>
+  
   <depends>com.intellij.modules.java</depends>
 
-  <application-components>
+  <project-components>
     <component>
-      <implementation-class>ru.itbasis.plugins.intellij.jvmwrapper.JvmWrapperPlugin</implementation-class>
+      <interface-class>com.intellij.openapi.components.ProjectComponent</interface-class>
+      <implementation-class>ru.itbasis.plugins.intellij.jvmwrapper.JvmWrapperProjectSdk</implementation-class>
     </component>
-  </application-components>
+  </project-components>
 </idea-plugin>
