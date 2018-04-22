@@ -50,7 +50,7 @@ matrix:
 
     - os: osx
       env:
-        - ENV_TEST_FILE=09_00
+        - ENV_TEST_FILE=9_00
 #        - TEST_USE_SYSTEM=9
 
     - os: osx
