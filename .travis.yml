@@ -100,12 +100,12 @@ matrix:
     - os: osx
       env:
         - ENV_TEST_FILE=9_01
-        - TEST_USE_SYSTEM=9
+#        - TEST_USE_SYSTEM=9
 
     - os: osx
       env:
         - ENV_TEST_FILE=9.0.4_01
-        - TEST_USE_SYSTEM=9
+#        - TEST_USE_SYSTEM=9
 
     - os: osx
       env:
@@ -200,12 +200,12 @@ matrix:
     - os: linux
       env:
         - ENV_TEST_FILE=9_01
-        - TEST_USE_SYSTEM=9
+#        - TEST_USE_SYSTEM=9
 
     - os: linux
       env:
         - ENV_TEST_FILE=9.0.4_01
-        - TEST_USE_SYSTEM=9
+#        - TEST_USE_SYSTEM=9
 
     - os: linux
       env:
