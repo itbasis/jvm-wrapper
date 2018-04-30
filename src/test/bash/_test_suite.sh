@@ -22,4 +22,5 @@ for test_script in $(find . -name "${TEST_TYPE}.*.sh" -type f | sort); do
 	${test_script} || {
 	rm -Rf "$TMP_DIR";
 	exit 1; }
+	rm -Rf "$TMP_DIR"
 done
