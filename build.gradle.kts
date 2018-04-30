@@ -5,14 +5,22 @@ import java.time.format.DateTimeFormatter
 
 tasks.withType<Wrapper> {
   distributionType = Wrapper.DistributionType.BIN
-  gradleVersion = "4.7-rc-2"
+  gradleVersion = "4.7"
 }
 
 group = "ru.itbasis.jvm-wrapper"
 
+buildscript {
+  val kotlinVersion: String by extra
+  dependencies {
+    classpath(kotlin("gradle-plugin", kotlinVersion))
+  }
+}
 plugins {
   `build-scan`
-  idea
+}
+apply {
+  plugin<IdeaPlugin>()
 }
 
 configure<BuildScanExtension> {
@@ -33,4 +41,20 @@ configure<IdeaModel> {
 
 allprojects {
   version = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmm"))
+
+  apply {
+    plugin<IdeaPlugin>()
+  }
+
+  configure<IdeaModel> {
+    module {
+      isDownloadJavadoc = false
+      isDownloadSources = false
+    }
+  }
+
+  repositories {
+    jcenter()
+  }
+
 }

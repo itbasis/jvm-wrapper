@@ -8,30 +8,30 @@ import java.lang.IllegalArgumentException
 
 class JvmWrapperExtensionsStringToBooleanPassedTest {
 
-    companion object {
-        @JvmStatic
-        fun dataPassed() = listOf(
-            arrayOf("Y", true)
-            , arrayOf("y", true)
-            , arrayOf("N", false)
-            , arrayOf("n", false)
-        )
+  companion object {
+    @JvmStatic
+    fun dataPassed() = listOf(
+      arrayOf("Y", true),
+      arrayOf("y", true),
+      arrayOf("N", false),
+      arrayOf("n", false)
+    )
 
-        @JvmStatic
-        fun dataFail() = listOf(
-            arrayOf("bla")
-        )
-    }
+    @JvmStatic
+    fun dataFail() = listOf(
+      arrayOf("bla")
+    )
+  }
 
-    @ParameterizedTest(name = "[{index}] {0} -> {1}")
-    @MethodSource("dataPassed")
-    fun toBooleanPassed(value: Any?, expected: Boolean?) {
-        assertEquals(expected, value?.toString()?.toBoolean())
-    }
+  @ParameterizedTest(name = "[{index}] {0} -> {1}")
+  @MethodSource("dataPassed")
+  fun toBooleanPassed(value: Any?, expected: Boolean?) {
+    assertEquals(expected, value?.toString()?.toBoolean())
+  }
 
-    @ParameterizedTest
-    @MethodSource("dataFail")
-    fun toBooleanFail(value: Any?) {
-        assertThrows(IllegalArgumentException::class.java) { value?.toString()?.toBoolean() }
-    }
+  @ParameterizedTest
+  @MethodSource("dataFail")
+  fun toBooleanFail(value: Any?) {
+    assertThrows(IllegalArgumentException::class.java) { value?.toString()?.toBoolean() }
+  }
 }
