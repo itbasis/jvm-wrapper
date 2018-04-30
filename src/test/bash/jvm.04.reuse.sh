@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 
-CUR_DIR=$(dirname "$0")
-source "${CUR_DIR}/_test_core.sh"
+source "${PWD}/src/test/bash/_test_core.sh"
 
 # Hack for code verification
 TEST_JVM_TYPE=${TEST_JVM_TYPE:?}

@@ -19,8 +19,7 @@ export TEST_JVM_HOME="${HOME}/.jvm/${TEST_JVM_VENDOR}-${TEST_JVM_TYPE}-${TEST_JV
 function before_test() {
 	rm -Rf "${HOME}"/.jvm/oracle-jdk-*
 	rm -Rf "${HOME}"/.jvm/oracle-jre-*
-	cp ../jdkw ./
-	cp "../samples.properties/${TEST_JVM_VENDOR}-${TEST_JVM_VERSION}.properties" ./jvmw.properties
+	cp "./samples.properties/${TEST_JVM_VENDOR}-${TEST_JVM_VERSION}.properties" ./jvmw.properties
 }
 
 function after_test() {

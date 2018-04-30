@@ -3,7 +3,10 @@
 # Hack for code verification
 ENV_TEST_FILE=${ENV_TEST_FILE:?}
 
-echo "PWD=$PWD"
+TMP_DIR=`mktemp -d`
+cp -R ./ "$TMP_DIR"
+cd "$TMP_DIR"
+
 # shellcheck disable=SC1090
 source "$PWD/src/test/resources/test.env/$ENV_TEST_FILE.sh"
 
@@ -13,11 +16,10 @@ TEST_FULL_VERSION=${TEST_FULL_VERSION:?}
 TEST_REUSE_JAVA_VERSION=${TEST_REUSE_JAVA_VERSION}
 #
 
-rm -Rf ./build/
-mkdir -p ./build/
-cd ./build/ || exit 1
 
-for test_script in $(find "${PWD}/src/test/bash" -maxdepth 1 -mindepth 1 -name "${TEST_TYPE}.*.sh" -type f | sort); do
+for test_script in $(find . -name "${TEST_TYPE}.*.sh" -type f | sort); do
 	echo ":: execute '${test_script}'..."
-	${test_script} || exit 1
+	${test_script} || {
+	rm -Rf "$TMP_DIR";
+	exit 1; }
 done
