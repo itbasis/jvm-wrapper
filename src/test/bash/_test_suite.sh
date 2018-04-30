@@ -3,8 +3,9 @@
 # Hack for code verification
 ENV_TEST_FILE=${ENV_TEST_FILE:?}
 
+echo "PWD=$PWD"
 # shellcheck disable=SC1090
-source "src/test/resources/test.env/$ENV_TEST_FILE.sh"
+source "$PWD/src/test/resources/test.env/$ENV_TEST_FILE.sh"
 
 # Hack for code verification
 TEST_TYPE=${TEST_TYPE:?}

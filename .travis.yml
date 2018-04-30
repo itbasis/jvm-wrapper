@@ -32,7 +32,7 @@ before_script:
 script:
   - env
 #  - ./src/test/bash/_test_suite.sh
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then ./src/test/bash/_test_docker_suite.sh; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then $PWD/src/test/bash/_test_docker_suite.sh; fi
   - ./jdkw info
   - ./jdkw ./gradlew check
 
