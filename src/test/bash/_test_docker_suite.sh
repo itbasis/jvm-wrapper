@@ -12,13 +12,10 @@ rm -Rf ./build/
 mkdir -p ./build/
 cd ./build/ || exit 1
 
-CUR_DIR=./../$(dirname "$0")
-export CUR_DIR
-
 for DOCKER_IMAGE in ${DOCKER_IMAGES}; do
 	docker_image=${DOCKER_IMAGE%%:*}
 	docker_image=${docker_image%%/*}
-	docker_script=${CUR_DIR}/travis_ci/script_docker.${docker_image}.sh
+	docker_script=${PWD}/src/test/bash/travis_ci/script_docker.${docker_image}.sh
 	export DOCKER_IMAGE
 	echo ":: DOCKER_IMAGE=${DOCKER_IMAGE}"
 	echo ":: :: execute '${docker_script}'..."

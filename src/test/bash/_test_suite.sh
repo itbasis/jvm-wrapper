@@ -16,7 +16,7 @@ rm -Rf ./build/
 mkdir -p ./build/
 cd ./build/ || exit 1
 
-for test_script in $(find "../src/test/bash" -maxdepth 1 -mindepth 1 -name "${TEST_TYPE}.*.sh" -type f | sort); do
+for test_script in $(find "${PWD}/src/test/bash" -maxdepth 1 -mindepth 1 -name "${TEST_TYPE}.*.sh" -type f | sort); do
 	echo ":: execute '${test_script}'..."
 	${test_script} || exit 1
 done
