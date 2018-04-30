@@ -79,19 +79,6 @@ matrix:
       env:
         - ENV_TEST_FILE=8u144_00
 
-    - os: osx
-      env:
-        - ENV_TEST_FILE=7_00
-#        - TEST_USE_SYSTEM=7
-
-    - os: osx
-      env:
-        - ENV_TEST_FILE=7u80_00
-
-    - os: osx
-      env:
-        - ENV_TEST_FILE=7u65_00
-
 #
 #  OSX, JDK
     - os: osx
@@ -129,18 +116,6 @@ matrix:
     - os: osx
       env:
         - ENV_TEST_FILE=8u144_01
-
-    - os: osx
-      env:
-        - ENV_TEST_FILE=7_01
-
-    - os: osx
-      env:
-        - ENV_TEST_FILE=7u80_01
-
-    - os: osx
-      env:
-        - ENV_TEST_FILE=7u65_01
 
 #  Linux, JVM
     - os: linux
@@ -180,18 +155,6 @@ matrix:
       env:
         - ENV_TEST_FILE=8u144_00
 
-    - os: linux
-      env:
-        - ENV_TEST_FILE=7_00
-
-    - os: linux
-      env:
-        - ENV_TEST_FILE=7u80_00
-
-    - os: linux
-      env:
-        - ENV_TEST_FILE=7u65_00
-
 #
 #  Linux, JDK
     - os: linux
@@ -230,16 +193,3 @@ matrix:
     - os: linux
       env:
         - ENV_TEST_FILE=8u144_01
-
-    - os: linux
-      env:
-        - ENV_TEST_FILE=7_01
-
-    - os: linux
-      env:
-        - ENV_TEST_FILE=7u80_01
-#        - TEST_USE_SYSTEM=7
-
-    - os: linux
-      env:
-        - ENV_TEST_FILE=7u65_01

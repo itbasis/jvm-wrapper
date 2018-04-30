@@ -20,6 +20,7 @@ for DOCKER_IMAGE in ${DOCKER_IMAGES}; do
 	docker_image=${docker_image%%/*}
 	docker_script=${CUR_DIR}/travis_ci/script_docker.${docker_image}.sh
 	export DOCKER_IMAGE
+	echo ":: DOCKER_IMAGE=${DOCKER_IMAGE}"
 	echo ":: :: execute '${docker_script}'..."
 	${docker_script} || exit 1
 	echo ":: :: done..."
