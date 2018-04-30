@@ -9,6 +9,7 @@ build/
 *.log
 *.bak
 tmp.*
+.sandbox/
 
 .idea/*
 !.idea/externalDependencies.xml

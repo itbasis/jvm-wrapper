@@ -11,13 +11,7 @@ docker run \
 -it \
 -e ORACLE_USER \
 -e ORACLE_PASSWORD \
--e TEST_TYPE \
--e TEST_JVM_VERSION \
--e TEST_JVM_VENDOR \
--e TEST_FULL_VERSION \
--e TEST_REUSE_JVM_VERSION \
--e TEST_JVM_TYPE \
--e TEST_JVMW_FILE_PROPERTIES \
+-e ENV_TEST_FILE \
 -v "${CUR_DIR}/jdkw":/root/jdkw \
 -v "${CUR_DIR}/src/":/root/src/ \
 -v "${CUR_DIR}/samples.properties/":/root/samples.properties/ \
