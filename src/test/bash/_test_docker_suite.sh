@@ -8,10 +8,6 @@ ENV_TEST_FILE=${ENV_TEST_FILE:?}
 DOCKER_IMAGES=${DOCKER_IMAGES:?}
 #
 
-rm -Rf ./build/
-mkdir -p ./build/
-cd ./build/ || exit 1
-
 for DOCKER_IMAGE in ${DOCKER_IMAGES}; do
 	docker_image=${DOCKER_IMAGE%%:*}
 	docker_image=${docker_image%%/*}
