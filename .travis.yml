@@ -42,12 +42,12 @@ os:
   - linux
 
 env:
-  global:
-    - DOCKER_IMAGE=centos:centos6
-    - DOCKER_IMAGE=centos:centos7
-
-env:
-  - ENV_TEST_FILE=10_00
+  DOCKER_IMAGE:
+    - centos:centos6
+    - centos:centos7
+  ENV_TEST_FILE:
+    - 10_00
+    - 9_00
 
 jobs:
   include:
