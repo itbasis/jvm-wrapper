@@ -495,8 +495,8 @@ if [[ "${USE_SYSTEM_JDK}" -eq "Y" ]]; then
 	JVM_HOME_DIR="${JDK_HOME_DIR}"
 fi
 
-export JDK_HOME=${JDK_HOME_DIR}
-export JAVA_HOME=${JVM_HOME_DIR}
+export JDK_HOME=${JDK_HOME_DIR%%/bin/*}
+export JAVA_HOME=${JVM_HOME_DIR%%/bin/*}
 
 if [[ -z "$1" ]] || [[ "$1" == "info" ]]; then
 	print_debug_info
