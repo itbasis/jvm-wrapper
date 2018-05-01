@@ -33,4 +33,4 @@ for test_script in $(find "$ORIGIN_PWD/src/test/bash" -name "${TEST_TYPE}.*.sh" 
 done
 
 run_tests "./jdkw info"
-run_tests "./jdkw ./gradlew test"
+#run_tests "./jdkw ./gradlew test"
