@@ -14,13 +14,15 @@ TEST_REUSE_JAVA_VERSION=${TEST_REUSE_JAVA_VERSION}
 #
 
 
-for test_script in $(find . -name "${TEST_TYPE}.*.sh" -type f | sort); do
+for test_script in $(find "$ORIGIN_PWD/src/test/bash" -name "${TEST_TYPE}.*.sh" -type f | sort); do
+	test_script="src/${test_script##*/src/}"
 	echo ":: execute '${test_script}'..."
 
 	TMP_DIR=`mktemp -d`
-	cp -R "$ORIGIN_PWD/" "$TMP_DIR/"
+	echo "TMP_DIR=$TMP_DIR, ORIGIN_PWD=$ORIGIN_PWD"
+	cd "${ORIGIN_PWD}" && ls -1 "$ORIGIN_PWD" | grep -v "sandbox" | grep -v "build" | xargs cp -R -t "$TMP_DIR/"
 	cd "$TMP_DIR"
-
+	#
 	${test_script} || {
 	rm -Rf "$TMP_DIR";
 	exit 1; }
