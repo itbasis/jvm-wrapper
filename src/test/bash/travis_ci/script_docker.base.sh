@@ -11,4 +11,4 @@ docker run \
 -e ORACLE_PASSWORD \
 -e ENV_TEST_FILE \
 -v "${PWD}/":/root/jdkw-prj \
- ${DOCKER_IMAGE} bash -c "export HOME=/root/jdkw-prj && cd /root/jdkw-prj && ./src/test/bash/_test_suite.sh 2>&1"
+ ${DOCKER_IMAGE} bash -c "export HOME=/root/jdkw-prj && cd /root/jdkw-prj && ./jdkw ./gradlew test && ./src/test/bash/_test_suite.sh 2>&1"

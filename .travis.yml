@@ -30,13 +30,7 @@ before_script:
   - find . \( -name 'jdkw' -o -name '*.sh' \) -exec shellcheck -e SC1090 -x {} \;
 
 script:
-  - env
-  - ./src/test/bash/_test_suite.sh
-  - cd $TRAVIS_BUILD_DIR
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then $PWD/src/test/bash/_test_docker_suite.sh; fi
-  - cd $TRAVIS_BUILD_DIR
-  - ./jdkw info
-  - ./jdkw ./gradlew test
+  - env && ./src/test/bash/_test_suite.sh && cd $TRAVIS_BUILD_DIR && if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then $PWD/src/test/bash/_test_docker_suite.sh; fi && cd $TRAVIS_BUILD_DIR && ./jdkw info && JVMW_DEBUG=Y ./jdkw ./gradlew test
 
 env:
   global:
