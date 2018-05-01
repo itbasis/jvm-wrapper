@@ -4,188 +4,50 @@ language: generic
 services:
   - docker
 
-install:
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update; fi
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew reinstall shellcheck; fi
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew tap caskroom/versions; fi
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew cask uninstall java; fi
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew cask search java; fi
-#  - if [[ "$TRAVIS_OS_NAME" == "osx" ]] && [[ "x$TEST_USE_SYSTEM" == "x7" ]]; then brew cask install java7; fi
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]] && [[ "x$TEST_USE_SYSTEM" == "x8" ]]; then brew cask install java8; fi
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]] && [[ "x$TEST_USE_SYSTEM" == "x9" ]]; then brew cask install java9; fi
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]] && [[ "x$TEST_USE_SYSTEM" == "x10" ]]; then brew cask install java; fi
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]] && [[ "x$TEST_USE_SYSTEM" != "x" ]]; then /System/Library/Frameworks/JavaVM.framework/Versions/Current/Commands/java_home; fi
+#install:
+#  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update; fi
+#  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew reinstall shellcheck; fi
+#  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew tap caskroom/versions; fi
+#  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew cask uninstall java; fi
+#  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew cask search java; fi
+##  - if [[ "$TRAVIS_OS_NAME" == "osx" ]] && [[ "x$TEST_USE_SYSTEM" == "x7" ]]; then brew cask install java7; fi
+#  - if [[ "$TRAVIS_OS_NAME" == "osx" ]] && [[ "x$TEST_USE_SYSTEM" == "x8" ]]; then brew cask install java8; fi
+#  - if [[ "$TRAVIS_OS_NAME" == "osx" ]] && [[ "x$TEST_USE_SYSTEM" == "x9" ]]; then brew cask install java9; fi
+#  - if [[ "$TRAVIS_OS_NAME" == "osx" ]] && [[ "x$TEST_USE_SYSTEM" == "x10" ]]; then brew cask install java; fi
+#  - if [[ "$TRAVIS_OS_NAME" == "osx" ]] && [[ "x$TEST_USE_SYSTEM" != "x" ]]; then /System/Library/Frameworks/JavaVM.framework/Versions/Current/Commands/java_home; fi
+#
+#  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then docker --version; fi
+#  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get update; fi
+#  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install -y shellcheck; fi
+#  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then apt-cache search oracle-; fi
+##  - if [[ "$TRAVIS_OS_NAME" == "linux" ]] && [[ "x$TEST_USE_SYSTEM" == "x7" ]]; then sudo apt-get install -y oracle-java7-installer oracle-java7-set-default; fi
+#  - if [[ "$TRAVIS_OS_NAME" == "linux" ]] && [[ "x$TEST_USE_SYSTEM" == "x8" ]]; then sudo apt-get install -y oracle-java8-installer oracle-java8-set-default; fi
+#  - if [[ "$TRAVIS_OS_NAME" == "linux" ]] && [[ "x$TEST_USE_SYSTEM" == "x9" ]]; then sudo apt-get install -y oracle-java9-installer oracle-java9-set-default; fi
+##  - if [[ "$TRAVIS_OS_NAME" == "linux" ]] && [[ "x$TEST_USE_SYSTEM" == "x10" ]]; then sudo apt-get install -y oracle-java10-installer oracle-java10-set-default; fi
+#  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then for DOCKER_IMAGE in ${DOCKER_IMAGES}; do docker pull "${DOCKER_IMAGE}"; done; fi
 
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then docker --version; fi
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get update; fi
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install -y shellcheck; fi
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then apt-cache search oracle-; fi
-#  - if [[ "$TRAVIS_OS_NAME" == "linux" ]] && [[ "x$TEST_USE_SYSTEM" == "x7" ]]; then sudo apt-get install -y oracle-java7-installer oracle-java7-set-default; fi
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]] && [[ "x$TEST_USE_SYSTEM" == "x8" ]]; then sudo apt-get install -y oracle-java8-installer oracle-java8-set-default; fi
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]] && [[ "x$TEST_USE_SYSTEM" == "x9" ]]; then sudo apt-get install -y oracle-java9-installer oracle-java9-set-default; fi
-#  - if [[ "$TRAVIS_OS_NAME" == "linux" ]] && [[ "x$TEST_USE_SYSTEM" == "x10" ]]; then sudo apt-get install -y oracle-java10-installer oracle-java10-set-default; fi
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then for DOCKER_IMAGE in ${DOCKER_IMAGES}; do docker pull "${DOCKER_IMAGE}"; done; fi
-
-before_script:
-  - find . \( -name 'jdkw' -o -name '*.sh' \) -exec shellcheck -e SC1090 -x {} \;
+#before_script:
+#  - find . \( -name 'jdkw' -o -name '*.sh' \) -exec shellcheck -e SC1090 -x {} \;
 
 script:
-  - env && ./src/test/bash/_test_suite.sh && cd $TRAVIS_BUILD_DIR && if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then $PWD/src/test/bash/_test_docker_suite.sh; fi && cd $TRAVIS_BUILD_DIR && ./jdkw info && JVMW_DEBUG=Y ./jdkw ./gradlew test
+  - env
+#  - env && ./src/test/bash/_test_suite.sh && cd $TRAVIS_BUILD_DIR && ./jdkw info && JVMW_DEBUG=Y ./jdkw ./gradlew test && cd $TRAVIS_BUILD_DIR && if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then $PWD/src/test/bash/_test_docker_suite.sh; fi
+
+#env:
+#  global:
+#    - DOCKER_IMAGES="centos:centos6 centos:centos7 debian:wheezy debian:jessie ubuntu:trusty opensuse:latest base/arch:latest"
+
+os:
+  - osx
+  - linux
 
 env:
   global:
-    - DOCKER_IMAGES="centos:centos6 centos:centos7 debian:wheezy debian:jessie ubuntu:trusty opensuse:latest base/arch:latest"
+    - DOCKER_IMAGE=centos:centos6
+    - DOCKER_IMAGE=centos:centos7
+  - ENV_TEST_FILE=10_00
 
-matrix:
+jobs:
   include:
-#  OSX, JVM
-    - os: osx
-      env:
-        - ENV_TEST_FILE=10_00
-        - TEST_USE_SYSTEM=10
-
-    - os: osx
-      env:
-        - ENV_TEST_FILE=9_00
-#        - TEST_USE_SYSTEM=9
-
-    - os: osx
-      env:
-        - ENV_TEST_FILE=9.0.4_00
-#        - TEST_USE_SYSTEM=9
-
-    - os: osx
-      env:
-        - ENV_TEST_FILE=9.0.1_00
-
-    - os: osx
-      env:
-        - ENV_TEST_FILE=8_00
-
-    - os: osx
-      env:
-        - ENV_TEST_FILE=8u171_00
-
-    - os: osx
-      env:
-        - ENV_TEST_FILE=8u172_00
-        - TEST_USE_SYSTEM=8
-
-    - os: osx
-      env:
-        - ENV_TEST_FILE=8u144_00
-
-#
-#  OSX, JDK
-    - os: osx
-      env:
-        - ENV_TEST_FILE=10_01
-        - TEST_USE_SYSTEM=10
-
-    - os: osx
-      env:
-        - ENV_TEST_FILE=9_01
-#        - TEST_USE_SYSTEM=9
-
-    - os: osx
-      env:
-        - ENV_TEST_FILE=9.0.4_01
-#        - TEST_USE_SYSTEM=9
-
-    - os: osx
-      env:
-        - ENV_TEST_FILE=9.0.1_01
-
-    - os: osx
-      env:
-        - ENV_TEST_FILE=8_01
-
-    - os: osx
-      env:
-        - ENV_TEST_FILE=8u171_01
-
-    - os: osx
-      env:
-        - ENV_TEST_FILE=8u172_01
-        - TEST_USE_SYSTEM=8
-
-    - os: osx
-      env:
-        - ENV_TEST_FILE=8u144_01
-
-#  Linux, JVM
-    - os: linux
-      env:
-        - ENV_TEST_FILE=10_00
-#        - TEST_USE_SYSTEM=10
-
-    - os: linux
-      env:
-        - ENV_TEST_FILE=9_00
-        - TEST_USE_SYSTEM=9
-
-    - os: linux
-      env:
-        - ENV_TEST_FILE=9.0.4_00
-        - TEST_USE_SYSTEM=9
-
-    - os: linux
-      env:
-        - ENV_TEST_FILE=9.0.1_00
-
-    - os: linux
-      env:
-        - ENV_TEST_FILE=8_00
-        - TEST_USE_SYSTEM=8
-
-    - os: linux
-      env:
-        - ENV_TEST_FILE=8u171_00
-        - TEST_USE_SYSTEM=8
-
-    - os: linux
-      env:
-        - ENV_TEST_FILE=8u172_00
-
-    - os: linux
-      env:
-        - ENV_TEST_FILE=8u144_00
-
-#
-#  Linux, JDK
-    - os: linux
-      env:
-        - ENV_TEST_FILE=10_01
-#        - TEST_USE_SYSTEM=10
-
-    - os: linux
-      env:
-        - ENV_TEST_FILE=9_01
-#        - TEST_USE_SYSTEM=9
-
-    - os: linux
-      env:
-        - ENV_TEST_FILE=9.0.4_01
-#        - TEST_USE_SYSTEM=9
-
-    - os: linux
-      env:
-        - ENV_TEST_FILE=9.0.1_01
-
-    - os: linux
-      env:
-        - ENV_TEST_FILE=8_01
-        - TEST_USE_SYSTEM=8
-
-    - os: linux
-      env:
-        - ENV_TEST_FILE=8u171_01
-        - TEST_USE_SYSTEM=8
-
-    - os: linux
-      env:
-        - ENV_TEST_FILE=8u172_01
-
-    - os: linux
-      env:
-        - ENV_TEST_FILE=8u144_01
+    - stage: deploy
+      script: echo Deploy
