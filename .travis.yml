@@ -43,13 +43,15 @@ os:
 
 env:
   matrix:
-    - DOCKER_IMAGE="centos:centos6"
-    - DOCKER_IMAGE="centos:centos7"
-
-env:
-  matrix:
-    - ENV_TEST_FILE="10_00"
-    - ENV_TEST_FILE="9_00"
+#
+    - DOCKER_IMAGE=""   ENV_TEST_FILE="10_00"
+    - DOCKER_IMAGE=""   ENV_TEST_FILE="9_00"
+#
+    - DOCKER_IMAGE="centos:centos6"   ENV_TEST_FILE="10_00"
+    - DOCKER_IMAGE="centos:centos7"   ENV_TEST_FILE="10_00"
+#
+    - DOCKER_IMAGE="centos:centos7"   ENV_TEST_FILE="9_00"
+    - DOCKER_IMAGE="centos:centos6"   ENV_TEST_FILE="9_00"
 
 jobs:
   include:
