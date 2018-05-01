@@ -14,7 +14,7 @@ TEST_REUSE_JAVA_VERSION=${TEST_REUSE_JAVA_VERSION}
 #
 
 function run_tests() {
-	test_script="src/${1##*/src/}"
+	test_script="${1}"
 	echo ":: execute '${test_script}'..."
 
 	TMP_DIR=`mktemp -d`
@@ -29,7 +29,7 @@ function run_tests() {
 }
 
 for test_script in $(find "$ORIGIN_PWD/src/test/bash" -name "${TEST_TYPE}.*.sh" -type f | sort); do
-	run_tests "${test_script}"
+	run_tests "src/${test_script##*/src/}"
 done
 
 run_tests "./jdkw info"

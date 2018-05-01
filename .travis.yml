@@ -30,7 +30,7 @@ before_script:
 script:
   - env
   - if [[ "x$DOCKER_IMAGES" == "x" ]]; then cd $TRAVIS_BUILD_DIR && ./src/test/bash/_test_suite.sh; fi
-  - if [[ "x$DOCKER_IMAGES" != "x" ]]; then cd $TRAVIS_BUILD_DIR && ./src/test/bash/_test_docker_suite.sh; fi
+  - if [[ "x$DOCKER_IMAGES" != "x" ]] && [[ "$TRAVIS_OS_NAME" == "linux" ]]; then cd $TRAVIS_BUILD_DIR && ./src/test/bash/_test_docker_suite.sh; fi
 #  - cd $TRAVIS_BUILD_DIR && ./jdkw info
 #  - env && ./src/test/bash/_test_suite.sh && cd $TRAVIS_BUILD_DIR && ./jdkw info && JVMW_DEBUG=Y ./jdkw ./gradlew test && cd $TRAVIS_BUILD_DIR && if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then $PWD/src/test/bash/_test_docker_suite.sh; fi
 
@@ -118,3 +118,5 @@ jobs:
   include:
     - stage: deploy
       script: echo Deploy
+      env:
+        - DOCKER_IMAGES=""   ENV_TEST_FILE=""
