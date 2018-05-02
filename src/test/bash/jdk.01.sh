@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 
-CUR_DIR=$(dirname "$0")
-source "${CUR_DIR}/_test_core.sh"
+source "${PWD}/src/test/bash/_test_core.sh"
 
 # Hack for code verification
 TEST_JVM_HOME=${TEST_JVM_HOME:?}
@@ -11,7 +10,7 @@ before_test
 export USE_SYSTEM_JDK=N
 export JVMW_DEBUG=Y
 #
-cp -R ../src/test/resources/gradle/* ./
+cp -R ${PWD}/src/test/resources/gradle/* ./
 
 
 TEST_OUTPUT=$(./jdkw gradlew clean build 2>&1)

@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 
-CUR_DIR=$(dirname "$0")
-source "${CUR_DIR}/_test_core.sh"
+source "${PWD}/src/test/bash/_test_core.sh"
 
 # Hack for code verification
 TEST_FULL_VERSION=${TEST_FULL_VERSION:?}
@@ -10,7 +9,7 @@ before_test
 export USE_SYSTEM_JDK=N
 #
 mkdir -p ./test
-cp ../src/test/resources/Test.java ./test/
+cp ${PWD}/src/test/resources/Test.java ./test/
 
 [[ -f "test/Test.java" ]] || die;
 
