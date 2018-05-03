@@ -18,8 +18,8 @@ function run_tests() {
 	echo ":: execute '${test_script}'..."
 
 	TMP_DIR=`mktemp -d`
-	#	echo "TMP_DIR=$TMP_DIR, ORIGIN_PWD=$ORIGIN_PWD"
-	cd "${ORIGIN_PWD}" && ls -1 "$ORIGIN_PWD" | grep -v "sandbox" | grep -v "build" | xargs -I find_src cp -R find_src "$TMP_DIR/"
+	echo "TMP_DIR=$TMP_DIR, ORIGIN_PWD=$ORIGIN_PWD"
+	cd "${ORIGIN_PWD}" && ls -1 "$ORIGIN_PWD" | grep -v "build" | xargs -I find_src cp -R find_src "$TMP_DIR/"
 	cd "$TMP_DIR"
 	#
 	${test_script} || {
@@ -33,4 +33,4 @@ for test_script in $(find "$ORIGIN_PWD/src/test/bash" -name "${TEST_TYPE}.*.sh" 
 done
 
 run_tests "./jdkw info"
-#run_tests "./jdkw ./gradlew test"
+run_tests "./jdkw ./gradlew test"

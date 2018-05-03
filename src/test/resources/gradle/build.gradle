@@ -1,7 +1,6 @@
-package gradle
-
 apply plugin: 'java'
 
+print 'JAVA_HOME='
 print org.gradle.internal.jvm.Jvm.current().getJavaHome()
 println '/'
 

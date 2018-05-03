@@ -23,6 +23,12 @@ function before_test() {
 	cp "./samples.properties/${TEST_JVM_VENDOR}-${TEST_JVM_VERSION}.properties" ./jvmw.properties
 }
 
+function before_gradle_test() {
+	before_test
+	rm -rf .gradle/ gradle/ plugin-*/ samples.properties/ gradle* settings.*
+	mv src src.origin
+}
+
 function after_test() {
 	unset USE_SYSTEM_JDK JVMW_DEBUG REQUIRED_UPDATE
 	for env_test in $(env | grep TEST_); do
@@ -32,10 +38,10 @@ function after_test() {
 
 function die() {
 	echo '----- TEST .JVM directory :: begin -----'
-	ls  -la "${HOME}/.jvm/"
+	ls -laFh "${HOME}/.jvm/"
 	echo '----- TEST .JVM directory :: end -----'
 	echo '----- TEST content "*.last_update" :: begin -----'
-	tail  "${HOME}/.jvm/*.last_update"
+	tail "${HOME}/.jvm/*.last_update"
 	echo '----- TEST content "*.last_update" :: end -----'
 	echo '----- TEST ENVIRONMENTS :: begin -----'
 	env | grep TEST_

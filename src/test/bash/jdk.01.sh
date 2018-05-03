@@ -6,11 +6,11 @@ source "${PWD}/src/test/bash/_test_core.sh"
 TEST_JVM_HOME=${TEST_JVM_HOME:?}
 TEST_FULL_VERSION=${TEST_FULL_VERSION:?}
 #
-before_test
+before_gradle_test
 export USE_SYSTEM_JDK=N
 export JVMW_DEBUG=Y
 #
-cp -R ${PWD}/src/test/resources/gradle/* ./
+cp -R src.origin/test/resources/gradle/* ./
 
 
 TEST_OUTPUT=$(./jdkw gradlew clean build 2>&1)
