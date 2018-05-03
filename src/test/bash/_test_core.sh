@@ -17,8 +17,9 @@ JVM_VENDOR=${JVM_VENDOR}
 export TEST_JVM_HOME="${HOME}/.jvm/${TEST_JVM_VENDOR}-${TEST_JVM_TYPE}-${TEST_JVM_VERSION}/"
 
 function before_test() {
-	rm -Rf "${HOME}"/.jvm/oracle-jdk-*
-	rm -Rf "${HOME}"/.jvm/oracle-jre-*
+	rm -rf "${HOME}"/.jvm/oracle-jdk-*
+	rm -rf "${HOME}"/.jvm/oracle-jre-*
+	rm -rf ~/.gradle/caches
 	cp "./samples.properties/${TEST_JVM_VENDOR}-${TEST_JVM_VERSION}.properties" ./jvmw.properties
 }
 
