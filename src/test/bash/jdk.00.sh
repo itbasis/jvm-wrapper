@@ -9,7 +9,7 @@ before_test
 export USE_SYSTEM_JDK=N
 #
 mkdir -p ./test
-cp ${PWD}/src/test/resources/Test.java ./test/
+cp "${PWD}/src/test/resources/Test.java" ./test/
 
 [[ -f "test/Test.java" ]] || die;
 
