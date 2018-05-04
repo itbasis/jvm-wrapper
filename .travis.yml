@@ -34,36 +34,36 @@ script:
   - cd $TRAVIS_BUILD_DIR && ./jvmw info && JVMW_DEBUG=Y ./jvmw ./gradlew test
 #  - env && ./src/test/bash/_test_suite.sh && cd $TRAVIS_BUILD_DIR && ./jvmw info && JVMW_DEBUG=Y ./jvmw ./gradlew test && cd $TRAVIS_BUILD_DIR && if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then $PWD/src/test/bash/_test_docker_suite.sh; fi
 
-
-os:
-  - osx
-  - linux
-
-env:
-  global:
-    - DOCKER_IMAGES="centos:centos6 centos:centos7 debian:wheezy debian:jessie ubuntu:trusty opensuse:latest base/arch:latest"
-  matrix:
-#
-    - ENV_TEST_FILE="oracle-10_00"
-    - ENV_TEST_FILE="oracle-10_01"
-    - ENV_TEST_FILE="oracle-9_00"
-    - ENV_TEST_FILE="oracle-9_01"
-    - ENV_TEST_FILE="oracle-9.0.4_00"
-    - ENV_TEST_FILE="oracle-9.0.4_01"
-    - ENV_TEST_FILE="oracle-9.0.1_00"
-    - ENV_TEST_FILE="oracle-9.0.1_01"
-    - ENV_TEST_FILE="oracle-8_00"
-    - ENV_TEST_FILE="oracle-8_01"
-    - ENV_TEST_FILE="oracle-8u172_00"
-    - ENV_TEST_FILE="oracle-8u172_01"
-    - ENV_TEST_FILE="oracle-8u171_00"
-    - ENV_TEST_FILE="oracle-8u171_01"
-    - ENV_TEST_FILE="oracle-8u144_00"
-    - ENV_TEST_FILE="oracle-8u144_01"
-
 jobs:
   include:
+    - stage: test
+      os:
+        - osx
+        - linux
+      env:
+        global:
+          - DOCKER_IMAGES="centos:centos6 centos:centos7 debian:wheezy debian:jessie ubuntu:trusty opensuse:latest base/arch:latest"
+        matrix:
+      #
+          - ENV_TEST_FILE="oracle-10_00"
+          - ENV_TEST_FILE="oracle-10_01"
+          - ENV_TEST_FILE="oracle-9_00"
+          - ENV_TEST_FILE="oracle-9_01"
+          - ENV_TEST_FILE="oracle-9.0.4_00"
+          - ENV_TEST_FILE="oracle-9.0.4_01"
+          - ENV_TEST_FILE="oracle-9.0.1_00"
+          - ENV_TEST_FILE="oracle-9.0.1_01"
+          - ENV_TEST_FILE="oracle-8_00"
+          - ENV_TEST_FILE="oracle-8_01"
+          - ENV_TEST_FILE="oracle-8u172_00"
+          - ENV_TEST_FILE="oracle-8u172_01"
+          - ENV_TEST_FILE="oracle-8u171_00"
+          - ENV_TEST_FILE="oracle-8u171_01"
+          - ENV_TEST_FILE="oracle-8u144_00"
+          - ENV_TEST_FILE="oracle-8u144_01"
+
+    - stage: test
+      script: echo test plugins
+
     - stage: deploy
       script: echo Deploy
-      env:
-        - DOCKER_IMAGES=""   ENV_TEST_FILE="oracle-"
