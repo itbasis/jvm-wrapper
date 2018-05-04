@@ -32,4 +32,4 @@ for test_script in $(find "$ORIGIN_PWD/src/test/bash" -name "${TEST_TYPE}.*.sh" 
 	run_tests "src/${test_script##*/src/}"
 done
 
-run_tests "./jdkw info"
+run_tests "./jvmw info"

@@ -8,14 +8,14 @@ TEST_JVM_VENDOR=${TEST_JVM_VENDOR:?}
 TEST_FULL_VERSION=${TEST_FULL_VERSION:?}
 #
 before_test
-export USE_SYSTEM_JDK=N
+export USE_SYSTEM_JVM=N
 export JVMW_DEBUG=Y
 
 export TEST_JDK_LAST_UPDATE_FILE=${HOME}/.jvm/${TEST_JVM_VENDOR}-jdk-${TEST_JVM_VERSION}.last_update
 
 #
 [[ ! -f "${TEST_JDK_LAST_UPDATE_FILE}" ]] || die
-TEST_OUTPUT=$(./jdkw java -fullversion 2>&1)
+TEST_OUTPUT=$(./jvmw java -fullversion 2>&1)
 [[ -f "${TEST_JDK_LAST_UPDATE_FILE}" ]] || die
 [[ "$(echo "${TEST_OUTPUT}" | grep 'LAST_UPDATE_FILE=')" == *"${TEST_JDK_LAST_UPDATE_FILE}"* ]] || die
 # shellcheck disable=SC2143
@@ -29,7 +29,7 @@ TEST_OUTPUT=$(./jdkw java -fullversion 2>&1)
 
 #
 [[ -f "${TEST_JDK_LAST_UPDATE_FILE}" ]] || die
-TEST_OUTPUT=$(./jdkw java -fullversion 2>&1)
+TEST_OUTPUT=$(./jvmw java -fullversion 2>&1)
 [[ -f "${TEST_JDK_LAST_UPDATE_FILE}" ]] || die
 [[ "$(echo "${TEST_OUTPUT}" | grep 'LAST_UPDATE_FILE=')" == *"${TEST_JDK_LAST_UPDATE_FILE}"* ]] || die
 # shellcheck disable=SC2143

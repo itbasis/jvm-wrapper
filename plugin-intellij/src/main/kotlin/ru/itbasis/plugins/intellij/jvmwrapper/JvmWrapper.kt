@@ -17,7 +17,7 @@ class JvmWrapper(projectDir: File) {
   val jdkHomeDir: File by lazy { homeDir.resolve(jdkName).resolve(if (SystemInfo.isMac) "Home" else "") }
 
   companion object {
-    const val SCRIPT_FILE_NAME = "jdkw"
+    const val SCRIPT_FILE_NAME = "jvmw"
 
     @JvmStatic
     var DEFAULT_PROPERTIES: JvmWrapperProperties =

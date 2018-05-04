@@ -6,7 +6,7 @@ TEST_TYPE=${TEST_TYPE:?}
 TEST_JVM_TYPE=${TEST_JVM_TYPE:?}
 
 # Hack for code verification
-USE_SYSTEM_JDK=${USE_SYSTEM_JDK}
+USE_SYSTEM_JVM=${USE_SYSTEM_JVM}
 JVMW_DEBUG=${JVMW_DEBUG}
 REQUIRED_UPDATE=${REQUIRED_UPDATE}
 TEST_OUTPUT=${TEST_OUTPUT}
@@ -30,7 +30,7 @@ function before_gradle_test() {
 }
 
 function after_test() {
-	unset USE_SYSTEM_JDK JVMW_DEBUG REQUIRED_UPDATE
+	unset USE_SYSTEM_JVM JVMW_DEBUG REQUIRED_UPDATE
 	for env_test in $(env | grep TEST_); do
 		unset "${env_test%%=*}"
 	done
@@ -52,7 +52,7 @@ function die() {
 	echo '----- TEST CONFIGURATION FILE :: begin -----'
 	cat jvmw.properties
 	echo
-	echo "env.USE_SYSTEM_JDK=${USE_SYSTEM_JDK}"
+	echo "env.USE_SYSTEM_JVM=${USE_SYSTEM_JVM}"
 	echo "env.JVMW_DEBUG=${JVMW_DEBUG}"
 	echo "env.REQUIRED_UPDATE=${REQUIRED_UPDATE}"
 	echo "env.JVM_VERSION=${JVM_VERSION}"

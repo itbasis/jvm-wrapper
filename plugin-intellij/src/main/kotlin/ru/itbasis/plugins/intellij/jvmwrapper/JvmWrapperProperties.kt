@@ -5,7 +5,7 @@ import java.lang.IllegalArgumentException
 import java.util.Properties
 
 enum class JvmWrapperPropertyKeys {
-  JVM_VENDOR, JVM_TYPE, JVM_VERSION, JVMW_DEBUG, JVM_REQUIRED_UPDATE, JVMW_ORACLE_KEYCHAIN, ORACLE_USER, ORACLE_PASSWORD, JVMW_USE_SYSTEM_JDK
+  JVM_VENDOR, JVM_TYPE, JVM_VERSION, JVMW_DEBUG, JVM_REQUIRED_UPDATE, JVMW_ORACLE_KEYCHAIN, ORACLE_USER, ORACLE_PASSWORD, JVMW_USE_SYSTEM_JVM
 }
 
 enum class JvmVendor(val code: String) {
@@ -75,7 +75,7 @@ class JvmWrapperProperties(
         JvmWrapperPropertyKeys.JVM_VERSION.name -> if (version == null) version = value
         JvmWrapperPropertyKeys.JVM_REQUIRED_UPDATE.name -> if (requiredUpdate == null) requiredUpdate = value.toBoolean()
         JvmWrapperPropertyKeys.JVMW_DEBUG.name -> if (debug == null) debug = value.toBoolean()
-        JvmWrapperPropertyKeys.JVMW_USE_SYSTEM_JDK.name -> if (useSystemJdk == null) useSystemJdk = value.toBoolean()
+        JvmWrapperPropertyKeys.JVMW_USE_SYSTEM_JVM.name -> if (useSystemJdk == null) useSystemJdk = value.toBoolean()
         JvmWrapperPropertyKeys.JVMW_ORACLE_KEYCHAIN.name -> if (oracleKeychainName == null) oracleKeychainName = value
       }
     }

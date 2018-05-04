@@ -10,5 +10,5 @@ docker run \
 -e ORACLE_USER \
 -e ORACLE_PASSWORD \
 -e ENV_TEST_FILE \
--v "${PWD}/":/root/jdkw-prj \
- ${DOCKER_IMAGE} bash -c "apt-get update && apt-get install -y curl && cd /root/jdkw-prj && ./src/test/bash/_test_suite.sh 2>&1"
+-v "${PWD}/":/root/jvmw-prj \
+ ${DOCKER_IMAGE} bash -c "apt-get update && apt-get install -y curl && cd /root/jvmw-prj && ./src/test/bash/_test_suite.sh 2>&1"

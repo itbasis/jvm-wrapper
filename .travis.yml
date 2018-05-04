@@ -25,14 +25,14 @@ install:
 #  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then for DOCKER_IMAGE in ${DOCKER_IMAGES}; do docker pull "${DOCKER_IMAGE}"; done; fi
 
 before_script:
-  - find . \( -name 'jdkw' -o -name '*.sh' \) -exec shellcheck -e SC1090 -x {} \;
+  - find . \( -name 'jvmw' -o -name '*.sh' \) -exec shellcheck -e SC1090 -x {} \;
 
 script:
   - env
   - if [[ "x$DOCKER_IMAGES" == "x" ]]; then cd $TRAVIS_BUILD_DIR && ./src/test/bash/_test_suite.sh; fi
   - if [[ "x$DOCKER_IMAGES" != "x" ]] && [[ "$TRAVIS_OS_NAME" == "linux" ]]; then cd $TRAVIS_BUILD_DIR && ./src/test/bash/_test_docker_suite.sh; fi
-  - cd $TRAVIS_BUILD_DIR && ./jdkw info && JVMW_DEBUG=Y ./jdkw ./gradlew test
-#  - env && ./src/test/bash/_test_suite.sh && cd $TRAVIS_BUILD_DIR && ./jdkw info && JVMW_DEBUG=Y ./jdkw ./gradlew test && cd $TRAVIS_BUILD_DIR && if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then $PWD/src/test/bash/_test_docker_suite.sh; fi
+  - cd $TRAVIS_BUILD_DIR && ./jvmw info && JVMW_DEBUG=Y ./jvmw ./gradlew test
+#  - env && ./src/test/bash/_test_suite.sh && cd $TRAVIS_BUILD_DIR && ./jvmw info && JVMW_DEBUG=Y ./jvmw ./gradlew test && cd $TRAVIS_BUILD_DIR && if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then $PWD/src/test/bash/_test_docker_suite.sh; fi
 
 
 os:

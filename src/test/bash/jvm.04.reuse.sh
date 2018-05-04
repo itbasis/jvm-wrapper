@@ -14,19 +14,19 @@ if [[ -z "${TEST_REUSE_JVM_VERSION}" ]]; then
 fi
 #
 before_test
-export USE_SYSTEM_JDK=N
+export USE_SYSTEM_JVM=N
 export JVMW_DEBUG=N
 
 #
-TEST_OUTPUT=$(./jdkw info 2>&1)
+TEST_OUTPUT=$(./jvmw info 2>&1)
 [[ "${TEST_OUTPUT}" == *"${TEST_JVM_HOME}"* ]] || die
 
-./jdkw info 2>&1
-./jdkw java -fullversion 2>&1
+./jvmw info 2>&1
+./jvmw java -fullversion 2>&1
 
 export JVM_VERSION=${TEST_REUSE_JVM_VERSION}
 
-TEST_OUTPUT=$(./jdkw info 2>&1)
+TEST_OUTPUT=$(./jvmw info 2>&1)
 [[ "${TEST_OUTPUT}" == *"${TEST_JVM_HOME}"* ]] || die
 export TEST_JVM_HOME="${HOME}/.jvm/${TEST_JVM_VENDOR}-${TEST_JVM_TYPE}-${TEST_REUSE_JVM_VERSION}/"
 [[ "${TEST_OUTPUT}" != *"${TEST_JVM_HOME}"* ]] || die

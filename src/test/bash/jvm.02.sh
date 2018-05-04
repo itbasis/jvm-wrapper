@@ -7,7 +7,7 @@ TEST_JVM_VERSION=${TEST_JVM_VERSION:?}
 TEST_FULL_VERSION=${TEST_FULL_VERSION:?}
 #
 before_test
-export USE_SYSTEM_JDK=N
+export USE_SYSTEM_JVM=N
 export REQUIRED_UPDATE=N
 export JVMW_DEBUG=Y
 
@@ -19,7 +19,7 @@ export TEST_JDK_LAST_UPDATE_FILE=${HOME}/.jvm/${TEST_JVM_VENDOR}-jdk-${TEST_JVM_
 fake_date=$([[ "${TEST_OS}" == "darwin" ]] && echo "$(date -v -2d +"%F %R")" || echo "$(date --date="-2 days" '+%F %R')")
 printf "%s" "${fake_date}" >"${TEST_JDK_LAST_UPDATE_FILE}"
 
-TEST_OUTPUT=$(./jdkw java -fullversion 2>&1)
+TEST_OUTPUT=$(./jvmw java -fullversion 2>&1)
 [[ -f "${TEST_JDK_LAST_UPDATE_FILE}" ]] || die
 # shellcheck disable=SC2143
 [[ "${TEST_OUTPUT}" == *"No such file or directory"* ]] || die

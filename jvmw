@@ -13,7 +13,7 @@ REQUIRED_COMMANDS_DARWIN='hdiutil xar cpio shasum'
 REQUIRED_COMMANDS_LINUX='sha256sum tar'
 
 # Hack for code verification
-USE_SYSTEM_JDK="${USE_SYSTEM_JDK}"
+USE_SYSTEM_JVM="${USE_SYSTEM_JVM}"
 JVMW_DEBUG="${JVMW_DEBUG}"
 REQUIRED_UPDATE="${REQUIRED_UPDATE}"
 JVM_VERSION=${JVM_VERSION}
@@ -56,7 +56,7 @@ function die() {
 function print_debug_info() {
 	if [[ "${JVMW_DEBUG}" == "Y" ]]; then
 		printf ''
-		for key in OS ARCH JVMW_HOME ARCHIVE_EXT JVM_VERSION JVM_VERSION_MAJOR JVM_VERSION_SECURITY JDK_ROOT_DIR JDK_HOME_DIR JAVA_HOME_DIR JVM_PAGE_URL ARCHIVE_JVM_URL ARCHIVE_JVM_CHECKSUM ARCHIVE_FILE LAST_UPDATE_FILE REQUIRED_UPDATE JVMW_DEBUG USE_SYSTEM_JDK JVM_VENDOR ORACLE_USER; do
+		for key in OS ARCH JVMW_HOME ARCHIVE_EXT JVM_VERSION JVM_VERSION_MAJOR JVM_VERSION_SECURITY JDK_ROOT_DIR JDK_HOME_DIR JAVA_HOME_DIR JVM_PAGE_URL ARCHIVE_JVM_URL ARCHIVE_JVM_CHECKSUM ARCHIVE_FILE LAST_UPDATE_FILE REQUIRED_UPDATE JVMW_DEBUG USE_SYSTEM_JVM JVM_VENDOR ORACLE_USER; do
 			>&2 log_2 '' "${key}=${!key}";
 		done
 	fi
@@ -82,7 +82,7 @@ function properties_default() {
 JVM_VERSION=9
 REQUIRED_UPDATE=Y
 JVMW_DEBUG=N
-USE_SYSTEM_JDK=Y
+USE_SYSTEM_JVM=Y
 JVM_VENDOR=oracle
 JVMW_ORACLE_KEYCHAIN=JVM_WRAPPER_ORACLE
 EOF
@@ -415,7 +415,7 @@ function detect_system_jdk() {
 	cmd_path=$(whereis "${cmd}")
 
 	if [[ -z "${cmd_path}" ]]; then
-		USE_SYSTEM_JDK=N
+		USE_SYSTEM_JVM=N
 		return 0
 	fi
 
@@ -431,22 +431,22 @@ function detect_system_jdk() {
 	fi
 
 	if [[ -z "${jvm_dir}" ]] || [[ "${jvm_dir}" == *"Unable to find any JVMs matching version"* ]]; then
-		USE_SYSTEM_JDK=N
+		USE_SYSTEM_JVM=N
 		return 0
 	fi
 
 	local -r jdk_output="$(java -XshowSettings:properties -version 2>&1)"
 	if [[ "${jdk_output}" == *"command not found"* ]]; then
-		USE_SYSTEM_JDK=N
+		USE_SYSTEM_JVM=N
 		return 0
 	fi
 
 	if [[ "${jdk_output}" != *"java.runtime.version = ${JVM_VERSION_MAJOR}."* ]] && [[ "${jdk_output}" != *"java.runtime.version = 1.${JVM_VERSION_MAJOR}."* ]] && [[ "${jdk_output}" != *"java.runtime.version = ${JVM_VERSION_MAJOR}+"* ]]; then
-		USE_SYSTEM_JDK=N
+		USE_SYSTEM_JVM=N
 		return 0
 	fi
 
-	USE_SYSTEM_JDK=Y
+	USE_SYSTEM_JVM=Y
 	eval "JDK_HOME_DIR='${jvm_dir}/'"
 
 	return 0
@@ -481,17 +481,17 @@ else
 fi
 
 if [[ "$1" == "upgrade" ]]; then
-	curl -sS https://raw.githubusercontent.com/itbasis/jvm-wrapper/master/jdkw >"$0"
+	curl -sS https://raw.githubusercontent.com/itbasis/jvm-wrapper/master/jvmw >"$0"
 	exit 0
 fi
 
 main_properties
 detect_reuse_jdk
-if [[ "${USE_SYSTEM_JDK}" == "Y" ]]; then
+if [[ "${USE_SYSTEM_JVM}" == "Y" ]]; then
 	detect_system_jdk
 fi
 
-if [[ "${USE_SYSTEM_JDK}" -eq "Y" ]]; then
+if [[ "${USE_SYSTEM_JVM}" -eq "Y" ]]; then
 	JVM_HOME_DIR="${JDK_HOME_DIR}"
 fi
 
@@ -512,10 +512,10 @@ else
 
 	print_debug_info
 
-	if [[ "$1" == "javac" ]] && [[ "${USE_SYSTEM_JDK}" != "Y" ]]; then
+	if [[ "$1" == "javac" ]] && [[ "${USE_SYSTEM_JVM}" != "Y" ]]; then
 		PATH=.:${JDK_HOME}/bin:$PATH
 		EXEC_PATH=${JDK_HOME}/bin/$1
-	elif [[ "$1" == "java" ]] && [[ "${USE_SYSTEM_JDK}" != "Y" ]]; then
+	elif [[ "$1" == "java" ]] && [[ "${USE_SYSTEM_JVM}" != "Y" ]]; then
 		PATH=.:${JAVA_HOME}/bin:$PATH
 		EXEC_PATH=${JDK_HOME}/bin/$1
 	else
