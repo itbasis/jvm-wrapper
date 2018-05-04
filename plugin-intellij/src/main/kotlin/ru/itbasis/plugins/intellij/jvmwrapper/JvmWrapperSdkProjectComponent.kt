@@ -4,7 +4,6 @@ import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.components.AbstractProjectComponent
 import com.intellij.openapi.externalSystem.service.project.IdeModifiableModelsProviderImpl
 import com.intellij.openapi.module.ModuleManager
-import com.intellij.openapi.project.DumbAware
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.projectRoots.JavaSdk
 import com.intellij.openapi.projectRoots.ProjectJdkTable
@@ -15,16 +14,39 @@ import com.intellij.openapi.roots.LanguageLevelModuleExtensionImpl
 import com.intellij.openapi.roots.ProjectRootManager
 import com.intellij.openapi.roots.impl.LanguageLevelProjectExtensionImpl
 import com.intellij.openapi.roots.impl.ProjectRootManagerImpl
+import com.intellij.openapi.vfs.VirtualFile
+import com.intellij.openapi.vfs.VirtualFileContentsChangedAdapter
+import com.intellij.openapi.vfs.VirtualFileManager
+import com.intellij.openapi.vfs.VirtualFilePropertyEvent
 import java.io.File
 
 class JvmWrapperSdkProjectComponent(
   project: Project,
   private val javaSdk: JavaSdk,
-  private val projectJdkTable: ProjectJdkTable
-) : AbstractProjectComponent(project), DumbAware {
+  private val projectJdkTable: ProjectJdkTable,
+  private val virtualFileManager: VirtualFileManager
+) : AbstractProjectComponent(project) {
+
+  private var jvmwWrapperListener: VirtualFileContentsChangedAdapter = object : VirtualFileContentsChangedAdapter() {
+    override fun onFileChange(virtualFile: VirtualFile) {
+      if (virtualFile.nameWithoutExtension == JvmWrapper.SCRIPT_FILE_NAME) readAndUpdateWrapperSdk()
+    }
+
+    override fun propertyChanged(event: VirtualFilePropertyEvent) {
+      super.propertyChanged(event)
+      if (event.file.nameWithoutExtension == JvmWrapper.SCRIPT_FILE_NAME) readAndUpdateWrapperSdk()
+    }
+
+    override fun onBeforeFileChange(virtualFile: VirtualFile) {}
+  }
 
   override fun projectOpened() {
     readAndUpdateWrapperSdk()
+    virtualFileManager.addVirtualFileListener(jvmwWrapperListener)
+  }
+
+  override fun projectClosed() {
+    virtualFileManager.removeVirtualFileListener(jvmwWrapperListener)
   }
 
   private fun readAndUpdateWrapperSdk() {
@@ -64,7 +86,7 @@ class JvmWrapperSdkProjectComponent(
     val jvmWrapper = JvmWrapper(projectDir = File(myProject.baseDir.canonicalPath))
 
     ApplicationManager.getApplication().runWriteAction {
-      var findJdk: Sdk? = projectJdkTable.findJdk(jvmWrapper.sdkName)
+      var findJdk = projectJdkTable.findJdk(jvmWrapper.sdkName)
       while (findJdk != null) {
         projectJdkTable.removeJdk(findJdk)
         findJdk = projectJdkTable.findJdk(jvmWrapper.sdkName)

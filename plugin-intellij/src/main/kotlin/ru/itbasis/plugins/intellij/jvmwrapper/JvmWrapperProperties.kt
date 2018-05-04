@@ -32,7 +32,7 @@ enum class JvmType {
 }
 
 const val DEFAULT_JVM_VERSION = "9"
-const val JVMW_PROPERTY_FILE_NAME = "jvmw.properties"
+const val JVMW_PROPERTY_FILE_NAME = JvmWrapper.SCRIPT_FILE_NAME + ".properties"
 const val ORACLE_KEYCHAIN_DEFAULT_NAME = "JVM_WRAPPER_ORACLE"
 
 class JvmWrapperProperties(
