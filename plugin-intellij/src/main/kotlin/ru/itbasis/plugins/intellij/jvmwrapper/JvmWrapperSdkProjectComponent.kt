@@ -1,9 +1,12 @@
 package ru.itbasis.plugins.intellij.jvmwrapper
 
 import com.intellij.openapi.application.ApplicationManager
+import com.intellij.openapi.application.Result
+import com.intellij.openapi.application.WriteAction
 import com.intellij.openapi.components.AbstractProjectComponent
 import com.intellij.openapi.externalSystem.service.project.IdeModifiableModelsProviderImpl
 import com.intellij.openapi.module.ModuleManager
+import com.intellij.openapi.progress.ProgressManager
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.projectRoots.JavaSdk
 import com.intellij.openapi.projectRoots.ProjectJdkTable
@@ -18,13 +21,15 @@ import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.openapi.vfs.VirtualFileContentsChangedAdapter
 import com.intellij.openapi.vfs.VirtualFileManager
 import com.intellij.openapi.vfs.VirtualFilePropertyEvent
+import ru.itbasis.jvmwrapper.core.JvmWrapper
 import java.io.File
 
 class JvmWrapperSdkProjectComponent(
   project: Project,
   private val javaSdk: JavaSdk,
   private val projectJdkTable: ProjectJdkTable,
-  private val virtualFileManager: VirtualFileManager
+  private val virtualFileManager: VirtualFileManager,
+  private val progressManager: ProgressManager
 ) : AbstractProjectComponent(project) {
 
   private var jvmwWrapperListener: VirtualFileContentsChangedAdapter = object : VirtualFileContentsChangedAdapter() {
@@ -41,7 +46,8 @@ class JvmWrapperSdkProjectComponent(
   }
 
   override fun projectOpened() {
-    readAndUpdateWrapperSdk()
+    // FIXME https://github.com/itbasis/jvm-wrapper/issues/38
+//    readAndUpdateWrapperSdk()
     virtualFileManager.addVirtualFileListener(jvmwWrapperListener)
   }
 
@@ -50,9 +56,8 @@ class JvmWrapperSdkProjectComponent(
   }
 
   private fun readAndUpdateWrapperSdk() {
-    val wrapperSdk = readWrapperSdk() ?: return
-    updateProjectSdk(wrapperSdk)
-    updateModulesSdk(wrapperSdk)
+    readWrapperSdk()?.let { updateProjectSdk(it) }
+//    updateModulesSdk(wrapperSdk)
   }
 
   private fun updateModulesSdk(wrapperSdk: Sdk) {
@@ -77,27 +82,26 @@ class JvmWrapperSdkProjectComponent(
   }
 
   private fun readWrapperSdk(): Sdk? {
-    var wrapperSdk: Sdk? = null
-
     val ideaFolder = File(myProject.baseDir.canonicalPath).resolve(".idea")
     val jvmWrapperScript = ideaFolder.resolveSibling(JvmWrapper.SCRIPT_FILE_NAME)
-    if (!jvmWrapperScript.exists()) return wrapperSdk
+    if (!jvmWrapperScript.exists()) return null
 
-    val jvmWrapper = JvmWrapper(projectDir = File(myProject.baseDir.canonicalPath))
+    val jvmWrapper = progressManager.run(JvmWrapperTask(myProject))
 
-    ApplicationManager.getApplication().runWriteAction {
-      var findJdk = projectJdkTable.findJdk(jvmWrapper.sdkName)
-      while (findJdk != null) {
-        projectJdkTable.removeJdk(findJdk)
-        findJdk = projectJdkTable.findJdk(jvmWrapper.sdkName)
-      }
+    return object : WriteAction<Sdk>() {
+      override fun run(p0: Result<Sdk>) {
+        var findJdk = projectJdkTable.findJdk(jvmWrapper.sdkName)
+        while (findJdk != null) {
+          projectJdkTable.removeJdk(findJdk)
+          findJdk = projectJdkTable.findJdk(jvmWrapper.sdkName)
+        }
 //
-      val sdk = SdkConfigurationUtil.createAndAddSDK(jvmWrapper.jdkHomeDir.absolutePath, javaSdk) as ProjectJdkImpl
-      wrapperSdk = sdk.clone().apply { name = jvmWrapper.sdkName }
-      projectJdkTable.updateJdk(sdk, wrapperSdk as ProjectJdkImpl)
-    }
-
-    return wrapperSdk
+        val sdk = SdkConfigurationUtil.createAndAddSDK(jvmWrapper.jvmHomeDir.absolutePath, javaSdk) as ProjectJdkImpl
+        val wrapperSdk = sdk.clone().apply { name = jvmWrapper.sdkName }
+        projectJdkTable.updateJdk(sdk, wrapperSdk)
+        p0.setResult(wrapperSdk)
+      }
+    }.execute().resultObject
   }
 
   private fun updateProjectSdk(wrapperSdk: Sdk) {

@@ -9,6 +9,7 @@ import java.time.format.DateTimeFormatter
 
 tasks.withType<Wrapper> {
   distributionType = Wrapper.DistributionType.BIN
+//  gradleVersion = "4.8-rc-1"
   gradleVersion = "4.7"
 }
 
@@ -48,23 +49,17 @@ allprojects {
   version = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmm"))
 
   apply {
-    plugin<IdeaPlugin>()
-    plugin<DetektPlugin>()
+    from("$rootDir/gradle/dependencies.gradle.kts")
+    plugin<BasePlugin>()
+//    plugin<DetektPlugin>()
   }
 
-  configure<IdeaModel> {
-    module {
-      isDownloadJavadoc = false
-      isDownloadSources = false
-    }
-  }
-
-  configure<DetektExtension> {
-    //this.defaultProfile()
-  }
+//  configure<DetektExtension> {
+//    this.defaultProfile()
+//  }
 
   tasks.withType<DetektCheckTask> {
-//    input = projectDir.resolve("src/main/kotlin")
+    //    input = projectDir.resolve("src/main/kotlin")
     tasks.findByName(LifecycleBasePlugin.CHECK_TASK_NAME)?.dependsOn(this)
   }
 

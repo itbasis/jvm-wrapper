@@ -1,8 +1,11 @@
+import org.apache.commons.io.FileUtils
 import org.apache.commons.io.FilenameUtils
 import org.gradle.internal.impldep.org.eclipse.jgit.util.Paths
 import org.jetbrains.intellij.IntelliJPluginExtension
 import org.jetbrains.intellij.tasks.PatchPluginXmlTask
+import org.jetbrains.intellij.tasks.PrepareSandboxTask
 import org.jetbrains.intellij.tasks.PublishTask
+import org.jetbrains.intellij.tasks.RunIdeTask
 import org.jetbrains.intellij.tasks.VerifyPluginTask
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.jetbrains.kotlin.gradle.plugin.KotlinPlatformJvmPlugin
@@ -53,6 +56,14 @@ configure<IntelliJPluginExtension> {
 tasks.withType(PatchPluginXmlTask::class.java).all {
   untilBuild("181.*")
 }
+
+tasks.withType(PrepareSandboxTask::class.java) {
+  doFirst {
+    File(configDirectory.parentFile, "/system/log").takeIf { it.isDirectory }
+      ?.deleteRecursively()
+  }
+}
+
 tasks.withType(PublishTask::class.java).all {
   setChannels("dev")
   setUsername(project.findProperty("jetbrains.username") as String?)
@@ -60,7 +71,7 @@ tasks.withType(PublishTask::class.java).all {
 }
 
 dependencies {
-
+  "compile"(group = "org.apache.commons", name = "commons-compress", version = "1.16.1")
   "compile"(kotlin("stdlib-jdk8"))
 
   // https://stackoverflow.com/questions/49638462/how-to-run-kotlintest-tests-using-the-gradle-kotlin-dsl
@@ -68,4 +79,6 @@ dependencies {
   "testRuntimeOnly"("org.junit.jupiter:junit-jupiter-engine:latest.release")
   "testImplementation"("org.junit.jupiter:junit-jupiter-params:latest.release")
   "testImplementation"("io.github.glytching:junit-extensions:latest.release")
+  "testImplementation"(group = "io.kotlintest", name = "kotlintest-runner-junit5")
+  "testImplementation"(group = "org.mockito", name = "mockito-junit-jupiter")
 }

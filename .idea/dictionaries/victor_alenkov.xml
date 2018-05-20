@@ -13,17 +13,22 @@
       <w>glytching</w>
       <w>hdiutil</w>
       <w>itbasis</w>
+      <w>javase</w>
       <w>jdkw</w>
       <w>jlleitschuh</w>
       <w>jvmw</w>
       <w>jvmwrapper</w>
+      <w>kotlintest</w>
       <w>ktlint</w>
       <w>levelname</w>
       <w>lineno</w>
+      <w>macosx</w>
       <w>mountpoint</w>
+      <w>mozilla</w>
       <w>nexturl</w>
       <w>nfake</w>
       <w>opensuse</w>
+      <w>opentest</w>
       <w>oraclelicense</w>
       <w>pycodestyle</w>
       <w>readlink</w>
@@ -37,6 +42,7 @@
       <w>sudo</w>
       <w>technetwork</w>
       <w>uname</w>
+      <w>unarchiver</w>
       <w>userid</w>
       <w>whereis</w>
       <w>xxxxxx</w>

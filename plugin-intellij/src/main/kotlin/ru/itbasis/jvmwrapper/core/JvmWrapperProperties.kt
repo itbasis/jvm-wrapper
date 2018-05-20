@@ -1,34 +1,25 @@
-package ru.itbasis.plugins.intellij.jvmwrapper
+package ru.itbasis.jvmwrapper.core
 
+import ru.itbasis.jvmwrapper.core.vendor.JvmVendor
 import java.io.File
-import java.lang.IllegalArgumentException
 import java.util.Properties
 
 enum class JvmWrapperPropertyKeys {
-  JVM_VENDOR, JVM_TYPE, JVM_VERSION, JVMW_DEBUG, JVM_REQUIRED_UPDATE, JVMW_ORACLE_KEYCHAIN, ORACLE_USER, ORACLE_PASSWORD, JVMW_USE_SYSTEM_JVM
-}
-
-enum class JvmVendor(val code: String) {
-  ORACLE("oracle"), OPEN_JDK("openjdk");
-
-  companion object {
-    fun parse(code: String?): JvmVendor? {
-      if (code == null) return null
-
-      for (item in values()) {
-        if (item.code.equals(code, ignoreCase = true)) return item
-      }
-      throw IllegalArgumentException("value '$code' unsupported")
-    }
-  }
+  JVM_VENDOR,
+  JVM_TYPE,
+  JVM_VERSION,
+  JVMW_DEBUG,
+  JVM_REQUIRED_UPDATE,
+  JVMW_ORACLE_KEYCHAIN,
+  ORACLE_USER,
+  ORACLE_PASSWORD,
+  JVMW_USE_SYSTEM_JVM
 }
 
 enum class JvmType {
   JVM, JDK;
 
-  override fun toString(): String {
-    return this.name.toLowerCase()
-  }
+  override fun toString() = this.name.toLowerCase()
 }
 
 const val DEFAULT_JVM_VERSION = "9"
