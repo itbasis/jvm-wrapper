@@ -16,9 +16,7 @@ JVM_VENDOR=${JVM_VENDOR}
 #
 
 function before_test() {
-	rm -rf "${HOME}"/.jvm/oracle-jdk-*
-	rm -rf "${HOME}"/.jvm/oracle-jre-*
-	rm -rf ~/.gradle/caches
+	rm -rf "${TEST_JVM_HOME}*"
 	cp "./samples.properties/${TEST_JVM_VENDOR}-${TEST_JVM_VERSION}.properties" ./jvmw.properties
 }
 
