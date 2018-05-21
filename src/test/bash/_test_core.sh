@@ -3,6 +3,7 @@
 TEST_JVM_VERSION=${TEST_JVM_VERSION:?}
 TEST_JVM_VENDOR=${TEST_JVM_VENDOR:?}
 TEST_TYPE=${TEST_TYPE:?}
+TEST_JVM_HOME=${TEST_JVM_HOME}
 TEST_JVM_TYPE=${TEST_JVM_TYPE:?}
 
 # Hack for code verification
@@ -13,8 +14,6 @@ TEST_OUTPUT=${TEST_OUTPUT}
 JVM_VERSION=${JVM_VERSION}
 JVM_VENDOR=${JVM_VENDOR}
 #
-# shellcheck disable=SC2034
-export TEST_JVM_HOME="${HOME}/.jvm/${TEST_JVM_VENDOR}-${TEST_JVM_TYPE}-${TEST_JVM_VERSION}/"
 
 function before_test() {
 	rm -rf "${HOME}"/.jvm/oracle-jdk-*
