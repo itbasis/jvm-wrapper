@@ -46,6 +46,26 @@ val JvmVersionLatestSamples = listOf(
     versionUpdate = "172",
     downloadPageUrl = "/technetwork/java/javase/downloads/jdk8-downloads-2133151.html",
     downloadArchiveUrlPart = "http://download.oracle.com/otn-pub/java/jdk/8u172-b11/a58eab1ec242421181065cdc37240b08/jdk-8u172-"
+  ),
+  JvmVersionSample(
+    vendor = "oracle",
+    type = "jdk",
+    version = "1.8.0_171-b11",
+    fullVersion = "1.8.0_171-b11",
+    versionMajor = "8",
+    versionUpdate = "171",
+    downloadPageUrl = "/technetwork/java/javase/downloads/jdk8-downloads-2133151.html",
+    downloadArchiveUrlPart = "http://download.oracle.com/otn-pub/java/jdk/8u171-b11/512cd62ec5174c3487ac17c61aaa89e8/jdk-8u171-"
+  ),
+  JvmVersionSample(
+    vendor = "oracle",
+    type = "jdk",
+    version = "1.8.0_172-b11",
+    fullVersion = "1.8.0_172-b11",
+    versionMajor = "8",
+    versionUpdate = "172",
+    downloadPageUrl = "/technetwork/java/javase/downloads/jdk8-downloads-2133151.html",
+    downloadArchiveUrlPart = "http://download.oracle.com/otn-pub/java/jdk/8u172-b11/a58eab1ec242421181065cdc37240b08/jdk-8u172-"
   )
 )
 
