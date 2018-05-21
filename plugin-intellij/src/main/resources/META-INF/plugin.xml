@@ -1,12 +1,14 @@
 <idea-plugin>
   <name>JVM Wrapper Support</name>
-  <vendor email="Victor@Alenkov.name" url="https://github.com/itbasis/jvm-wrapper/">ITBasis</vendor>
+  <vendor email="Victor@Alenkov.name" url="https://github.com/itbasis/jvm-wrapper/plugin-intellij/">ITBasis</vendor>
 
   <category>Tools Integration</category>
 
-  <description>https://github.com/itbasis/jvm-wrapper/plugin-intellij/</description>
+  <description>JVM Wrapper Plugin</description>
 
   <depends>com.intellij.modules.java</depends>
+
+  <change-notes>Initial release of the plugin.</change-notes>
 
   <project-components>
     <component>

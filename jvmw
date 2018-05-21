@@ -102,9 +102,14 @@ function properties_build() {
 		unset JVM_VERSION_UPDATE
 	fi
 
-	JVM_FULL_NAME="${JVM_VENDOR}-jdk-${JVM_VERSION_MAJOR}"
-	if [[ ! -z "${JVM_VERSION_UPDATE}" ]]; then
-		JVM_FULL_NAME="${JVM_FULL_NAME}u${JVM_VERSION_UPDATE}"
+	JVM_FULL_NAME="${JVM_VENDOR}-jdk-"
+	if [[ ${JVM_VERSION_MAJOR} -lt 9 ]]; then
+		JVM_FULL_NAME="${JVM_FULL_NAME}${JVM_VERSION_MAJOR}"
+		if [[ ! -z "${JVM_VERSION_UPDATE}" ]]; then
+			JVM_FULL_NAME="${JVM_FULL_NAME}u${JVM_VERSION_UPDATE}"
+		fi
+	else
+		JVM_FULL_NAME="${JVM_FULL_NAME}${JVM_VERSION}"
 	fi
 
 	JDK_ROOT_DIR=${JVMW_HOME}/${JVM_FULL_NAME}
