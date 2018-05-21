@@ -16,13 +16,13 @@ JVM_VENDOR=${JVM_VENDOR}
 #
 
 function before_test() {
-	rm -rf "${TEST_JVM_HOME}*"
-	cp "./samples.properties/${TEST_JVM_VENDOR}-${TEST_JVM_VERSION}.properties" ./jvmw.properties
+	rm -rfv "${TEST_JVM_HOME}*"
+	cp -v "./samples.properties/${TEST_JVM_VENDOR}-${TEST_JVM_VERSION}.properties" ./jvmw.properties
 }
 
 function before_gradle_test() {
 	before_test
-	rm -rf .gradle/ gradle/ plugin-*/ samples.properties/ gradle* settings.*
+	rm -rfv .gradle/ gradle/ plugin-*/ samples.properties/ gradle* settings.*
 	mv src src.origin
 }
 
