@@ -29,7 +29,9 @@ before_script:
 
 script:
   - env
-  - if [[ "x$DOCKER_IMAGES" == "x" ]]; then cd $TRAVIS_BUILD_DIR && ./src/test/bash/_test_suite.sh; fi && if [[ "x$DOCKER_IMAGES" != "x" ]] && [[ "$TRAVIS_OS_NAME" == "linux" ]]; then cd $TRAVIS_BUILD_DIR && ./src/test/bash/_test_docker_suite.sh; fi && cd $TRAVIS_BUILD_DIR && ./jvmw info && JVMW_DEBUG=Y ./jvmw ./gradlew test
+  - if [[ "x$DOCKER_IMAGES" == "x" ]]; then cd $TRAVIS_BUILD_DIR && ./src/test/bash/_test_suite.sh; fi
+  - if [[ "x$DOCKER_IMAGES" != "x" ]] && [[ "$TRAVIS_OS_NAME" == "linux" ]]; then cd $TRAVIS_BUILD_DIR && ./src/test/bash/_test_docker_suite.sh; fi
+  - cd $TRAVIS_BUILD_DIR && ./jvmw info && JVMW_DEBUG=Y ./jvmw ./gradlew test
 #  - env && ./src/test/bash/_test_suite.sh && cd $TRAVIS_BUILD_DIR && ./jvmw info && JVMW_DEBUG=Y ./jvmw ./gradlew test && cd $TRAVIS_BUILD_DIR && if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then $PWD/src/test/bash/_test_docker_suite.sh; fi
 
 
