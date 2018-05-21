@@ -16,14 +16,15 @@ JVM_VENDOR=${JVM_VENDOR}
 #
 
 function before_test() {
-	rm -rfv "${TEST_JVM_HOME}*"
+	rm -rfv "${HOME}"/.jvm/oracle-jdk-*
+	rm -rfv "${HOME}"/.jvm/oracle-jre-*
 	cp -v "./samples.properties/${TEST_JVM_VENDOR}-${TEST_JVM_VERSION}.properties" ./jvmw.properties
 }
 
 function before_gradle_test() {
 	before_test
 	rm -rfv .gradle/ gradle/ plugin-*/ samples.properties/ gradle* settings.*
-	mv src src.origin
+	mv -v src src.origin
 }
 
 function after_test() {
