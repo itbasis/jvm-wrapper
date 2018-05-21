@@ -2,9 +2,9 @@
   <name>JVM Wrapper Support</name>
   <vendor email="Victor@Alenkov.name" url="https://github.com/itbasis/jvm-wrapper/">ITBasis</vendor>
 
-  <!--<category></category>-->
+  <category>Tools Integration</category>
 
-  <description>https://github.com/itbasis/jvm-wrapper/</description>
+  <description>https://github.com/itbasis/jvm-wrapper/plugin-intellij/</description>
 
   <depends>com.intellij.modules.java</depends>
 

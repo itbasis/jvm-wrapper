@@ -53,14 +53,14 @@ configure<IntelliJPluginExtension> {
 
   pluginName = rootProject.name
 }
+
 tasks.withType(PatchPluginXmlTask::class.java).all {
-  untilBuild("181.*")
+  untilBuild("182.*")
 }
 
 tasks.withType(PrepareSandboxTask::class.java) {
   doFirst {
-    File(configDirectory.parentFile, "/system/log").takeIf { it.isDirectory }
-      ?.deleteRecursively()
+    File(configDirectory.parentFile, "/system/log").takeIf { it.isDirectory }?.deleteRecursively()
   }
 }
 
@@ -75,10 +75,10 @@ dependencies {
   "compile"(kotlin("stdlib-jdk8"))
 
   // https://stackoverflow.com/questions/49638462/how-to-run-kotlintest-tests-using-the-gradle-kotlin-dsl
-  "testImplementation"("org.junit.jupiter:junit-jupiter-api:latest.release")
-  "testRuntimeOnly"("org.junit.jupiter:junit-jupiter-engine:latest.release")
-  "testImplementation"("org.junit.jupiter:junit-jupiter-params:latest.release")
-  "testImplementation"("io.github.glytching:junit-extensions:latest.release")
+  "testImplementation"(group = "org.junit.jupiter", name = "junit-jupiter-api")
+  "testRuntimeOnly"(group = "org.junit.jupiter", name = "junit-jupiter-engine")
+  "testImplementation"(group = "org.junit.jupiter", name = "junit-jupiter-params")
+  "testImplementation"(group = "io.github.glytching", name = "junit-extensions")
   "testImplementation"(group = "io.kotlintest", name = "kotlintest-runner-junit5")
   "testImplementation"(group = "org.mockito", name = "mockito-junit-jupiter")
 }

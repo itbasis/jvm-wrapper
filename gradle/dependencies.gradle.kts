@@ -29,6 +29,7 @@ configurations.all {
         "org.objenesis" -> useVersion("2.6")
         "org.jetbrains.kotlin" -> useVersion(kotlinVersion)
         "io.kotlintest" -> useVersion(kotlinTestVersion)
+        "io.github.glytching" -> useVersion("2.2.0")
       }
     }
   }

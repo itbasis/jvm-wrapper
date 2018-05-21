@@ -52,3 +52,6 @@ Properties are read without replacing the previously read. For example, if envir
 
 To download archival versions of JDK, you must set the variables `ORACLE_USER` and `ORACLE_PASSWORD`
 
+## IDE supports
+
+[IDEA plugin](plugin-intellij)
