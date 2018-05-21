@@ -13,7 +13,7 @@ export JVMW_DEBUG=Y
 
 # shellcheck disable=SC2155
 export TEST_OS=$(uname | tr '[:upper:]' '[:lower:]')
-export TEST_JDK_LAST_UPDATE_FILE=${HOME}/.jvm/${TEST_JVM_VENDOR}-jdk-${TEST_JVM_VERSION}.last_update
+export TEST_JDK_LAST_UPDATE_FILE=${TEST_JVM_HOME}.last_update
 
 # shellcheck disable=SC2005
 fake_date=$([[ "${TEST_OS}" == "darwin" ]] && echo "$(date -v -2d +"%F %R")" || echo "$(date --date="-2 days" '+%F %R')")

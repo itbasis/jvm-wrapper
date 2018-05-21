@@ -11,7 +11,7 @@ before_test
 export USE_SYSTEM_JVM=N
 export JVMW_DEBUG=Y
 
-export TEST_JDK_LAST_UPDATE_FILE=${HOME}/.jvm/${TEST_JVM_VENDOR}-jdk-${TEST_JVM_VERSION}.last_update
+export TEST_JDK_LAST_UPDATE_FILE=${TEST_JVM_HOME}.last_update
 
 #
 [[ ! -f "${TEST_JDK_LAST_UPDATE_FILE}" ]] || die

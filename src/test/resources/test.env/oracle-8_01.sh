@@ -7,4 +7,4 @@ export TEST_JVM_TYPE=jdk
 export TEST_FULL_VERSION=1.8.0_171-b11
 export TEST_REUSE_JAVA_VERSION=8u171
 # shellcheck disable=SC2034
-export TEST_JVM_HOME="${HOME}/.jvm/oracle-jdk-8u171/"
+export TEST_JVM_HOME="${HOME}/.jvm/oracle-jdk-8u171"
