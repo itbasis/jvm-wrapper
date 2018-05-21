@@ -4,6 +4,8 @@
 
 The plugin adds JVM Wrapper support for IDEA.
 
+[JetBrains Plugin Repository](https://plugins.jetbrains.com/plugin/10760-jvm-wrapper-support)
+
 ## Screenshots
 
 ![pic 00](docs/images/pic_00.png)
