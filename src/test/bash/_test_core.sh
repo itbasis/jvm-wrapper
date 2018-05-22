@@ -16,8 +16,8 @@ JVM_VENDOR=${JVM_VENDOR}
 #
 
 function before_test() {
-	rm -rfv "${HOME}"/.jvm/oracle-jdk-*
-	rm -rfv "${HOME}"/.jvm/oracle-jre-*
+	rm -rf "${HOME}"/.jvm/oracle-jdk-*
+	rm -rf "${HOME}"/.jvm/oracle-jre-*
 	cp -v "./samples.properties/${TEST_JVM_VENDOR}-${TEST_JVM_VERSION}.properties" ./jvmw.properties
 }
 
