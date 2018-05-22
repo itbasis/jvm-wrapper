@@ -1,15 +1,14 @@
 #!/usr/bin/env bash
 
-CUR_DIR=$(dirname "$0")
-source "${CUR_DIR}/_test_core.sh"
+source "${PWD}/src/test/bash/_test_core.sh"
 
 #
 before_test
-export USE_SYSTEM_JDK=N
+export USE_SYSTEM_JVM=N
 export JVMW_DEBUG=Y
 
 #
-TEST_OUTPUT=$(./jdkw -fullversion 2>&1)
+TEST_OUTPUT=$(./jvmw -fullversion 2>&1)
 [[ "${TEST_OUTPUT}" == *"No program found to execute: -fullversion"* ]] || die
 #
 after_test

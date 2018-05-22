@@ -29,8 +29,8 @@ class TestVersionArguments : ArgumentsProvider {
           fullVersion = "10+46",
           useSystem = "10"
         )
-      )
-      , Arguments.of(
+      ),
+      Arguments.of(
         TestVersion(
           jvmVendor = "oracle",
           jvmType = "jdk",

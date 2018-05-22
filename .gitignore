@@ -9,7 +9,6 @@ build/
 *.log
 *.bak
 tmp.*
-.sandbox/
 
 .idea/*
 !.idea/externalDependencies.xml
@@ -21,3 +20,4 @@ tmp.*
 !.idea/inspectionProfiles/
 !.idea/compiler.xml
 !.idea/gradle.xml
+!.idea/kotlinc.xml

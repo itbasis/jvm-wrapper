@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 
-CUR_DIR=$(dirname "$0")
-source "${CUR_DIR}/_test_core.sh"
+source "${PWD}/src/test/bash/_test_core.sh"
 
 # Hack for code verification
 TEST_JVM_HOME=${TEST_JVM_HOME:?}
@@ -13,14 +12,14 @@ if [[ -z "${TEST_USE_SYSTEM}" ]]; then
 fi
 #
 before_test
-export USE_SYSTEM_JDK=Y
+export USE_SYSTEM_JVM=Y
 export JVMW_DEBUG=N
 
 #
-TEST_OUTPUT=$(./jdkw info 2>&1)
+TEST_OUTPUT=$(./jvmw info 2>&1)
 [[ "${TEST_OUTPUT}" != *"${TEST_JVM_HOME}"* ]] || die
 
-TEST_OUTPUT=$(./jdkw java -fullversion 2>&1)
+TEST_OUTPUT=$(./jvmw java -fullversion 2>&1)
 [[ "${TEST_OUTPUT}" == *"${TEST_FULL_VERSION}"* ]] || die
 #
 after_test

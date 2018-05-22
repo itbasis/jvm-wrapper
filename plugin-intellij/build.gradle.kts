@@ -1,11 +1,14 @@
+import org.apache.commons.io.FileUtils
 import org.apache.commons.io.FilenameUtils
 import org.gradle.internal.impldep.org.eclipse.jgit.util.Paths
-import org.gradle.plugins.ide.idea.model.IdeaModel
 import org.jetbrains.intellij.IntelliJPluginExtension
 import org.jetbrains.intellij.tasks.PatchPluginXmlTask
+import org.jetbrains.intellij.tasks.PrepareSandboxTask
 import org.jetbrains.intellij.tasks.PublishTask
+import org.jetbrains.intellij.tasks.RunIdeTask
 import org.jetbrains.intellij.tasks.VerifyPluginTask
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.jetbrains.kotlin.gradle.plugin.KotlinPlatformJvmPlugin
 
 buildscript {
   repositories {
@@ -18,24 +21,14 @@ buildscript {
   }
 }
 
-plugins {
-  idea
-  kotlin("jvm") version embeddedKotlinVersion
-}
 apply {
+  plugin<KotlinPlatformJvmPlugin>()
   plugin("org.jetbrains.intellij")
   plugin("org.jlleitschuh.gradle.ktlint")
 }
 
 configure<JavaPluginConvention> {
   sourceCompatibility = JavaVersion.VERSION_1_8
-}
-
-configure<IdeaModel> {
-  module {
-    isDownloadJavadoc = false
-    isDownloadSources = false
-  }
 }
 
 tasks.withType(KotlinCompile::class.java).all {
@@ -60,26 +53,32 @@ configure<IntelliJPluginExtension> {
 
   pluginName = rootProject.name
 }
+
 tasks.withType(PatchPluginXmlTask::class.java).all {
-  untilBuild("181.*")
+  untilBuild("182.*")
 }
+
+tasks.withType(PrepareSandboxTask::class.java) {
+  doFirst {
+    File(configDirectory.parentFile, "/system/log").takeIf { it.isDirectory }?.deleteRecursively()
+  }
+}
+
 tasks.withType(PublishTask::class.java).all {
   setChannels("dev")
   setUsername(project.findProperty("jetbrains.username") as String?)
   setPassword(project.findProperty("jetbrains.password") as String?)
 }
 
-repositories {
-  jcenter()
-}
-
 dependencies {
-
-  implementation(kotlin("stdlib-jdk8"))
+  "compile"(group = "org.apache.commons", name = "commons-compress", version = "1.16.1")
+  "compile"(kotlin("stdlib-jdk8"))
 
   // https://stackoverflow.com/questions/49638462/how-to-run-kotlintest-tests-using-the-gradle-kotlin-dsl
-  testImplementation("org.junit.jupiter:junit-jupiter-api:latest.release")
-  testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:latest.release")
-  testImplementation("org.junit.jupiter:junit-jupiter-params:latest.release")
-  testImplementation("io.github.glytching:junit-extensions:latest.release")
+  "testImplementation"(group = "org.junit.jupiter", name = "junit-jupiter-api")
+  "testRuntimeOnly"(group = "org.junit.jupiter", name = "junit-jupiter-engine")
+  "testImplementation"(group = "org.junit.jupiter", name = "junit-jupiter-params")
+  "testImplementation"(group = "io.github.glytching", name = "junit-extensions")
+  "testImplementation"(group = "io.kotlintest", name = "kotlintest-runner-junit5")
+  "testImplementation"(group = "org.mockito", name = "mockito-junit-jupiter")
 }
