@@ -5,4 +5,4 @@ import io.github.glytching.junit.extension.folder.TemporaryFolderExtension
 import org.junit.jupiter.api.extension.ExtendWith
 
 @ExtendWith(TemporaryFolderExtension::class)
-internal class JvmWrapperSdkProjectComponentTest : LightPlatformCodeInsightFixtureTestCase()
+internal class WrapperProjectComponentTest : LightPlatformCodeInsightFixtureTestCase()
