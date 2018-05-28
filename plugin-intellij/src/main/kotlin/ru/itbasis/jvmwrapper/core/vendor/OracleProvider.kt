@@ -59,14 +59,16 @@ class OracleProvider(private val jvmVersion: JvmVersion) : AbstractProvider() {
       // TODO мигрировать на kotlin/io/IOStreams.kt:copyTo
       while (true) {
         val bufferLength = bis.read(buffer)
-        if (bufferLength <= 0) break
+        if (bufferLength <= 0) {
+          break
+        }
 
         sizeCurrent += bufferLength
         if (sizeCurrent >= percentageCurrent) {
           percentageCurrent += percentageStep
           fos.flush()
-          downloadProcessListener?.invoke(remoteArchiveFile, sizeCurrent, sizeTotal)?.let {
-            if (!it) return@use
+          if (downloadProcessListener?.invoke(remoteArchiveFile, sizeCurrent, sizeTotal) == false) {
+            break
           }
         }
         fos.write(buffer, 0, bufferLength)

@@ -1,6 +1,6 @@
 package ru.itbasis.plugins.intellij.jvmwrapper
 
-import com.intellij.openapi.application.ApplicationManager
+import com.intellij.execution.ExecutionException
 import com.intellij.openapi.application.Result
 import com.intellij.openapi.application.WriteAction
 import com.intellij.openapi.components.ServiceManager
@@ -13,9 +13,6 @@ import com.intellij.openapi.projectRoots.ProjectJdkTable
 import com.intellij.openapi.projectRoots.Sdk
 import com.intellij.openapi.projectRoots.impl.ProjectJdkImpl
 import com.intellij.openapi.projectRoots.impl.SdkConfigurationUtil
-import com.intellij.openapi.roots.ProjectRootManager
-import com.intellij.openapi.roots.impl.LanguageLevelProjectExtensionImpl
-import com.intellij.openapi.roots.impl.ProjectRootManagerImpl
 import com.twelvemonkeys.io.FileUtil
 import ru.itbasis.jvmwrapper.core.JVMW_PROPERTY_FILE_NAME
 import ru.itbasis.jvmwrapper.core.JvmWrapper
@@ -26,7 +23,8 @@ import java.io.File
 class JvmWrapperService(
   private val project: Project,
   private val javaSdk: JavaSdk,
-  private val projectJdkTable: ProjectJdkTable
+  private val projectJdkTable: ProjectJdkTable,
+  private val progressManager: ProgressManager
 ) {
   companion object {
     @JvmStatic
@@ -37,24 +35,23 @@ class JvmWrapperService(
     return true
   }
 
-  fun getWrapper(): JvmWrapper? {
-    var result: JvmWrapper? = null
-    ProgressManager.getInstance().run(object : Task.Backgroundable(project, "JVM Wrapper") {
-      override fun run(progressIndicator: ProgressIndicator) {
-        result = JvmWrapper(
+  private fun getWrapper(): JvmWrapper? {
+    return progressManager.run(object : Task.WithResult<JvmWrapper, ExecutionException>(project, "JVM Wrapper", true) {
+      override fun compute(progressIndicator: ProgressIndicator): JvmWrapper {
+        return JvmWrapper(
           workingDir = File(project.baseDir.takeIf { it.findChild(JVMW_PROPERTY_FILE_NAME) != null }!!.canonicalPath),
           stepListener = stepListener(progressIndicator),
           downloadProcessListener = downloadProcessListener(progressIndicator)
         )
       }
     })
-    return result
   }
 
-  private fun getSdk(): Sdk? {
+  fun getSdk(): Sdk? {
+    val wrapper = getWrapper() ?: return null
+
     return object : WriteAction<Sdk>() {
       override fun run(result: Result<Sdk>) {
-        val wrapper = getWrapper() ?: return
         val sdkName = "${JvmWrapper.SCRIPT_FILE_NAME}-${wrapper.jvmName}"
 
         var findJdk = projectJdkTable.findJdk(sdkName)
@@ -69,21 +66,6 @@ class JvmWrapperService(
         result.setResult(wrapperSdk)
       }
     }.execute().resultObject
-  }
-
-  fun updateProjectSdk(wrapperSdk: Sdk? = getSdk()) {
-    if (wrapperSdk == null) return
-
-    ApplicationManager.getApplication().runWriteAction {
-      (ProjectRootManager.getInstance(project) as ProjectRootManagerImpl).projectSdk = wrapperSdk
-//
-      LanguageLevelProjectExtensionImpl.getInstanceImpl(project).default = true
-      LanguageLevelProjectExtensionImpl.MyProjectExtension(project).projectSdkChanged(wrapperSdk)
-    }
-  }
-
-  fun refresh() {
-    if (hasWrapper()) updateProjectSdk()
   }
 
   private fun stepListener(progressIndicator: ProgressIndicator): ProcessStepListener = { msg ->

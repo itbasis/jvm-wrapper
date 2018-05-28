@@ -14,6 +14,10 @@ The plugin adds JVM Wrapper support for IDEA.
 
 ![pic 02](docs/images/pic_02.png)
 
+![pic 03](docs/images/pic_03.png)
+
+![pic 04](docs/images/pic_04.png)
+
 ### What can
 * Download the latest version of JDK from oracle.com (without authorization)
 * Install the required JDK in the project when changing the settings of `jvmw.properties`
@@ -22,5 +26,3 @@ The plugin adds JVM Wrapper support for IDEA.
 * Download JDK archived versions
 * Show the vendor license acceptance dialog before downloading
 * Download not only for MacOS, but also for Linux / Windows
-* Show the progress of the distribution download
-* Install JDK when opening a project
