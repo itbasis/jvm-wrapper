@@ -14,7 +14,7 @@ class ProjectSdkUpdater(private val project: Project, private val jvmWrapperServ
   }
 
   fun update() {
-    check(jvmWrapperService.hasWrapper())
+    if (!jvmWrapperService.hasWrapper()) return
 
     val wrapperSdk = jvmWrapperService.getSdk() ?: return
 

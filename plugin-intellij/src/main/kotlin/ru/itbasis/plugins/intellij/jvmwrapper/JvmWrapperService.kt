@@ -14,7 +14,6 @@ import com.intellij.openapi.projectRoots.Sdk
 import com.intellij.openapi.projectRoots.impl.ProjectJdkImpl
 import com.intellij.openapi.projectRoots.impl.SdkConfigurationUtil
 import com.twelvemonkeys.io.FileUtil
-import ru.itbasis.jvmwrapper.core.JVMW_PROPERTY_FILE_NAME
 import ru.itbasis.jvmwrapper.core.JvmWrapper
 import ru.itbasis.jvmwrapper.core.ProcessStepListener
 import ru.itbasis.jvmwrapper.core.vendor.DownloadProcessListener
@@ -31,19 +30,18 @@ class JvmWrapperService(
     fun getInstance(project: Project): JvmWrapperService = ServiceManager.getService(project, JvmWrapperService::class.java)
   }
 
-  fun hasWrapper(): Boolean {
-    return true
-  }
+  fun hasWrapper(): Boolean = project.baseDir.findFileByRelativePath(JvmWrapper.SCRIPT_FILE_NAME)?.exists() ?: false
 
   private fun getWrapper(): JvmWrapper? {
     return progressManager.run(object : Task.WithResult<JvmWrapper, ExecutionException>(project, "JVM Wrapper", true) {
-      override fun compute(progressIndicator: ProgressIndicator): JvmWrapper {
-        return JvmWrapper(
-          workingDir = File(project.baseDir.takeIf { it.findChild(JVMW_PROPERTY_FILE_NAME) != null }!!.canonicalPath),
+      override fun compute(progressIndicator: ProgressIndicator): JvmWrapper? = if (!hasWrapper())
+        null
+      else
+        JvmWrapper(
+          workingDir = File(project.baseDir.canonicalPath),
           stepListener = stepListener(progressIndicator),
           downloadProcessListener = downloadProcessListener(progressIndicator)
         )
-      }
     })
   }
 
