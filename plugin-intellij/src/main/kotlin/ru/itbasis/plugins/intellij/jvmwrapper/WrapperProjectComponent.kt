@@ -15,11 +15,8 @@ import com.intellij.openapi.vfs.VirtualFilePropertyEvent
 import ru.itbasis.jvmwrapper.core.JvmWrapper
 
 class WrapperProjectComponent(
-  project: Project,
-  private val virtualFileManager: VirtualFileManager,
-  private val projectSdkUpdater: ProjectSdkUpdater
-) :
-  AbstractProjectComponent(project) {
+  project: Project, private val virtualFileManager: VirtualFileManager, private val projectSdkUpdater: ProjectSdkUpdater
+) : AbstractProjectComponent(project) {
 
   private var jvmwWrapperListener: VirtualFileListener = object : VirtualFileContentsChangedAdapter() {
     override fun onFileChange(virtualFile: VirtualFile) = refresh(virtualFile)

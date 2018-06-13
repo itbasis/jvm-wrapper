@@ -28,7 +28,7 @@ class JvmWrapperPlugin(project: Project, private val progressIndicator: Progress
     }
   }
 
-  private fun downloadProcessListener(): DownloadProcessListener = { (url), sizeCurrent, sizeTotal ->
+  private fun downloadProcessListener(): DownloadProcessListener = { url, sizeCurrent, sizeTotal ->
     progressIndicator.run {
       ProgressManager.checkCanceled()
       val percentage = sizeCurrent.toDouble() / sizeTotal

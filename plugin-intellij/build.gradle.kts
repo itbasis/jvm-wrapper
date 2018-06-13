@@ -5,7 +5,6 @@ import org.jetbrains.intellij.IntelliJPluginExtension
 import org.jetbrains.intellij.tasks.PatchPluginXmlTask
 import org.jetbrains.intellij.tasks.PrepareSandboxTask
 import org.jetbrains.intellij.tasks.PublishTask
-import org.jetbrains.intellij.tasks.RunIdeTask
 import org.jetbrains.intellij.tasks.VerifyPluginTask
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.jetbrains.kotlin.gradle.plugin.KotlinPlatformJvmPlugin
@@ -37,13 +36,6 @@ tasks.withType(KotlinCompile::class.java).all {
   }
 }
 
-tasks.withType(Test::class.java).all {
-  useJUnitPlatform {
-    includeEngines("junit-jupiter")
-  }
-  failFast = true
-}
-
 tasks.getByPath("check").dependsOn(tasks.withType(VerifyPluginTask::class.java))
 
 configure<IntelliJPluginExtension> {
@@ -71,14 +63,12 @@ tasks.withType(PublishTask::class.java).all {
 }
 
 dependencies {
-  "compile"(group = "org.apache.commons", name = "commons-compress", version = "1.16.1")
-  "compile"(kotlin("stdlib-jdk8"))
+  "compile"(project(":plugin-common"))
 
-  // https://stackoverflow.com/questions/49638462/how-to-run-kotlintest-tests-using-the-gradle-kotlin-dsl
-  "testImplementation"(group = "org.junit.jupiter", name = "junit-jupiter-api")
-  "testRuntimeOnly"(group = "org.junit.jupiter", name = "junit-jupiter-engine")
-  "testImplementation"(group = "org.junit.jupiter", name = "junit-jupiter-params")
-  "testImplementation"(group = "io.github.glytching", name = "junit-extensions")
-  "testImplementation"(group = "io.kotlintest", name = "kotlintest-runner-junit5")
+  "compile"(group = "com.github.shafirov.klogging", name = "klogging.jvm")
+
+//  "compile"(kotlin("stdlib-jdk8"))
+
+//  "testImplementation"(group = "io.kotlintest", name = "kotlintest-runner-junit4")
   "testImplementation"(group = "org.mockito", name = "mockito-junit-jupiter")
 }

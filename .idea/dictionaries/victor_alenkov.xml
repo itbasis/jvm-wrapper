@@ -7,11 +7,14 @@
       <w>cmds</w>
       <w>cpio</w>
       <w>debian</w>
+      <w>detekt</w>
       <w>dokka</w>
       <w>fullversion</w>
       <w>funcname</w>
       <w>glytching</w>
+      <w>gson</w>
       <w>hdiutil</w>
+      <w>httpcomponents</w>
       <w>itbasis</w>
       <w>javase</w>
       <w>jdkw</w>
@@ -23,6 +26,7 @@
       <w>levelname</w>
       <w>lineno</w>
       <w>macosx</w>
+      <w>microutils</w>
       <w>mountpoint</w>
       <w>mozilla</w>
       <w>nexturl</w>

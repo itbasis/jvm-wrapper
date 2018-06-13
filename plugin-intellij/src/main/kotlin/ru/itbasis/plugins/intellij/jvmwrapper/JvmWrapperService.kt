@@ -34,14 +34,12 @@ class JvmWrapperService(
 
   private fun getWrapper(): JvmWrapper? {
     return progressManager.run(object : Task.WithResult<JvmWrapper, ExecutionException>(project, "JVM Wrapper", true) {
-      override fun compute(progressIndicator: ProgressIndicator): JvmWrapper? = if (!hasWrapper())
-        null
-      else
-        JvmWrapper(
-          workingDir = File(project.baseDir.canonicalPath),
-          stepListener = stepListener(progressIndicator),
-          downloadProcessListener = downloadProcessListener(progressIndicator)
-        )
+      override fun compute(progressIndicator: ProgressIndicator): JvmWrapper? = if (!hasWrapper()) null
+      else JvmWrapper(
+        workingDir = File(project.baseDir.canonicalPath),
+        stepListener = stepListener(progressIndicator),
+        downloadProcessListener = downloadProcessListener(progressIndicator)
+      )
     })
   }
 
@@ -75,14 +73,13 @@ class JvmWrapperService(
     }
   }
 
-  private fun downloadProcessListener(progressIndicator: ProgressIndicator): DownloadProcessListener = { (url), sizeCurrent, sizeTotal ->
+  private fun downloadProcessListener(progressIndicator: ProgressIndicator): DownloadProcessListener = { url, sizeCurrent, sizeTotal ->
     progressIndicator.run {
       ProgressManager.checkCanceled()
       val percentage = sizeCurrent.toDouble() / sizeTotal
       fraction = percentage
       text = "%s / %s (%.2f%%) < %s".format(
-        FileUtil.toHumanReadableSize(sizeCurrent),
-        FileUtil.toHumanReadableSize(sizeTotal), percentage * 100, url
+        FileUtil.toHumanReadableSize(sizeCurrent), FileUtil.toHumanReadableSize(sizeTotal), percentage * 100, url
       )
       return@run this.isRunning
     }
