@@ -14,7 +14,7 @@
       <implementation-class>ru.itbasis.plugins.intellij.jvmwrapper.WrapperProjectComponent</implementation-class>
     </component>
   </project-components>
-`
+
   <actions>
     <group id="WrapperBuildMenu" compact="true">
       <add-to-group group-id="BuildMenu" anchor="after" relative-to-action="CompileProject"/>

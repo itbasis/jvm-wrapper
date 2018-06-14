@@ -25,10 +25,12 @@ group = "ru.itbasis.jvm-wrapper"
 
 buildscript {
   val kotlinVersion: String by extra
+
   dependencies {
     classpath(kotlin("gradle-plugin", kotlinVersion))
     classpath("gradle.plugin.io.gitlab.arturbosch.detekt:detekt-gradle-plugin:latest.release")
     classpath("com.netflix.nebula:nebula-project-plugin:latest.release")
+    classpath("gradle.plugin.org.jlleitschuh.gradle:ktlint-gradle:latest.release")
   }
 }
 
@@ -65,6 +67,8 @@ allprojects {
     plugin<BasePlugin>()
     plugin<DetektPlugin>()
     plugin<NebulaFacetPlugin>()
+    // FIXME https://github.com/shyiko/ktlint/issues/226
+//    plugin("org.jlleitschuh.gradle.ktlint")
   }
 
   configure<DetektExtension> {
@@ -101,7 +105,7 @@ allprojects {
       dependencies {
         "compile"(kotlin("stdlib-jdk8"))
 
-        arrayOf(kotlin("test"), kotlin("test-junit"), "io.kotlintest:kotlintest-runner-junit4").forEach {
+        arrayOf(kotlin("test-junit5"), "io.kotlintest:kotlintest-runner-junit5").forEach {
           "testCompile"(it)
           "integrationTestCompile"(it)
         }

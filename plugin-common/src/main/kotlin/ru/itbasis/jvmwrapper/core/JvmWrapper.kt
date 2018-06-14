@@ -1,5 +1,7 @@
 package ru.itbasis.jvmwrapper.core
 
+import org.apache.commons.lang3.SystemUtils
+import org.apache.commons.lang3.SystemUtils.IS_OS_MAC
 import ru.itbasis.jvmwrapper.core.unarchiver.MacUnarchiver
 import ru.itbasis.jvmwrapper.core.vendor.DownloadProcessListener
 import ru.itbasis.jvmwrapper.core.vendor.JvmVendor
@@ -15,7 +17,7 @@ class JvmWrapper(
     require(workingDir.isDirectory) { "'$workingDir' is not a directory" }
   }
 
-  private val homeDir: File = SystemInfo.userHome.resolve(".jvm")
+  private val homeDir: File = File(SystemUtils.USER_HOME, ".jvm")
 
   private val wrapperProperties: JvmWrapperProperties = JvmWrapperProperties().apply {
     "Reading properties from the working directory".step(stepListener) { workingDir.resolve(JVMW_PROPERTY_FILE_NAME).let { append(it) } }
@@ -40,7 +42,7 @@ class JvmWrapper(
         }
       }.let { archiveFile -> "unpack JVM archive file".step(stepListener) { MacUnarchiver(archiveFile, jvmHomeDir, stepListener) } }
     }
-  }.run { if (SystemInfo.isMac) this.resolve("Home") else this }.apply { check(isDirectory, { "jvm home directory is not exists: $this" }) }
+  }.run { if (IS_OS_MAC) this.resolve("Home") else this }.apply { check(isDirectory, { "jvm home directory is not exists: $this" }) }
 
   companion object {
     const val SCRIPT_FILE_NAME = "jvmw"

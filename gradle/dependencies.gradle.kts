@@ -16,6 +16,8 @@ configurations.all {
     eachDependency {
       when (requested.group) {
         "junit" -> useVersion("4.12")
+        "org.junit.platform" -> useVersion("1.2.0")
+        "org.junit.jupiter" -> useVersion("5.2.0")
         "org.mockito" -> useVersion("2.18.3")
         "org.opentest4j" -> useVersion("1.1.0")
         "org.objenesis" -> useVersion("2.6")
@@ -24,8 +26,8 @@ configurations.all {
         "io.github.glytching" -> useVersion("2.2.0")
         "com.github.shafirov.klogging" -> useVersion("1.2.10")
         "org.apache.commons" -> when (requested.name) {
-          "commons-lang3" -> useVersion("3.5")
-          "commons-compress" -> useVersion("1.17")
+          "commons-lang3" -> useVersion("3.4")
+          "commons-compress" -> useVersion("1.16.1")
         }
         "org.apache.httpcomponents" -> when (requested.name) {
           "httpclient" -> useVersion("4.5.2")

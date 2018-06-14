@@ -1,7 +1,7 @@
 package ru.itbasis.jvmwrapper.core
 
-import ru.itbasis.jvmwrapper.core.SystemInfo.isMac
-import ru.itbasis.jvmwrapper.core.SystemInfo.isWindows
+import org.apache.commons.lang3.SystemUtils.IS_OS_MAC
+import org.apache.commons.lang3.SystemUtils.IS_OS_WINDOWS
 
 data class JvmVersion(val type: JvmType = JvmType.JDK, val version: String) {
   val major: String
@@ -19,8 +19,8 @@ data class JvmVersion(val type: JvmType = JvmType.JDK, val version: String) {
   val os: String
     get() {
       return when {
-        isMac -> if (major.toInt() > 8) "osx" else "macosx"
-        isWindows -> "windows"
+        IS_OS_MAC -> if (major.toInt() > 8) "osx" else "macosx"
+        IS_OS_WINDOWS -> "windows"
         else -> "linux"
       }
     }

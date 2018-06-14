@@ -1,5 +1,7 @@
 package ru.itbasis.jvmwrapper.core.vendor
 
+import org.apache.commons.lang3.SystemUtils.IS_OS_MAC
+import org.apache.commons.lang3.SystemUtils.IS_OS_WINDOWS
 import org.apache.http.HttpResponse
 import org.apache.http.client.CookieStore
 import org.apache.http.client.methods.HttpGet
@@ -14,8 +16,6 @@ import org.apache.http.protocol.HttpContext
 import org.apache.http.util.EntityUtils
 import ru.itbasis.jvmwrapper.core.RemoteArchiveFile
 import ru.itbasis.jvmwrapper.core.SystemInfo.is32Bit
-import ru.itbasis.jvmwrapper.core.SystemInfo.isMac
-import ru.itbasis.jvmwrapper.core.SystemInfo.isWindows
 import java.io.File
 
 typealias DownloadProcessListener = (remoteArchiveUrl: String, sizeCurrent: Long, sizeTotal: Long) -> Boolean
@@ -39,8 +39,8 @@ abstract class AbstractProvider {
   val archiveArchitecture = if (is32Bit) "i586" else "x64"
 
   val archiveExtension = when {
-    isMac -> "dmg"
-    isWindows -> "exe"
+    IS_OS_MAC -> "dmg"
+    IS_OS_WINDOWS -> "exe"
     else -> "tar.gz"
   }
 

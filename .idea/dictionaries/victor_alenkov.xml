@@ -15,12 +15,14 @@
       <w>gson</w>
       <w>hdiutil</w>
       <w>httpcomponents</w>
+      <w>httpcore</w>
       <w>itbasis</w>
       <w>javase</w>
       <w>jdkw</w>
       <w>jlleitschuh</w>
       <w>jvmw</w>
       <w>jvmwrapper</w>
+      <w>klogging</w>
       <w>kotlintest</w>
       <w>ktlint</w>
       <w>levelname</w>
@@ -40,6 +42,7 @@
       <w>rlength</w>
       <w>rstart</w>
       <w>securebackup</w>
+      <w>shafirov</w>
       <w>shasum</w>
       <w>shellcheck</w>
       <w>signon</w>

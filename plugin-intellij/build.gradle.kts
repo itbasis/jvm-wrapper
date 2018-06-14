@@ -16,14 +16,12 @@ buildscript {
   }
   dependencies {
     classpath("gradle.plugin.org.jetbrains.intellij.plugins:gradle-intellij-plugin:latest.release")
-    classpath("gradle.plugin.org.jlleitschuh.gradle:ktlint-gradle:latest.release")
   }
 }
 
 apply {
   plugin<KotlinPlatformJvmPlugin>()
   plugin("org.jetbrains.intellij")
-  plugin("org.jlleitschuh.gradle.ktlint")
 }
 
 configure<JavaPluginConvention> {
@@ -67,8 +65,5 @@ dependencies {
 
   "compile"(group = "com.github.shafirov.klogging", name = "klogging.jvm")
 
-//  "compile"(kotlin("stdlib-jdk8"))
-
-//  "testImplementation"(group = "io.kotlintest", name = "kotlintest-runner-junit4")
   "testImplementation"(group = "org.mockito", name = "mockito-junit-jupiter")
 }
