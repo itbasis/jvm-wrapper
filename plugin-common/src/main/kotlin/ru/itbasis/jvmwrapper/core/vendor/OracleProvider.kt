@@ -2,6 +2,7 @@ package ru.itbasis.jvmwrapper.core.vendor
 
 import com.google.gson.JsonParser
 import kmu.copyTo
+import mu.KLogging
 import org.apache.commons.codec.digest.DigestUtils
 import org.apache.http.client.methods.HttpGet
 import org.apache.http.cookie.ClientCookie
@@ -12,7 +13,7 @@ import java.io.File
 import kotlin.text.RegexOption.IGNORE_CASE
 
 class OracleProvider(private val jvmVersion: JvmVersion) : AbstractProvider() {
-  // TODO Logger
+  companion object : KLogging()
 
   override val remoteArchiveFile: RemoteArchiveFile
     get() {
@@ -23,6 +24,7 @@ class OracleProvider(private val jvmVersion: JvmVersion) : AbstractProvider() {
   override fun String.urlWithinHost() = (if (startsWith("/")) "http://www.oracle.com$this" else this)
 
   override fun String?.getRemoteArchiveFile(): RemoteArchiveFile? {
+    logger.debug { "url: $this" }
     require(!this.isNullOrBlank()) { "request url null or empty" }
     val result = regexDownloadFile.findOne(this!!.htmlContent()) ?: return null
 
@@ -62,9 +64,11 @@ class OracleProvider(private val jvmVersion: JvmVersion) : AbstractProvider() {
     get() = """<a title="Previous Releases" href="(.*)">""".toRegex(IGNORE_CASE)
 
   private val regexDownloadFile: Regex
-    get() = """downloads\['${jvmVersion.type}-${jvmVersion.version}-oth-JPR']\['files']\['.*${jvmVersion.os}.*$archiveArchitecture.*\.$archiveExtension'] = (.*);""".toRegex(
-      IGNORE_CASE
-    )
+    get() {
+      return """downloads\['${jvmVersion.type}-${jvmVersion.cleanVersion}-oth-JPR']\['files']\['.*${jvmVersion.os}.*$archiveArchitecture.*\.$archiveExtension'] = (.*);""".toRegex(
+        IGNORE_CASE
+      )
+    }
 
   private val indexPage: String
     get() = "/technetwork/java/javase/downloads/index.html".htmlContent()

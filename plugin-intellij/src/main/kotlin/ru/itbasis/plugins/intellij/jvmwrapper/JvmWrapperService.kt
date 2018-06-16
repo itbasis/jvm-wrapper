@@ -27,10 +27,14 @@ class JvmWrapperService(
 ) {
   companion object {
     @JvmStatic
-    fun getInstance(project: Project): JvmWrapperService = ServiceManager.getService(project, JvmWrapperService::class.java)
+    fun getInstance(project: Project): JvmWrapperService {
+      return ServiceManager.getService(project, JvmWrapperService::class.java)
+    }
   }
 
-  fun hasWrapper(): Boolean = project.baseDir.findFileByRelativePath(JvmWrapper.SCRIPT_FILE_NAME)?.exists() ?: false
+  fun hasWrapper(): Boolean {
+    return project.baseDir.findFileByRelativePath(JvmWrapper.SCRIPT_FILE_NAME)?.exists() ?: false
+  }
 
   private fun getWrapper(): JvmWrapper? {
     return progressManager.run(object : Task.WithResult<JvmWrapper, ExecutionException>(project, "JVM Wrapper", true) {

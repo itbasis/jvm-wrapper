@@ -8,14 +8,27 @@ import ru.itbasis.jvmwrapper.core.JvmVersion
 import ru.itbasis.jvmwrapper.core.JvmVersionLatestSamples
 
 class JvmVersionTest : FunSpec({
-  test("new instance") {
+  test("version") {
     forall(
       rows = *JvmVersionLatestSamples.map { row(it) }.toTypedArray()
-    ) { (_, type, version, _, versionMajor, versionUpdate) ->
+    ) { (_, type, version, _, cleanVersion, versionMajor, versionUpdate) ->
       val actual = JvmVersion(version = version)
       actual.type.name.toLowerCase() shouldBe type
       actual.major shouldBe versionMajor
       actual.update shouldBe versionUpdate
+      actual.cleanVersion shouldBe cleanVersion
+    }
+  }
+
+  test("full version") {
+    forall(
+      rows = *JvmVersionLatestSamples.map { row(it) }.toTypedArray()
+    ) { (_, type, _, fullVersion, cleanVersion, versionMajor, versionUpdate) ->
+      val actual = JvmVersion(version = fullVersion)
+      actual.type.name.toLowerCase() shouldBe type
+      actual.major shouldBe versionMajor
+      actual.update shouldBe versionUpdate
+      actual.cleanVersion shouldBe cleanVersion
     }
   }
 })

@@ -33,11 +33,14 @@ internal class JvmWrapperTest : FunSpec() {
   init {
     test("test default versions") {
       forall(
-        rows = *JvmVersionLatestSamples.map { row(it) }.toTypedArray()
-      ) { jvmVersionSample ->
+//        rows = *JvmVersionLatestSamples.map { row(it) }.toTypedArray()
+        row(jvmVersionSample__oracle_jdk_1_8_0_171)
+      ) { (vendor, _, version, fullVersion) ->
+        temporaryFolder.root.listFiles().forEach { it.deleteRecursively() }
+
         val propertiesFile = temporaryFolder.newFile("jvmw.properties").apply {
-          appendText("JVM_VERSION=${jvmVersionSample.version}\n")
-          appendText("JVM_VENDOR=${jvmVersionSample.vendor}")
+          appendText("JVM_VERSION=$version\n")
+          appendText("JVM_VENDOR=$vendor")
         }
         val workingDir = propertiesFile.parentFile
         File(System.getProperty("user.dir")).parentFile.resolve(JvmWrapper.SCRIPT_FILE_NAME)
@@ -52,7 +55,7 @@ internal class JvmWrapperTest : FunSpec() {
 
         val process = ProcessBuilder(File(jvmBinDir, "java").absolutePath, "-fullversion").start()
         process.waitFor(5, TimeUnit.SECONDS)
-        """java full version "${jvmVersionSample.fullVersion}"""" shouldBe process.errorStream.readBytes().toString(Charset.defaultCharset()).trim()
+        """java full version "$fullVersion"""" shouldBe process.errorStream.readBytes().toString(Charset.defaultCharset()).trim()
       }
     }
   }

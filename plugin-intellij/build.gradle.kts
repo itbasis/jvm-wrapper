@@ -65,5 +65,5 @@ dependencies {
 
   "compile"(group = "com.github.shafirov.klogging", name = "klogging.jvm")
 
-  "testImplementation"(group = "org.mockito", name = "mockito-junit-jupiter")
+//  "testImplementation"(group = "org.mockito", name = "mockito-junit-jupiter")
 }

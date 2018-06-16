@@ -54,5 +54,6 @@ class JvmWrapper(
       debug = false,
       oracleKeychainName = ORACLE_KEYCHAIN_DEFAULT_NAME
     )
+    const val REMOTE_SCRIPT_URL = "https://raw.githubusercontent.com/itbasis/jvm-wrapper/master/jvmw"
   }
 }

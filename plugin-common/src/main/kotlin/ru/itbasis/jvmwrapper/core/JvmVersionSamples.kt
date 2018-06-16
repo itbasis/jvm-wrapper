@@ -7,59 +7,75 @@ data class JvmVersionSample(
   val type: String,
   val version: String,
   val fullVersion: String,
+  val cleanVersion: String,
   val versionMajor: String,
   val versionUpdate: String?,
   val downloadPageUrl: String,
   val downloadArchiveUrlPart: String
 )
 
+val jvmVersionSample__oracle_jdk_10_0_1 = JvmVersionSample(
+  vendor = "oracle",
+  type = "jdk",
+  version = "10.0.1",
+  fullVersion = "10.0.1+10",
+  cleanVersion = "10.0.1",
+  versionMajor = "10",
+  versionUpdate = null,
+  downloadPageUrl = "/technetwork/java/javase/downloads/jdk10-downloads-4416644.html",
+  downloadArchiveUrlPart = "http://download.oracle.com/otn-pub/java/jdk/10.0.1+10/fb4372174a714e6b8c52526dc134031e/jdk-10.0.1_"
+)
+
+val jvmVersionSample__oracle_jdk_8u171 = JvmVersionSample(
+  vendor = "oracle",
+  type = "jdk",
+  version = "8u171",
+  fullVersion = "1.8.0_171-b11",
+  cleanVersion = "8u171",
+  versionMajor = "8",
+  versionUpdate = "171",
+  downloadPageUrl = "/technetwork/java/javase/downloads/jdk8-downloads-2133151.html",
+  downloadArchiveUrlPart = "http://download.oracle.com/otn-pub/java/jdk/8u171-b11/512cd62ec5174c3487ac17c61aaa89e8/jdk-8u171-"
+)
+val jvmVersionSample__oracle_jdk_8u172 = JvmVersionSample(
+  vendor = "oracle",
+  type = "jdk",
+  version = "8u172",
+  fullVersion = "1.8.0_172-b11",
+  cleanVersion = "8u172",
+  versionMajor = "8",
+  versionUpdate = "172",
+  downloadPageUrl = "/technetwork/java/javase/downloads/jdk8-downloads-2133151.html",
+  downloadArchiveUrlPart = "http://download.oracle.com/otn-pub/java/jdk/8u172-b11/a58eab1ec242421181065cdc37240b08/jdk-8u172-"
+)
+val jvmVersionSample__oracle_jdk_1_8_0_171 = JvmVersionSample(
+  vendor = "oracle",
+  type = "jdk",
+  version = "1.8.0_171-b11",
+  fullVersion = "1.8.0_171-b11",
+  cleanVersion = "8u171",
+  versionMajor = "8",
+  versionUpdate = "171",
+  downloadPageUrl = "/technetwork/java/javase/downloads/jdk8-downloads-2133151.html",
+  downloadArchiveUrlPart = "http://download.oracle.com/otn-pub/java/jdk/8u171-b11/512cd62ec5174c3487ac17c61aaa89e8/jdk-8u171-"
+)
+val jvmVersionSample__oracle_jdk_1_8_0_172 = JvmVersionSample(
+  vendor = "oracle",
+  type = "jdk",
+  version = "1.8.0_172-b11",
+  fullVersion = "1.8.0_172-b11",
+  cleanVersion = "8u172",
+  versionMajor = "8",
+  versionUpdate = "172",
+  downloadPageUrl = "/technetwork/java/javase/downloads/jdk8-downloads-2133151.html",
+  downloadArchiveUrlPart = "http://download.oracle.com/otn-pub/java/jdk/8u172-b11/a58eab1ec242421181065cdc37240b08/jdk-8u172-"
+)
 val JvmVersionLatestSamples = arrayOf(
-  JvmVersionSample(
-    vendor = "oracle",
-    type = "jdk",
-    version = "10.0.1",
-    fullVersion = "10.0.1+10",
-    versionMajor = "10",
-    versionUpdate = null,
-    downloadPageUrl = "/technetwork/java/javase/downloads/jdk10-downloads-4416644.html",
-    downloadArchiveUrlPart = "http://download.oracle.com/otn-pub/java/jdk/10.0.1+10/fb4372174a714e6b8c52526dc134031e/jdk-10.0.1_"
-  ), JvmVersionSample(
-    vendor = "oracle",
-    type = "jdk",
-    version = "8u171",
-    fullVersion = "1.8.0_171-b11",
-    versionMajor = "8",
-    versionUpdate = "171",
-    downloadPageUrl = "/technetwork/java/javase/downloads/jdk8-downloads-2133151.html",
-    downloadArchiveUrlPart = "http://download.oracle.com/otn-pub/java/jdk/8u171-b11/512cd62ec5174c3487ac17c61aaa89e8/jdk-8u171-"
-  ), JvmVersionSample(
-    vendor = "oracle",
-    type = "jdk",
-    version = "8u172",
-    fullVersion = "1.8.0_172-b11",
-    versionMajor = "8",
-    versionUpdate = "172",
-    downloadPageUrl = "/technetwork/java/javase/downloads/jdk8-downloads-2133151.html",
-    downloadArchiveUrlPart = "http://download.oracle.com/otn-pub/java/jdk/8u172-b11/a58eab1ec242421181065cdc37240b08/jdk-8u172-"
-  ), JvmVersionSample(
-    vendor = "oracle",
-    type = "jdk",
-    version = "1.8.0_171-b11",
-    fullVersion = "1.8.0_171-b11",
-    versionMajor = "8",
-    versionUpdate = "171",
-    downloadPageUrl = "/technetwork/java/javase/downloads/jdk8-downloads-2133151.html",
-    downloadArchiveUrlPart = "http://download.oracle.com/otn-pub/java/jdk/8u171-b11/512cd62ec5174c3487ac17c61aaa89e8/jdk-8u171-"
-  ), JvmVersionSample(
-    vendor = "oracle",
-    type = "jdk",
-    version = "1.8.0_172-b11",
-    fullVersion = "1.8.0_172-b11",
-    versionMajor = "8",
-    versionUpdate = "172",
-    downloadPageUrl = "/technetwork/java/javase/downloads/jdk8-downloads-2133151.html",
-    downloadArchiveUrlPart = "http://download.oracle.com/otn-pub/java/jdk/8u172-b11/a58eab1ec242421181065cdc37240b08/jdk-8u172-"
-  )
+  jvmVersionSample__oracle_jdk_10_0_1,
+  jvmVersionSample__oracle_jdk_8u171,
+  jvmVersionSample__oracle_jdk_8u172,
+  jvmVersionSample__oracle_jdk_1_8_0_171,
+  jvmVersionSample__oracle_jdk_1_8_0_172
 )
 
 val JvmVersionArchiveSamples = arrayOf(
@@ -68,6 +84,7 @@ val JvmVersionArchiveSamples = arrayOf(
     type = "jdk",
     version = "8u144",
     fullVersion = "1.8.0_144-b01",
+    cleanVersion = "8u144",
     versionMajor = "8",
     versionUpdate = "144",
     downloadPageUrl = "/technetwork/java/javase/downloads/java-archive-javase8-2177648.html",

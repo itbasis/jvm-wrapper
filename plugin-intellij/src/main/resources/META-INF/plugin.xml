@@ -21,7 +21,7 @@
       <separator/>
       <group text="JVM Wrapper" popup="true">
         <separator/>
-        <action id="jvmUpdaterAction" class="ru.itbasis.plugins.intellij.jvmwrapper.JvmUpdaterAction"/>
+        <action id="jvmUpdaterAction" class="ru.itbasis.plugins.intellij.jvmwrapper.actions.JvmUpdaterAction"/>
         <separator/>
       </group>
       <separator/>

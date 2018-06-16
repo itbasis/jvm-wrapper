@@ -15,6 +15,7 @@ configurations.all {
 
     eachDependency {
       when (requested.group) {
+        "org.slf4j" -> useVersion("1.7.25")
         "junit" -> useVersion("4.12")
         "org.junit.platform" -> useVersion("1.2.0")
         "org.junit.jupiter" -> useVersion("5.2.0")
@@ -34,6 +35,7 @@ configurations.all {
           "httpcore" -> useVersion("4.4.5")
         }
         "com.google.code.gson" -> useVersion("2.8.2")
+        "io.github.microutils" -> useVersion("1.5.4")
       }
     }
   }

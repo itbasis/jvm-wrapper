@@ -18,7 +18,7 @@ import java.time.format.DateTimeFormatter
 
 tasks.withType<Wrapper> {
   distributionType = Wrapper.DistributionType.BIN
-  gradleVersion = "4.7"
+  gradleVersion = "4.8"
 }
 
 group = "ru.itbasis.jvm-wrapper"
@@ -82,12 +82,13 @@ allprojects {
       configure<JavaPluginConvention> {
         sourceCompatibility = JavaVersion.VERSION_1_8
       }
+      tasks.withType(DetektCheckTask::class.java) {
+        dependsOn(tasks.withType(Test::class.java))
+        tasks.getByName(JavaBasePlugin.CHECK_TASK_NAME).dependsOn(this)
+      }
       plugins.withType(NebulaFacetPlugin::class.java) {
-        val facetIntegrationTest = TestFacetDefinition("integrationTest").also { extension.add(it) }
-        tasks.withType(DetektCheckTask::class.java) {
-          dependsOn(facetIntegrationTest.name)
-          this.actions
-          tasks.getByName(JavaBasePlugin.CHECK_TASK_NAME).dependsOn(this)
+        TestFacetDefinition("integrationTest").also {
+          extension.add(it)
         }
       }
     }
@@ -104,8 +105,17 @@ allprojects {
       }
       dependencies {
         "compile"(kotlin("stdlib-jdk8"))
+        "compile"("io.github.microutils:kotlin-logging")
 
-        arrayOf(kotlin("test-junit5"), "io.kotlintest:kotlintest-runner-junit5").forEach {
+        "testCompile"("org.slf4j:slf4j-simple")
+
+
+        arrayOf(
+          kotlin("test-junit"),
+          "io.kotlintest:kotlintest-extensions-system",
+          "io.kotlintest:kotlintest-assertions-arrow",
+          "io.kotlintest:kotlintest-runner-junit4"
+        ).forEach {
           "testCompile"(it)
           "integrationTestCompile"(it)
         }
@@ -113,6 +123,8 @@ allprojects {
     }
 
     tasks.withType(Test::class.java).all {
+      failFast = true
+      useJUnit()
       testLogging {
         showStandardStreams = true
       }
