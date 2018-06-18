@@ -36,6 +36,7 @@ configurations.all {
         }
         "com.google.code.gson" -> useVersion("2.8.2")
         "io.github.microutils" -> useVersion("1.5.4")
+        "com.github.itbasis.kotlin-utils" -> useVersion("v20180618_1139")
       }
     }
   }

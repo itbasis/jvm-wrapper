@@ -7,8 +7,7 @@ import ru.itbasis.plugins.intellij.jvmwrapper.ProjectSdkUpdater
 
 class JvmUpdaterAction : AnAction("Refresh") {
   override fun update(event: AnActionEvent) {
-    event.presentation.isEnabledAndVisible = JvmWrapperService.getInstance(event.project!!)
-      .hasWrapper()
+    event.presentation.isEnabledAndVisible = JvmWrapperService.getInstance(event.project!!).hasWrapper()
   }
 
   override fun actionPerformed(event: AnActionEvent) = ProjectSdkUpdater.getInstance(event.project!!).update()

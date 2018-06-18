@@ -28,4 +28,10 @@ data class JvmVersion(val type: JvmType = JvmType.JDK, val version: String) {
   val cleanVersion: String = if (update == null) version.substringBefore("+") else "${major}u$update"
 
   override fun toString(): String = "JvmVersion($type-$version)"
+
+  companion object {
+    fun runtime(): JvmVersion {
+      return JvmVersion(version = System.getProperty("java.version"))
+    }
+  }
 }

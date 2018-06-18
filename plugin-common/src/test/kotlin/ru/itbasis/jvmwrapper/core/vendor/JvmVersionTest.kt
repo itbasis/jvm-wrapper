@@ -6,6 +6,7 @@ import io.kotlintest.specs.FunSpec
 import io.kotlintest.tables.row
 import ru.itbasis.jvmwrapper.core.JvmVersion
 import ru.itbasis.jvmwrapper.core.JvmVersionLatestSamples
+import ru.itbasis.jvmwrapper.core.jvmVersionSample__oracle_jdk_8u171
 
 class JvmVersionTest : FunSpec({
   test("version") {
@@ -30,5 +31,13 @@ class JvmVersionTest : FunSpec({
       actual.update shouldBe versionUpdate
       actual.cleanVersion shouldBe cleanVersion
     }
+  }
+
+  test("runtime version"){
+    val expected = jvmVersionSample__oracle_jdk_8u171
+    val actual = JvmVersion(version = System.getProperty("java.version"))
+    actual.major shouldBe expected.versionMajor
+    actual.update shouldBe expected.versionUpdate
+    actual.cleanVersion shouldBe expected.cleanVersion
   }
 })

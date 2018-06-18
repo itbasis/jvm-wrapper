@@ -5,9 +5,10 @@ apply {
 }
 
 dependencies {
-  "compile"(group = "microutils", name = "KotlinMicroUtils", version = "latest.release")
+  "compile"("com.github.itbasis.kotlin-utils:kotlin-utils-jvm")
   "compile"(group = "org.apache.commons", name = "commons-compress")
   "compile"(group = "org.apache.commons", name = "commons-lang3")
   "implementation"(group = "org.apache.httpcomponents", name = "httpclient")
   "implementation"(group = "com.google.code.gson", name = "gson")
+  "implementation"(group = "org.slf4j", name = "slf4j-log4j12")
 }

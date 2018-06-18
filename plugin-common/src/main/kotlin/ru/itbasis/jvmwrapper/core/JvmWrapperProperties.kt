@@ -1,7 +1,7 @@
 package ru.itbasis.jvmwrapper.core
 
-import kmu.toBoolean
 import ru.itbasis.jvmwrapper.core.vendor.JvmVendor
+import ru.itbasis.kotlin.utils.toBoolean
 import java.io.File
 import java.util.Properties
 
@@ -15,7 +15,7 @@ enum class JvmType {
   override fun toString() = this.name.toLowerCase()
 }
 
-const val DEFAULT_JVM_VERSION = "9"
+const val DEFAULT_JVM_VERSION = "8u171"
 const val JVMW_PROPERTY_FILE_NAME = JvmWrapper.SCRIPT_FILE_NAME + ".properties"
 const val ORACLE_KEYCHAIN_DEFAULT_NAME = "JVM_WRAPPER_ORACLE"
 

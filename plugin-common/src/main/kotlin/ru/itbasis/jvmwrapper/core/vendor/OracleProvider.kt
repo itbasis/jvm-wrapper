@@ -1,7 +1,6 @@
 package ru.itbasis.jvmwrapper.core.vendor
 
 import com.google.gson.JsonParser
-import kmu.copyTo
 import mu.KLogging
 import org.apache.commons.codec.digest.DigestUtils
 import org.apache.http.client.methods.HttpGet
@@ -9,6 +8,7 @@ import org.apache.http.cookie.ClientCookie
 import org.apache.http.impl.cookie.BasicClientCookie2
 import ru.itbasis.jvmwrapper.core.JvmVersion
 import ru.itbasis.jvmwrapper.core.RemoteArchiveFile
+import ru.itbasis.kotlin.utils.copyTo
 import java.io.File
 import kotlin.text.RegexOption.IGNORE_CASE
 
@@ -45,6 +45,7 @@ class OracleProvider(private val jvmVersion: JvmVersion) : AbstractProvider() {
     val cookieOracleLicense = BasicClientCookie2("oraclelicense", "accept-securebackup-cookie")
     cookieOracleLicense.setAttribute(ClientCookie.DOMAIN_ATTR, true.toString())
     cookieOracleLicense.domain = ".oracle.com"
+
 
     httpCookieStore.addCookie(cookieOracleLicense)
     val httpGet = HttpGet(remoteArchiveFile.url)
