@@ -28,7 +28,7 @@ configurations.all {
         "com.github.shafirov.klogging" -> useVersion("1.2.10")
         "org.apache.commons" -> when (requested.name) {
           "commons-lang3" -> useVersion("3.4")
-          "commons-compress" -> useVersion("1.16.1")
+          "commons-compress" -> useVersion("1.17")
         }
         "org.apache.httpcomponents" -> when (requested.name) {
           "httpclient" -> useVersion("4.5.2")
