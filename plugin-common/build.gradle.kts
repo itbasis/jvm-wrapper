@@ -10,5 +10,4 @@ dependencies {
   "compile"(group = "org.apache.commons", name = "commons-lang3")
   "implementation"(group = "org.apache.httpcomponents", name = "httpclient")
   "implementation"(group = "com.google.code.gson", name = "gson")
-  "implementation"(group = "org.slf4j", name = "slf4j-log4j12")
 }

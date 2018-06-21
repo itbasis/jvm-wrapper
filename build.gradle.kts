@@ -109,7 +109,6 @@ allprojects {
 
         "testCompile"("org.slf4j:slf4j-simple")
 
-
         arrayOf(
           kotlin("test-junit"),
           "io.kotlintest:kotlintest-extensions-system",

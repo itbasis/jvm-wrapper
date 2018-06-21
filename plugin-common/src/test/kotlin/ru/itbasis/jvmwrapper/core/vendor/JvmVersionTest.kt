@@ -33,7 +33,7 @@ class JvmVersionTest : FunSpec({
     }
   }
 
-  test("runtime version"){
+  test("runtime version").config(enabled = !System.getenv().containsKey("CI")) {
     val expected = jvmVersionSample__oracle_jdk_8u171
     val actual = JvmVersion(version = System.getProperty("java.version"))
     actual.major shouldBe expected.versionMajor
