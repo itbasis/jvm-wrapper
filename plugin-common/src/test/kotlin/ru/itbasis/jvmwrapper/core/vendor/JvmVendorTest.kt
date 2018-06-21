@@ -8,7 +8,6 @@ import io.kotlintest.tables.row
 import ru.itbasis.jvmwrapper.core.vendor.JvmVendor.ORACLE
 
 internal class JvmVendorTest : FunSpec({
-  System.getProperties().forEach { key, value -> println("$key > $value") }
   test("Successful parsing of vendors") {
     forall(
       row("oracle", ORACLE), row("Oracle", ORACLE), row("Oracle Corporation", ORACLE)

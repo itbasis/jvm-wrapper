@@ -8,7 +8,6 @@ import ru.itbasis.jvmwrapper.core.JvmWrapper.Companion.REMOTE_SCRIPT_URL
 import ru.itbasis.jvmwrapper.core.JvmWrapper.Companion.SCRIPT_FILE_NAME
 import ru.itbasis.jvmwrapper.core.JvmWrapperPropertyKeys
 import java.io.File
-import java.io.FileOutputStream
 import java.net.URL
 
 class GenerateWrapperAction(
@@ -16,7 +15,7 @@ class GenerateWrapperAction(
 ) : Runnable {
 
   override fun run() {
-    URL(REMOTE_SCRIPT_URL).openStream().copyTo(FileOutputStream(File(parentDir, SCRIPT_FILE_NAME)))
+    URL(REMOTE_SCRIPT_URL).openStream().copyTo(File(parentDir, SCRIPT_FILE_NAME).outputStream())
 
 
     File(parentDir, JvmWrapper.JVMW_PROPERTY_FILE_NAME).apply {

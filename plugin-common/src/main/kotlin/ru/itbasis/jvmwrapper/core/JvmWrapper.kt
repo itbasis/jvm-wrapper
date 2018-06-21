@@ -2,7 +2,7 @@ package ru.itbasis.jvmwrapper.core
 
 import org.apache.commons.lang3.SystemUtils
 import org.apache.commons.lang3.SystemUtils.IS_OS_MAC
-import ru.itbasis.jvmwrapper.core.unarchiver.MacUnarchiver
+import ru.itbasis.jvmwrapper.core.unarchiver.UnarchiverFactory
 import ru.itbasis.jvmwrapper.core.vendor.DownloadProcessListener
 import ru.itbasis.jvmwrapper.core.vendor.JvmVendor
 import ru.itbasis.jvmwrapper.core.vendor.OracleProvider
@@ -40,9 +40,17 @@ class JvmWrapper(
             provider.download(remoteArchiveFile = remoteFile, target = this, downloadProcessListener = downloadProcessListener)
           }
         }
-      }.let { archiveFile -> "unpack JVM archive file".step(stepListener) { MacUnarchiver(archiveFile, jvmHomeDir, stepListener) } }
+      }.let { archiveFile ->
+        "unpack JVM archive file".step(stepListener) {
+          UnarchiverFactory.getInstance(archiveFile, jvmHomeDir, stepListener).unpack()
+        }
+      }
     }
-  }.run { if (IS_OS_MAC) this.resolve("Home") else this }.apply { check(isDirectory, { "jvm home directory is not exists: $this" }) }
+  }.run {
+    if (IS_OS_MAC) this.resolve("Home") else this
+  }.apply {
+    check(isDirectory) { "jvm home directory is not exists: $this" }
+  }
 
   companion object {
     const val SCRIPT_FILE_NAME = "jvmw"
