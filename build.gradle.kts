@@ -18,7 +18,7 @@ import java.time.format.DateTimeFormatter
 
 tasks.withType<Wrapper> {
   distributionType = Wrapper.DistributionType.BIN
-  gradleVersion = "4.8"
+  gradleVersion = "4.8.1"
 }
 
 group = "ru.itbasis.jvm-wrapper"
