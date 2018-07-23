@@ -6,18 +6,17 @@ services:
 
 install:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update; fi
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew reinstall shellcheck; fi
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew tap caskroom/versions; fi
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew cask uninstall java; fi
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew cask search java; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew reinstall shellcheck bats; fi
+#  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew tap caskroom/versions; fi
+#  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew cask uninstall java; fi
+#  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew cask search java; fi
 #  - if [[ "$TRAVIS_OS_NAME" == "osx" ]] && [[ "x$TEST_USE_SYSTEM" == "x8" ]]; then brew cask install java8; fi
 #  - if [[ "$TRAVIS_OS_NAME" == "osx" ]] && [[ "x$TEST_USE_SYSTEM" == "x9" ]]; then brew cask install java9; fi
 #  - if [[ "$TRAVIS_OS_NAME" == "osx" ]] && [[ "x$TEST_USE_SYSTEM" == "x10" ]]; then brew cask install java; fi
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install bats; fi
 #  - if [[ "$TRAVIS_OS_NAME" == "osx" ]] && [[ "x$TEST_USE_SYSTEM" != "x" ]]; then /System/Library/Frameworks/JavaVM.framework/Versions/Current/Commands/java_home; fi
 #
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then docker --version; fi
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo add-apt-repository ppa:duggan/bats; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo add-apt-repository -y ppa:duggan/bats; fi
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get update; fi
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install -y shellcheck bats; fi
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then apt-cache search oracle-; fi
