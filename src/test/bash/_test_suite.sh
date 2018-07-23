@@ -5,7 +5,7 @@ ORIGIN_PWD=$PWD
 ENV_TEST_FILE=${ENV_TEST_FILE:?}
 
 # shellcheck disable=SC1090
-source "$PWD/src/test/resources/test.env/$ENV_TEST_FILE.sh"
+source "$PWD/src/test/resources/test.env/$ENV_TEST_FILE.env"
 
 # Hack for code verification
 TEST_TYPE=${TEST_TYPE:?}
