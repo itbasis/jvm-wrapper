@@ -12,7 +12,7 @@ setup() {
 	load ../../../main/bash/jvmw/download_oracle
 }
 
-@test "download JDK ${TEST_JVM_VERSION} (${ARCHIVE_EXT})" {
+@test "download JDK ${TEST_JVM_VERSION}" {
 	export ARCHIVE_JVM_CHECKSUM=`printenv "TEST_ARCHIVE_JVM_CHECKSUM_${OS}"`
 	export ARCHIVE_JVM_URL=`printenv "TEST_ARCHIVE_JVM_URL_${OS}"`
 	export ARCHIVE_FILE=$BATS_TMPDIR/jdk${TEST_JVM_VERSION}.${ARCHIVE_EXT}

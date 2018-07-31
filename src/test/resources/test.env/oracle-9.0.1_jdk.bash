@@ -14,4 +14,3 @@ export TEST_ARCHIVE_JVM_CHECKSUM_linux=2cdaf0ff92d0829b510edd883a4ac8322c02f2fc1
 export TEST_ARCHIVE_JVM_URL_linux=http://download.oracle.com/otn/java/jdk/9.0.1+11/jdk-9.0.1_linux-x64_bin.tar.gz
 export TEST_ARCHIVE_JVM_CHECKSUM_windows=4df5f74fe04c708977e23bdae8842297bce10d550e4a1cbedde9a33af56f4dab
 export TEST_ARCHIVE_JVM_URL_windows=http://download.oracle.com/otn/java/jdk/9.0.1+11/jdk-9.0.1_windows-x64_bin.exe
-
