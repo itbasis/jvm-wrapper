@@ -48,6 +48,7 @@ jobs:
         - echo Deploy
         - ./src/main/bash/builder.bash
         - cp ./build/jvmw ./
-        - git commmit
+        - git commmit -a -m "Release"
+        - git push
       env:
         - DOCKER_IMAGES=""   ENV_TEST_FILE="oracle-"
