@@ -5,35 +5,23 @@ services:
   - docker
 
 install:
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update; fi
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew reinstall shellcheck; fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew tap caskroom/versions; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew reinstall shellcheck bats; fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew cask uninstall java; fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew cask search java; fi
-#  - if [[ "$TRAVIS_OS_NAME" == "osx" ]] && [[ "x$TEST_USE_SYSTEM" == "x8" ]]; then brew cask install java8; fi
-#  - if [[ "$TRAVIS_OS_NAME" == "osx" ]] && [[ "x$TEST_USE_SYSTEM" == "x9" ]]; then brew cask install java9; fi
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]] && [[ "x$TEST_USE_SYSTEM" == "x10" ]]; then brew cask install java; fi
-#  - if [[ "$TRAVIS_OS_NAME" == "osx" ]] && [[ "x$TEST_USE_SYSTEM" != "x" ]]; then /System/Library/Frameworks/JavaVM.framework/Versions/Current/Commands/java_home; fi
 #
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then docker --version; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo add-apt-repository -y ppa:duggan/bats; fi
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get update; fi
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install -y shellcheck; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install -y shellcheck bats; fi
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then apt-cache search oracle-; fi
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]] && [[ "x$TEST_USE_SYSTEM" == "x8" ]]; then sudo apt-get install -y oracle-java8-installer oracle-java8-set-default; fi
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]] && [[ "x$TEST_USE_SYSTEM" == "x9" ]]; then sudo apt-get install -y oracle-java9-installer oracle-java9-set-default; fi
-#  - if [[ "$TRAVIS_OS_NAME" == "linux" ]] && [[ "x$TEST_USE_SYSTEM" == "x10" ]]; then sudo apt-get install -y oracle-java10-installer oracle-java10-set-default; fi
-#  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then for DOCKER_IMAGE in ${DOCKER_IMAGES}; do docker pull "${DOCKER_IMAGE}"; done; fi
-
-before_script:
-  - find . \( -name 'jvmw' -o -name '*.sh' \) -exec shellcheck -e SC1090 -x {} \;
 
 script:
   - env
-  - if [[ "x$DOCKER_IMAGES" == "x" ]]; then cd $TRAVIS_BUILD_DIR && ./src/test/bash/_test_suite.sh; fi
-  - if [[ "x$DOCKER_IMAGES" != "x" ]] && [[ "$TRAVIS_OS_NAME" == "linux" ]]; then cd $TRAVIS_BUILD_DIR && ./src/test/bash/_test_docker_suite.sh; fi
-  - cd $TRAVIS_BUILD_DIR && ./jvmw info && JVMW_DEBUG=Y ./jvmw ./gradlew test
-#  - env && ./src/test/bash/_test_suite.sh && cd $TRAVIS_BUILD_DIR && ./jvmw info && JVMW_DEBUG=Y ./jvmw ./gradlew test && cd $TRAVIS_BUILD_DIR && if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then $PWD/src/test/bash/_test_docker_suite.sh; fi
-
+  - bats -t ./src/test/bash/jvmw/*.bats
+  - src/main/bash/builder.bash
+  - shellcheck src/main/bash/builder.bash
 
 os:
   - osx
@@ -43,28 +31,22 @@ env:
   global:
     - DOCKER_IMAGES="centos:centos6 centos:centos7 debian:wheezy debian:jessie ubuntu:trusty opensuse:latest base/arch:latest"
   matrix:
-#
-    - ENV_TEST_FILE="oracle-10_00"
-    - ENV_TEST_FILE="oracle-10_01"
-    - ENV_TEST_FILE="oracle-9_00"
-    - ENV_TEST_FILE="oracle-9_01"
-    - ENV_TEST_FILE="oracle-9.0.4_00"
-    - ENV_TEST_FILE="oracle-9.0.4_01"
-    - ENV_TEST_FILE="oracle-9.0.1_00"
-    - ENV_TEST_FILE="oracle-9.0.1_01"
-#    - ENV_TEST_FILE="oracle-8_00"
-#    - ENV_TEST_FILE="oracle-8_01"
-    - ENV_TEST_FILE="oracle-8u172_00"
-    - ENV_TEST_FILE="oracle-8u172_01"
-    - ENV_TEST_FILE="oracle-1.8.0_171-b11_00"
-    - ENV_TEST_FILE="oracle-8u171_00"
-    - ENV_TEST_FILE="oracle-8u171_01"
-    - ENV_TEST_FILE="oracle-8u144_00"
-    - ENV_TEST_FILE="oracle-8u144_01"
+    - ENV_TEST_FILE="oracle-10_jdk"
+    - ENV_TEST_FILE="oracle-9_jdk"
+    - ENV_TEST_FILE="oracle-9.0.1_jdk"
+    - ENV_TEST_FILE="oracle-8_jdk"
+    - ENV_TEST_FILE="oracle-8u171_jdk"
+    - ENV_TEST_FILE="oracle-1.8.0_171_jdk"
+    - ENV_TEST_FILE="oracle-1.8.0_171-b11_jdk"
+    - ENV_TEST_FILE="oracle-8u144_jdk"
 
 jobs:
   include:
     - stage: deploy
-      script: echo Deploy
+      script:
+      - ./src/main/bash/builder.bash
+      - cp ./build/jvmw ./
+      - git commit -a -m "Release" || exit 0
+#      - git push || exit 0
       env:
         - DOCKER_IMAGES=""   ENV_TEST_FILE="oracle-"

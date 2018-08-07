@@ -2,27 +2,35 @@
   <dictionary name="victor.alenkov">
     <words>
       <w>alenkov</w>
+      <w>arturbosch</w>
       <w>asctime</w>
+      <w>caskroom</w>
       <w>centos</w>
       <w>cmds</w>
       <w>cpio</w>
       <w>debian</w>
+      <w>detekt</w>
       <w>dokka</w>
       <w>fullversion</w>
       <w>funcname</w>
       <w>glytching</w>
+      <w>gson</w>
       <w>hdiutil</w>
+      <w>httpcomponents</w>
+      <w>httpcore</w>
       <w>itbasis</w>
       <w>javase</w>
       <w>jdkw</w>
       <w>jlleitschuh</w>
       <w>jvmw</w>
       <w>jvmwrapper</w>
+      <w>klogging</w>
       <w>kotlintest</w>
       <w>ktlint</w>
       <w>levelname</w>
       <w>lineno</w>
       <w>macosx</w>
+      <w>microutils</w>
       <w>mountpoint</w>
       <w>mozilla</w>
       <w>nexturl</w>
@@ -31,11 +39,13 @@
       <w>opensuse</w>
       <w>opentest</w>
       <w>oraclelicense</w>
+      <w>printenv</w>
       <w>pycodestyle</w>
       <w>readlink</w>
       <w>rlength</w>
       <w>rstart</w>
       <w>securebackup</w>
+      <w>shafirov</w>
       <w>shasum</w>
       <w>shellcheck</w>
       <w>signon</w>
@@ -45,6 +55,7 @@
       <w>uname</w>
       <w>unarchiver</w>
       <w>userid</w>
+      <w>webapps</w>
       <w>whereis</w>
       <w>xxxxxx</w>
       <w>zypper</w>
