@@ -8,8 +8,8 @@ install:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update; fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew reinstall shellcheck bats; fi
 #  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew tap caskroom/versions; fi
-#  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew cask uninstall java; fi
-#  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew cask search java; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew cask uninstall java; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew cask search java; fi
 #  - if [[ "$TRAVIS_OS_NAME" == "osx" ]] && [[ "x$TEST_USE_SYSTEM" == "x8" ]]; then brew cask install java8; fi
 #  - if [[ "$TRAVIS_OS_NAME" == "osx" ]] && [[ "x$TEST_USE_SYSTEM" == "x9" ]]; then brew cask install java9; fi
 #  - if [[ "$TRAVIS_OS_NAME" == "osx" ]] && [[ "x$TEST_USE_SYSTEM" == "x10" ]]; then brew cask install java; fi
@@ -25,17 +25,11 @@ install:
 #  - if [[ "$TRAVIS_OS_NAME" == "linux" ]] && [[ "x$TEST_USE_SYSTEM" == "x10" ]]; then sudo apt-get install -y oracle-java10-installer oracle-java10-set-default; fi
 #  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then for DOCKER_IMAGE in ${DOCKER_IMAGES}; do docker pull "${DOCKER_IMAGE}"; done; fi
 
-before_script:
-  - find . \( -name 'jvmw' -o -name '*.bash' \) -exec shellcheck -e SC1090 -x {} \;
-
 script:
   - env
   - bats -t ./src/test/bash/jvmw/*.bats
-#  - if [[ "x$DOCKER_IMAGES" == "x" ]]; then cd $TRAVIS_BUILD_DIR && ./src/test/bash/_test_suite.sh; fi
-#  - if [[ "x$DOCKER_IMAGES" != "x" ]] && [[ "$TRAVIS_OS_NAME" == "linux" ]]; then cd $TRAVIS_BUILD_DIR && ./src/test/bash/_test_docker_suite.sh; fi
-#  - cd $TRAVIS_BUILD_DIR && ./jvmw info && JVMW_DEBUG=Y ./jvmw ./gradlew test
-#  - env && ./src/test/bash/_test_suite.sh && cd $TRAVIS_BUILD_DIR && ./jvmw info && JVMW_DEBUG=Y ./jvmw ./gradlew test && cd $TRAVIS_BUILD_DIR && if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then $PWD/src/test/bash/_test_docker_suite.sh; fi
-
+  - src/main/bash/builder.bash
+  - shellcheck src/main/bash/builder.bash
 
 os:
   - osx
@@ -47,24 +41,13 @@ env:
   matrix:
 #
     - ENV_TEST_FILE="oracle-10_jdk"
-#    - ENV_TEST_FILE="oracle-10_01"
-#    - ENV_TEST_FILE="oracle-9_00"
-#    - ENV_TEST_FILE="oracle-9_01"
-#    - ENV_TEST_FILE="oracle-9.0.4_00"
-#    - ENV_TEST_FILE="oracle-9.0.4_01"
+    - ENV_TEST_FILE="oracle-9_jdk"
     - ENV_TEST_FILE="oracle-9.0.1_jdk"
-#    - ENV_TEST_FILE="oracle-9.0.1_01"
     - ENV_TEST_FILE="oracle-8_jdk"
-#    - ENV_TEST_FILE="oracle-8_01"
-#    - ENV_TEST_FILE="oracle-8u172_00"
-#    - ENV_TEST_FILE="oracle-8u172_01"
-#    - ENV_TEST_FILE="oracle-1.8.0_171-b11_00"
     - ENV_TEST_FILE="oracle-8u171_jdk"
     - ENV_TEST_FILE="oracle-1.8.0_171_jdk"
     - ENV_TEST_FILE="oracle-1.8.0_171-b11_jdk"
-#    - ENV_TEST_FILE="oracle-8u171_01"
     - ENV_TEST_FILE="oracle-8u144_jdk"
-#    - ENV_TEST_FILE="oracle-8u144_01"
 
 jobs:
   include:
