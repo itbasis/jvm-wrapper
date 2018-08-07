@@ -59,14 +59,18 @@ env:
 #    - ENV_TEST_FILE="oracle-8u172_00"
 #    - ENV_TEST_FILE="oracle-8u172_01"
 #    - ENV_TEST_FILE="oracle-1.8.0_171-b11_00"
-#    - ENV_TEST_FILE="oracle-8u171_00"
+    - ENV_TEST_FILE="oracle-8u171_jdk"
+    - ENV_TEST_FILE="oracle-1.8.0_171_jdk"
+    - ENV_TEST_FILE="oracle-1.8.0_171-b11_jdk"
 #    - ENV_TEST_FILE="oracle-8u171_01"
-#    - ENV_TEST_FILE="oracle-8u144_00"
+    - ENV_TEST_FILE="oracle-8u144_jdk"
 #    - ENV_TEST_FILE="oracle-8u144_01"
 
 jobs:
   include:
     - stage: deploy
-      script: echo Deploy
+      script:
+        - echo Deploy
+        - src/main/bash/builder.bash
       env:
         - DOCKER_IMAGES=""   ENV_TEST_FILE="oracle-"

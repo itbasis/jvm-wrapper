@@ -1,5 +1,10 @@
 #!/usr/bin/env bash
 
+# Hack for code verification
+JVM_FULL_NAME=${JVM_FULL_NAME}
+ARCHIVE_FILE=${ARCHIVE_FILE}
+JDK_ROOT_DIR=${JDK_ROOT_DIR}
+
 # BEGIN SCRIPT
 function oracle_unpack_darwin() {
 	hdiutil detach "/Volumes/${JVM_FULL_NAME}" -quiet -force 2> /dev/null
@@ -28,4 +33,5 @@ function oracle_unpack_linux() {
 		die 'error move unpacked jdk...'; }
 	rm -Rf "${tmp_dir}" "${ARCHIVE_FILE}"
 }
+
 # END SCRIPT
