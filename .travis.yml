@@ -43,12 +43,15 @@ env:
 
 jobs:
   include:
+    - stage: before_deploy
+      script:
+      - ./src/main/bash/builder.bash
+      - cp ./build/jvmw ./
+      - git commit -a -m "Release"
+      env:
+      - DOCKER_IMAGES=""   ENV_TEST_FILE="oracle-"
     - stage: deploy
       script:
-        - echo Deploy
-        - ./src/main/bash/builder.bash
-        - cp ./build/jvmw ./
-        - git commmit -a -m "Release"
         - git push
       env:
         - DOCKER_IMAGES=""   ENV_TEST_FILE="oracle-"
