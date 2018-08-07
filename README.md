@@ -54,4 +54,4 @@ To download archival versions of JDK, you must set the variables `ORACLE_USER` a
 
 ## IDE supports
 
-[IDEA plugin](plugin-intellij)
+[IDE plugins](https://github.com/itbasis/jvm-wrapper-ide-plugins/)
