@@ -31,7 +31,6 @@ env:
   global:
     - DOCKER_IMAGES="centos:centos6 centos:centos7 debian:wheezy debian:jessie ubuntu:trusty opensuse:latest base/arch:latest"
   matrix:
-#
     - ENV_TEST_FILE="oracle-10_jdk"
     - ENV_TEST_FILE="oracle-9_jdk"
     - ENV_TEST_FILE="oracle-9.0.1_jdk"
@@ -43,15 +42,11 @@ env:
 
 jobs:
   include:
-    - stage: before_deploy
+    - stage: deploy
       script:
       - ./src/main/bash/builder.bash
       - cp ./build/jvmw ./
-      - git commit -a -m "Release"
-      env:
-      - DOCKER_IMAGES=""   ENV_TEST_FILE="oracle-"
-    - stage: deploy
-      script:
-        - git push
+      - git commit -a -m "Release" || exit 0
+#      - git push || exit 0
       env:
         - DOCKER_IMAGES=""   ENV_TEST_FILE="oracle-"
