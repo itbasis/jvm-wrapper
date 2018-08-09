@@ -76,6 +76,14 @@ function whereis() {
 		fi
 	done
 }
+function system_check_program_exists() {
+	# shellcheck disable=SC2068
+	for cmd in $@; do
+		if [[ "$("$cmd" --version 2>&1)" == *"command not found"* ]]; then
+			die "command not found: ${cmd}"
+		fi
+	done
+}
 function properties_parser() {
 	while IFS='=' read -r key value || [[ -n "$key" ]]; do
 		[[ ! -z "${key}" ]] && [[ -z "${!key}" ]] && { debug "${key}='${value}'"; eval "${key}='${value}'"; }
@@ -214,6 +222,10 @@ function oracle_download_jdk() {
 	if [[ "${CLEAR_COOKIE}" == "Y" ]]; then
 		rm -f "${OTN_COOKIE_FILE}";
 	fi
+	if [[ "${JVMW_DEBUG}" == "Y" ]]; then
+		ls -laFh "${ARCHIVE_FILE}"
+	fi
+	#
 	if [[ ! check_checksum ]]; then
 		die
 	fi
@@ -317,9 +329,6 @@ function download_jdk() {
 	fi
 	#
 	if [[ -f "${ARCHIVE_FILE}" ]]; then
-		if [[ "${JVMW_DEBUG}" == "Y" ]]; then
-			ls -laFh "${ARCHIVE_FILE}"
-		fi
 		if [[ ${JVM_VERSION_MAJOR} -lt 8 ]]; then
 			# TODO
 			rm -f "${ARCHIVE_FILE}"
