@@ -10,3 +10,4 @@ for f in 'core' 'properties' 'download_oracle' 'unpack_oracle' 'main'; do
 done
 
 awk 'NF' < ${SCRIPT_FILE} > t && mv t ${SCRIPT_FILE}
+chmod +x ${SCRIPT_FILE}
