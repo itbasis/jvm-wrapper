@@ -18,7 +18,11 @@ function download_jdk() {
 	fi
 	#
 	if [[ -f "${ARCHIVE_FILE}" ]]; then
+		if [[ "${JVMW_DEBUG}" == "Y" ]]; then
+			ls -laFh "${ARCHIVE_FILE}"
+		fi
 		if [[ ${JVM_VERSION_MAJOR} -lt 8 ]]; then
+			# TODO
 			rm -f "${ARCHIVE_FILE}"
 		elif check_checksum; then
 			eval "${JVM_VENDOR}_unpack_${OS}"

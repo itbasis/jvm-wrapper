@@ -24,7 +24,7 @@ script:
   - src/main/bash/builder.bash && cp ./build/jvmw ./ && ./jvmw java -fullversion
 
 os:
-  - osx
+#  - osx
   - linux
 
 env:
