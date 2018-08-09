@@ -22,7 +22,7 @@ script:
   - bats -t ./src/test/bash/jvmw/*.bats
   - shellcheck src/main/bash/builder.bash
   - src/main/bash/builder.bash && cp ./build/jvmw ./ && chmod +x jvmw
-  - ./jvmw java --fullversion
+  - ./jvmw java -fullversion
 
 os:
   - osx
