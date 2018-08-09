@@ -21,6 +21,8 @@ script:
   - env
   - bats -t ./src/test/bash/jvmw/*.bats
   - shellcheck src/main/bash/builder.bash
+  - docker run --rm -it -e ORACLE_USER -e ORACLE_PASSWORD -e ENV_TEST_FILE -v "${PWD}":"/root/jvmw-prj" ${DOCKER_IMAGE} bash -c "sudo apt-get update && sudo apt-get install -y curl && cd /root/jvmw-prj && ls -la ./ && ./src/main/bash/builder.bash && cp ./build/jvmw ./ && ./jvmw java -fullversion 2>&1"
+  - ./jvmw java -fullversion
   - src/main/bash/builder.bash && cp ./build/jvmw ./ && ./jvmw java -fullversion
 
 os:
