@@ -6,6 +6,7 @@ ORACLE_USER=${ORACLE_USER}
 ORACLE_PASSWORD=${ORACLE_PASSWORD}
 OS=${OS}
 JVMW_ORACLE_KEYCHAIN=${JVMW_ORACLE_KEYCHAIN}
+JVMW_DEBUG=${JVMW_DEBUG}
 ARCHIVE_FILE=${ARCHIVE_FILE}
 REQUIRED_UPDATE=${REQUIRED_UPDATE}
 JVM_HOME_DIR=${JVM_HOME_DIR}
@@ -129,6 +130,11 @@ function oracle_download_jdk() {
 	if [[ "${CLEAR_COOKIE}" == "Y" ]]; then
 		rm -f "${OTN_COOKIE_FILE}";
 	fi
+
+	if [[ "${JVMW_DEBUG}" == "Y" ]]; then
+		ls -laFh "${ARCHIVE_FILE}"
+	fi
+	#
 
 	if [[ ! check_checksum ]]; then
 		die
