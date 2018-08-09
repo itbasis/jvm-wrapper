@@ -95,4 +95,12 @@ function whereis() {
 	done
 }
 
+function system_check_program_exists() {
+	# shellcheck disable=SC2068
+	for cmd in $@; do
+		if [[ "$("$cmd" --version 2>&1)" == *"command not found"* ]]; then
+			die "command not found: ${cmd}"
+		fi
+	done
+}
 # END SCRIPT
