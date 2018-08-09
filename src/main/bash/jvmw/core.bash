@@ -14,6 +14,8 @@ export JVMW=true
 if [[ -z "${JVMW_HOME}" ]]; then
 	JVMW_HOME="${HOME}/.jvm"
 fi
+mkdir -p "${JVMW_HOME}"
+#
 JVMW_PROPERTY_FILE="${JVMW_PROPERTY_FILE:-./jvmw.properties}"
 OS=$(uname | tr '[:upper:]' '[:lower:]')
 ARCH=$([[ "$(uname -m)" == "x86_64" ]] && echo "x64" || echo "i586")
