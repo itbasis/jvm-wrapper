@@ -1,5 +1,5 @@
 sudo: required
-language: generic
+language: bash
 
 services:
   - docker
@@ -20,8 +20,9 @@ install:
 script:
   - env
   - bats -t ./src/test/bash/jvmw/*.bats
-  - src/main/bash/builder.bash
   - shellcheck src/main/bash/builder.bash
+  - src/main/bash/builder.bash && cp ./build/jvmw ./ && chmod +x jvmw
+  - ./jvmw java --fullversion
 
 os:
   - osx
