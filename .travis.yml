@@ -22,10 +22,11 @@ script:
   - bats -t ./src/test/bash/jvmw/*.bats
   - shellcheck src/main/bash/builder.bash
   - src/main/bash/builder.bash && cp ./build/jvmw ./ && ./jvmw java -fullversion
+  - ./jvmw upgrade
 
 os:
   - osx
-  - linux
+#  - linux
 
 env:
   global:

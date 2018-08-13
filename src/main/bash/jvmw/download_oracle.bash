@@ -66,7 +66,6 @@ function oracle_otn_form_parser() {
 }
 
 function oracle_otn_curl_redirect() {
-	# FIXME https://github.com/koalaman/shellcheck/issues/1089
 	# shellcheck disable=SC2155
 	local host=$(awk '{ if (match($0, "http-equiv=\"refresh\".*")) print substr($0, RSTART, RLENGTH) }' <"${OTN_CONTENT_FILE}" | awk -F';' '{ if (match($0, "URL=[^\"]+")) print substr($0, RSTART+4, RLENGTH-4)}')
 	if [[ "${host:0:1}" == "/" ]]; then
