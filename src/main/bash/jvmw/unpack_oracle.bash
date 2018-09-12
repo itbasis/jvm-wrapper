@@ -17,6 +17,7 @@ function oracle_unpack_darwin() {
 	for dir in ./*jdk*; do
 		cpio -i <"${dir}/Payload" || exit 1
 	done
+	rm -Rf "${JDK_ROOT_DIR}"
 	mv Contents "${JDK_ROOT_DIR}" 1> /dev/null 2>&1 || die
 	cd - || die
 	rm -Rf "${tmp_dir}" "${ARCHIVE_FILE}"
