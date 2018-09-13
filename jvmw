@@ -65,7 +65,7 @@ function write_last_update() {
 	if [[ -z "${ARCHIVE_JVM_URL}" ]]; then
 		printf "%s\\n%s" "${now}" "$(tail -n2 "${LAST_UPDATE_FILE}")" >"${LAST_UPDATE_FILE}"
 	else
-		printf "%s\\n%s\\n%s\\n" "${now}" "${ARCHIVE_JVM_URL}" "${ARCHIVE_JVM_CHECKSUM}" >"${LAST_UPDATE_FILE}"
+		printf "%s\\n%s\\n%s" "${now}" "${ARCHIVE_JVM_URL}" "${ARCHIVE_JVM_CHECKSUM}" >"${LAST_UPDATE_FILE}"
 	fi
 }
 function whereis() {
