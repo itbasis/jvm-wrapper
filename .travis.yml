@@ -32,6 +32,7 @@ env:
   global:
     - DOCKER_IMAGES="centos:centos6 centos:centos7 debian:wheezy debian:jessie ubuntu:trusty opensuse:latest base/arch:latest"
   matrix:
+    - ENV_TEST_FILE="oracle-11_jdk"
     - ENV_TEST_FILE="oracle-10_jdk"
     - ENV_TEST_FILE="oracle-9_jdk"
     - ENV_TEST_FILE="oracle-9.0.1_jdk"
