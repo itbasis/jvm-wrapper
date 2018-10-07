@@ -50,13 +50,14 @@ Order of reading variables: environment, `~/jvmw.properties`, `./jvmw.properties
 |property name|default|examples|description|
 |---|:---:|---|---|
 |JVM_VERSION|11 |[see examples of configuration files](samples.properties)||
-|JVM_VENDOR|`openjdk` |`oracle`, `openjdk` | `oracle` = [Oracle Site](http://www.oracle.com/technetwork/java/javase/downloads/index.html)<br/>`openjdk` = [OpenJDK](https://jdk.java.net/)||
+|JVM_VENDOR|`openjdk`|`oracle`, `openjdk`|`openjdk` = [OpenJDK](http://jdk.java.net/)<br/>`oracle` = [Oracle Site](http://www.oracle.com/technetwork/java/javase/downloads/index.html)||
 |JVMW_ORACLE_KEYCHAIN|JVM_WRAPPER_ORACLE|Specifies the name of the Keychain Item, which stores the login (`ORACLE_USER`) and password (`ORACLE_PASSWORD`)|
 |ORACLE_USER| |ORACLE_USER=user@example.com|
 |ORACLE_PASSWORD| |ORACLE_PASSWORD=password|Value in the clear. It is recommended to use Keychain. If the parameter is not specified and the parameter `JVMW_ORACLE_KEYCHAIN` is not specified, an attempt will be made to find the password in Keychain by the parameter `ORACLE_USER`|
 |JVMW_DEBUG|`N`|`Y`, `N`|If `JVMW_DEBUG`=`Y`, debugging information will be displayed in stderr|
 |REQUIRED_UPDATE|`Y`|`Y`, `N`|If `REQUIRED_UPDATE`=`N`, then an attempt will not be made to load the JDK / JVM distributor. If the required version of JDK/JVM is not found locally, an error will be generated<br/>If `REQUIRED_UPDATE`=`Y` and the required version is not locally found, an attempt will be made to download the distribution from the Oracle website
-|USE_SYSTEM_JVM|`Y`|`Y`, `N`|If the requested version of JDK is present in the system, then it will be used. If you want to explicitly specify that the system JDK is not used, you must specify `USE_SYSTEM_JVM=N`|
+|USE_SYSTEM_JVM|`N`|`Y`, `N`|If the requested version of JDK is present in the system, then it will be used. If you want to explicitly specify that the system JDK is not used, you must specify `USE_SYSTEM_JVM=N`|
+|CLEAR_COOKIE|`Y`|`Y`, `N`|Delete authorization cookies after script completion. Set `Y` if the script runs several times in a row, so as not to re-authorize on the vendor site| 
 
 Properties are read without replacing the previously read. For example, if environment does not have an empty `JVM_VERSION` variable and also has `./jvmw.properties`, then the variable from the environment
 
