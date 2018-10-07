@@ -1,5 +1,11 @@
 #!/usr/bin/env bash
 
+# Hack for code verification
+OS=${OS}
+JVMW_HOME=${JVMW_HOME}
+JVM_VERSION=${JVM_VERSION}
+JVM_VENDOR=${JVM_VENDOR}
+
 # BEGIN SCRIPT
 function properties_parser() {
 	while IFS='=' read -r key value || [[ -n "$key" ]]; do
@@ -9,12 +15,12 @@ function properties_parser() {
 
 function properties_default() {
 	cat << EOF
-JVM_VERSION=9
+JVM_VERSION=11
 REQUIRED_UPDATE=Y
 CLEAR_COOKIE=Y
 JVMW_DEBUG=N
-USE_SYSTEM_JVM=Y
-JVM_VENDOR=oracle
+USE_SYSTEM_JVM=N
+JVM_VENDOR=openjdk
 JVMW_ORACLE_KEYCHAIN=JVM_WRAPPER_ORACLE
 EOF
 }

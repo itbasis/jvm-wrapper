@@ -7,6 +7,11 @@
 ![Support Linux](https://img.shields.io/badge/support%20OS-Linux-green.svg?style=flat-square)
 ![Support Mac OS](https://img.shields.io/badge/support%20OS-Mac%20OS-green.svg?style=flat-square)
 
+![Support OpenJDK 12](https://img.shields.io/badge/support%20OpenJDK-12-green.svg?style=flat-square)
+![Support OpenJDK 11](https://img.shields.io/badge/support%20OpenJDK-11-green.svg?style=flat-square)
+![Support OpenJDK 10](https://img.shields.io/badge/support%20OpenJDK-10-green.svg?style=flat-square)
+![Support OpenJDK 0](https://img.shields.io/badge/support%20OpenJDK-8-green.svg?style=flat-square)
+
 ![Support Oracle JDK 11](https://img.shields.io/badge/support%20Oracle%20JDK-11-green.svg?style=flat-square)
 ![Support Oracle JDK 10](https://img.shields.io/badge/support%20Oracle%20JDK-10-green.svg?style=flat-square)
 ![Support Oracle JDK 9](https://img.shields.io/badge/support%20Oracle%20JDK-9-green.svg?style=flat-square)
@@ -15,6 +20,10 @@
 ## Install
 
 download file [jvmw](jvmw) in `~/.jvm/` or project directory
+
+## IDE supports
+
+[IDE plugins](https://github.com/itbasis/jvm-wrapper-ide-plugins/)
 
 ## Usage
 
@@ -40,8 +49,8 @@ Order of reading variables: environment, `~/jvmw.properties`, `./jvmw.properties
 
 |property name|default|examples|description|
 |---|:---:|---|---|
-|JVM_VERSION| |[see examples of configuration files](samples.properties)||
-|JVM_VENDOR| |`oracle`|`oracle` = [Oracle Site](http://www.oracle.com/technetwork/java/javase/downloads/index.html)||
+|JVM_VERSION|11 |[see examples of configuration files](samples.properties)||
+|JVM_VENDOR|`openjdk` |`oracle`, `openjdk` | `oracle` = [Oracle Site](http://www.oracle.com/technetwork/java/javase/downloads/index.html)<br/>`openjdk` = [OpenJDK](https://jdk.java.net/)||
 |JVMW_ORACLE_KEYCHAIN|JVM_WRAPPER_ORACLE|Specifies the name of the Keychain Item, which stores the login (`ORACLE_USER`) and password (`ORACLE_PASSWORD`)|
 |ORACLE_USER| |ORACLE_USER=user@example.com|
 |ORACLE_PASSWORD| |ORACLE_PASSWORD=password|Value in the clear. It is recommended to use Keychain. If the parameter is not specified and the parameter `JVMW_ORACLE_KEYCHAIN` is not specified, an attempt will be made to find the password in Keychain by the parameter `ORACLE_USER`|
@@ -52,7 +61,3 @@ Order of reading variables: environment, `~/jvmw.properties`, `./jvmw.properties
 Properties are read without replacing the previously read. For example, if environment does not have an empty `JVM_VERSION` variable and also has `./jvmw.properties`, then the variable from the environment
 
 To download archival versions of JDK, you must set the variables `ORACLE_USER` and `ORACLE_PASSWORD`
-
-## IDE supports
-
-[IDE plugins](https://github.com/itbasis/jvm-wrapper-ide-plugins/)

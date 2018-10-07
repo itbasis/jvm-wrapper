@@ -1,44 +1,23 @@
 #!/usr/bin/env bash
 
+# Hack for code verification
+OS=${OS}
+JVMW_HOME=${JVMW_HOME}
+JVM_VERSION_UPDATE=${JVM_VERSION_UPDATE}
+JVMW_PROPERTY_FILE=${JVMW_PROPERTY_FILE}
+JVM_VENDOR=${JVM_VENDOR}
+JVM_VERSION_MAJOR=${JVM_VERSION_MAJOR}
+JVM_VERSION=${JVM_VERSION}
+JVM_PAGE_URL=${JVM_PAGE_URL}
+ARCHIVE_JVM_URL=${ARCHIVE_JVM_URL}
+ARCHIVE_FILE=${ARCHIVE_FILE}
+REQUIRED_COMMANDS_CORE=${REQUIRED_COMMANDS_CORE}
+REQUIRED_COMMANDS_DARWIN=${REQUIRED_COMMANDS_DARWIN}
+REQUIRED_COMMANDS_LINUX=${REQUIRED_COMMANDS_LINUX}
+LAST_UPDATE_FILE=${LAST_UPDATE_FILE}
+
+
 # BEGIN SCRIPT
-function download_jdk() {
-	eval "${JVM_VENDOR}_check_the_need_for_downloading"
-
-	debug "REQUIRED_UPDATE=${REQUIRED_UPDATE}"
-	if [[ "${REQUIRED_UPDATE}" != "Y" ]]; then
-		return 0
-	fi
-
-	if [[ -z "${ARCHIVE_JVM_URL}" ]]; then
-		die "empty ARCHIVE_JVM_URL. Use page '${JVM_PAGE_URL}'"
-	fi
-	#
-	if [[ -f "${LAST_UPDATE_FILE}" ]] && [[ "${ARCHIVE_JVM_URL}" == "$(head -2 <"${LAST_UPDATE_FILE}" | tail -1)" ]]; then
-		return 0
-	fi
-	#
-	if [[ -f "${ARCHIVE_FILE}" ]]; then
-		if [[ ${JVM_VERSION_MAJOR} -lt 8 ]]; then
-			# TODO
-			rm -f "${ARCHIVE_FILE}"
-		elif check_checksum; then
-			eval "${JVM_VENDOR}_unpack_${OS}"
-			return 0
-		fi
-	fi
-	#
-	if [[ -d "${JDK_HOME_DIR}" ]]; then
-		if [[ "$("${JVM_HOME_DIR}/bin/java" -fullversion 2>&1)" == *"${JVM_VERSION}"* ]]; then
-			write_last_update
-			return 0
-		fi
-	fi
-	#
-	eval "${JVM_VENDOR}_download_jdk"
-	eval "${JVM_VENDOR}_unpack_${OS}"
-
-	write_last_update
-}
 
 function main_properties() {
 	[[ -f "${JVMW_HOME}/${JVMW_PROPERTY_FILE}" ]] && { properties_parser "$(cat "${JVMW_HOME}/${JVMW_PROPERTY_FILE}")"; }
@@ -159,6 +138,7 @@ if [[ -z "$1" ]] || [[ "$1" == "info" ]]; then
 	echo "JAVA_HOME=${JAVA_HOME}"
 
 else
+	eval "${JVM_VENDOR}_prepare_actions"
 	download_jdk
 
 	if [[ -z "${JVM_HOME_DIR}" ]]; then

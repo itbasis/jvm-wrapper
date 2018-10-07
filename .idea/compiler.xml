@@ -2,17 +2,6 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <bytecodeTargetLevel>
-      <module name="jvm-wrapper_main" target="1.8" />
-      <module name="jvm-wrapper_test" target="1.8" />
-      <module name="library_main" target="1.8" />
-      <module name="library_test" target="1.8" />
-      <module name="plugin-common_integrationTest" target="1.8" />
-      <module name="plugin-common_main" target="1.8" />
-      <module name="plugin-common_test" target="1.8" />
-      <module name="plugin-intellij_commonTest" target="1.8" />
-      <module name="plugin-intellij_integrationTest" target="1.8" />
-      <module name="plugin-intellij_main" target="1.8" />
-      <module name="plugin-intellij_test" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>

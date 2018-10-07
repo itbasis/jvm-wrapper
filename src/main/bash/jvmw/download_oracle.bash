@@ -8,6 +8,7 @@ OS=${OS}
 JVMW_ORACLE_KEYCHAIN=${JVMW_ORACLE_KEYCHAIN}
 JVMW_DEBUG=${JVMW_DEBUG}
 ARCHIVE_FILE=${ARCHIVE_FILE}
+ARCHIVE_JVM_CHECKSUM=${ARCHIVE_JVM_CHECKSUM}
 REQUIRED_UPDATE=${REQUIRED_UPDATE}
 JVM_HOME_DIR=${JVM_HOME_DIR}
 JVM_VERSION=${JVM_VERSION}
@@ -75,7 +76,7 @@ function oracle_otn_curl_redirect() {
 }
 
 function oracle_otn_login() {
-	OTN_COOKIE_FILE="${TMPDIR}/jvm_wrapper.oracle_otn.cookie"
+	OTN_COOKIE_FILE="${TMPDIR}/jvmwrapper.oracle_otn.cookie"
 
 	if [[ "${CLEAR_COOKIE}" == "Y" ]]; then
 		rm -f "${OTN_COOKIE_FILE}";
@@ -135,7 +136,7 @@ function oracle_download_jdk() {
 	fi
 	#
 
-	if [[ ! check_checksum ]]; then
+	if [[ ! `check_checksum` ]]; then
 		die
 	fi
 }

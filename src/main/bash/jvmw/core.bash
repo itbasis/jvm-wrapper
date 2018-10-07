@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+
 # Hack for code verification
 JVMW_HOME=${JVMW_HOME}
 JVM_VERSION_MAJOR=${JVM_VERSION_MAJOR}
@@ -6,9 +7,23 @@ ARCHIVE_FILE=${ARCHIVE_FILE}
 ARCHIVE_JVM_CHECKSUM=${ARCHIVE_JVM_CHECKSUM}
 ARCHIVE_JVM_URL=${ARCHIVE_JVM_URL}
 LAST_UPDATE_FILE=${LAST_UPDATE_FILE}
-CLEAR_COOKIE=${CLEAR_COOKIE}
+OTN_USER_AGENT=${OTN_USER_AGENT}
+ARCH=${ARCH}
+ARCHIVE_EXT=${ARCHIVE_EXT}
+REQUIRED_COMMANDS_CORE=${REQUIRED_COMMANDS_CORE}
+REQUIRED_COMMANDS_DARWIN=${REQUIRED_COMMANDS_DARWIN}
+REQUIRED_COMMANDS_LINUX=${REQUIRED_COMMANDS_LINUX}
 
 # BEGIN SCRIPT
+# Hack for code verification
+JVMW_HOME=${JVMW_HOME}
+JVM_VERSION=${JVM_VERSION}
+JVM_VENDOR=${JVM_VENDOR}
+CLEAR_COOKIE=${CLEAR_COOKIE}
+ORACLE_USER=${ORACLE_USER}
+ORACLE_PASSWORD=${ORACLE_PASSWORD}
+JVMW_ORACLE_KEYCHAIN=${JVMW_ORACLE_KEYCHAIN}
+#
 export JVMW=true
 #JVMW_HOME=${HOME}/.jvm
 if [[ -z "${JVMW_HOME}" ]]; then
@@ -16,10 +31,15 @@ if [[ -z "${JVMW_HOME}" ]]; then
 fi
 mkdir -p "${JVMW_HOME}"
 #
+OTN_USER_AGENT='Mozilla/5.0 https://github.com/itbasis/jvm-wrapper'
+#
+ARCHIVE_EXT_TAR_GZ="tar.gz"
+ARCHIVE_EXT_DMG="dmg"
+#
 JVMW_PROPERTY_FILE="${JVMW_PROPERTY_FILE:-./jvmw.properties}"
 OS=$(uname | tr '[:upper:]' '[:lower:]')
 ARCH=$([[ "$(uname -m)" == "x86_64" ]] && echo "x64" || echo "i586")
-ARCHIVE_EXT=$([[ "${OS}" == "darwin" ]] && echo "dmg" || echo "tar.gz")
+ARCHIVE_EXT=$([[ "${OS}" == "darwin" ]] && echo ${ARCHIVE_EXT_DMG} || echo ${ARCHIVE_EXT_TAR_GZ})
 #
 REQUIRED_COMMANDS_CORE='awk tr head rm mv cd curl readlink dirname'
 REQUIRED_COMMANDS_DARWIN='hdiutil xar cpio shasum'
@@ -103,4 +123,5 @@ function system_check_program_exists() {
 		fi
 	done
 }
+
 # END SCRIPT

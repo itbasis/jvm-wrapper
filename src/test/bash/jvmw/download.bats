@@ -6,10 +6,15 @@ setup() {
 	export JVMW_ORACLE_KEYCHAIN=JVM_WRAPPER_ORACLE
 	export CLEAR_COOKIE=N
 
-	load ../../resources/test.env/$ENV_TEST_FILE
+	while IFS='' read -r line || [[ -n "$line" ]]; do
+		eval "export $line"
+	done < "src/test/resources/test.env/$ENV_TEST_FILE.properties"
 
 	load ../../../main/bash/jvmw/core
+	load ../../../main/bash/jvmw/download
 	load ../../../main/bash/jvmw/download_oracle
+	load ../../../main/bash/jvmw/download_openjdk
+	load ../../../main/bash/jvmw/unpack
 }
 
 @test "download JDK ${TEST_JVM_VERSION}" {
@@ -18,8 +23,9 @@ setup() {
 	export ARCHIVE_FILE=$BATS_TMPDIR/jdk${TEST_JVM_VERSION}.${ARCHIVE_EXT}
 
 	echo "ARCHIVE_FILE=$ARCHIVE_FILE"
-	run rm -f "${ARCHIVE_FILE}"
-	run oracle_download_jdk
+	#run rm -f "${ARCHIVE_FILE}"
+	run download_jdk
 	echo "output: $output"
+
 	[[ "$status" -eq 0 ]]
 }
