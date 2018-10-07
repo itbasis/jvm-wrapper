@@ -25,7 +25,7 @@ script:
   - ./jvmw upgrade
 
 os:
-#  - osx
+  - osx
   - linux
 
 env:
