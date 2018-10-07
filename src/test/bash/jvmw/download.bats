@@ -15,6 +15,10 @@ setup() {
 	load ../../../main/bash/jvmw/download_oracle
 	load ../../../main/bash/jvmw/download_openjdk
 	load ../../../main/bash/jvmw/unpack
+
+	echo '----------'
+	env
+	echo '----------'
 }
 
 @test "download JDK ${TEST_JVM_VERSION}" {
