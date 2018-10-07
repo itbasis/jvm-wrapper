@@ -9,7 +9,7 @@ install:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update; fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew reinstall shellcheck bats; fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew cask uninstall java; fi
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew cask search java; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew search java; fi
 #
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then docker --version; fi
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo add-apt-repository -y ppa:duggan/bats; fi
