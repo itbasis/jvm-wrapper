@@ -1,6 +1,15 @@
 #!/usr/bin/env bash
 
 # BEGIN SCRIPT
+# Hack for code verification
+OTN_HEADERS_FILE=${OTN_HEADERS_FILE}
+OTN_FORM_ACTION=${OTN_FORM_ACTION}
+OTN_COOKIE_FILE=${OTN_COOKIE_FILE}
+OTN_FORM_DATA=${OTN_FORM_DATA}
+OTN_CONTENT_FILE=${OTN_CONTENT_FILE}
+OTN_HOST_LOGIN=${OTN_HOST_LOGIN}
+#
+
 function oracle_prepare_actions() {
 	return 0
 }
