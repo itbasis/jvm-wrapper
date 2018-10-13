@@ -7,21 +7,26 @@ services:
 install:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew tap caskroom/versions; fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update; fi
+#  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew reinstall shellcheck bats-core; fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew reinstall shellcheck bats-core; fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew cask uninstall java; fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew search java; fi
 #
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then docker --version; fi
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo add-apt-repository -y ppa:duggan/bats; fi
+#  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo add-apt-repository -y ppa:duggan/bats; fi
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get update; fi
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install -y shellcheck bats; fi
+#  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install -y shellcheck bats; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install -y shellcheck; fi
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then apt-cache search oracle-; fi
+#
+  - git clone https://github.com/bats-core/bats-core.git && cd bats-core ./install.sh /usr/local && cd .. && rm -Rf ./bats-core/
 
 script:
   - env
   - shellcheck src/main/bash/builder.bash || travis_terminate 1
   - src/main/bash/builder.bash || travis_terminate 1
-  - bats -t ./src/test/bash/jvmw.bats || bats -t ./src/test/bash/jvmw/*.bats || travis_terminate 1
+  - bats -v
+  - bats -p ./src/test/bash/jvmw.bats || bats -p ./src/test/bash/jvmw/*.bats || travis_terminate 1
   - cp ./build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
 
 os:
