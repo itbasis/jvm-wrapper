@@ -25,7 +25,7 @@ script:
   - env
   - shellcheck src/main/bash/builder.bash || travis_terminate 1
   - src/main/bash/builder.bash || travis_terminate 1
-  - bats -v
+  - where bats && bats -v
   - bats -p ./src/test/bash/jvmw.bats || bats -p ./src/test/bash/jvmw/*.bats || travis_terminate 1
   - cp ./build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
 
