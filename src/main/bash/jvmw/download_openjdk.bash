@@ -61,7 +61,6 @@ function openjdk_archive_parser() {
 	local -r content=$(curl -s "${JVM_PAGE_URL}")
 
 	local awk_mask='https://download.java.net/java/.*?jdk-'${JVM_VERSION_MAJOR}'.*?'${os}'.*?-'${arch}'.*?.'${ARCHIVE_EXT}''
-echo "awk_mask: $awk_mask"
 
 	# 12 - https://download.java.net/java/early_access/jdk12/14/GPL/openjdk-12-ea+14_osx-x64_bin.tar.gz
 	# 11 - https://download.java.net/java/ga/jdk11/openjdk-11_osx-x64_bin.tar.gz
