@@ -19,15 +19,14 @@ install:
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install -y shellcheck; fi
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then apt-cache search oracle-; fi
 #
-  - git clone https://github.com/bats-core/bats-core.git && cd bats-core ./install.sh /usr/local && cd .. && rm -Rf ./bats-core/
+  - git clone https://github.com/bats-core/bats-core.git && cd bats-core ./install.sh /usr/local && ls -laFh /usr/local/bats && cd .. && rm -Rf ./bats-core/
 
 script:
   - env
   - shellcheck src/main/bash/builder.bash || travis_terminate 1
   - src/main/bash/builder.bash || travis_terminate 1
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; where bats; fi
-  - bats -v
-  - bats -p ./src/test/bash/jvmw.bats || bats -p ./src/test/bash/jvmw/*.bats || travis_terminate 1
+  - /usr/local/bats -v
+  - /usr/local/bats -p ./src/test/bash/jvmw.bats || bats -p ./src/test/bash/jvmw/*.bats || travis_terminate 1
   - cp ./build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
 
 os:
