@@ -54,7 +54,7 @@ function openjdk_archive_parser() {
 		os=osx
 	fi
 	local arch=${ARCH}
-	if [[ ${JVM_VERSION_MAJOR} -le 8 ]]; then
+	if [[ "${os}" == "darwin" ]] && [[ ${JVM_VERSION_MAJOR} -le 8 ]]; then
 		arch="x86_64"
 	fi
 
