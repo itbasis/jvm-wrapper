@@ -19,10 +19,10 @@ install:
 
 script:
   - env
-  - bats -t ./src/test/bash/jvmw/*.bats
-  - shellcheck src/main/bash/builder.bash
-  - src/main/bash/builder.bash && cp ./build/jvmw ./ && ./jvmw java -fullversion
-  - ./jvmw upgrade
+  - shellcheck src/main/bash/builder.bash || travis_terminate 1
+  - src/main/bash/builder.bash || travis_terminate 1
+  - bats -t ./src/test/bash/jvmw.bats || bats -t ./src/test/bash/jvmw/*.bats || travis_terminate 1
+  - cp ./build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
 
 os:
   - osx
