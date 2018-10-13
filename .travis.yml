@@ -52,7 +52,7 @@ jobs:
       script:
       - ./src/main/bash/builder.bash
       - cp ./build/jvmw ./
-      - git commit -a -m "Release" || exit 0
-#      - git push || exit 0
+      - git commit -a -m "Release" || travis_terminate 1
+      - git push || travis_terminate 1
       env:
         - DOCKER_IMAGES=""   ENV_TEST_FILE="oracle-"
