@@ -61,7 +61,7 @@ jobs:
         - git config --global user.name "Travis CI"
         - git config --global user.email "travis@travis-ci.org"
         - git remote add deploy "https://$GITHUB_TOKEN@github.com/$TRAVIS_REPO_SLUG.git"
-        - git checkout -b $TRAVIS_BRANCH
+        - git checkout -f $TRAVIS_BRANCH
         - git status
         - ./src/main/bash/builder.bash && cp ./build/jvmw ./
         - git status
