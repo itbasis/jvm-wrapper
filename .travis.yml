@@ -58,9 +58,9 @@ jobs:
         - DOCKER_IMAGES=""   ENV_TEST_FILE="oracle-"
         - RELEASE_NUMBER=`date +%Y%m%d_%H%M%S`
       script:
-        - git config --global user.name "Travis CI"
-        - git config --global user.email "travis@travis-ci.org"
-        - git remote add deploy "https://$GITHUB_TOKEN@github.com/$TRAVIS_REPO_SLUG.git"
+        - git config --global user.name "TravisCI"
+        - git config --global user.email "deploy@travis-ci.org"
+        - git remote add deploy "https://TravisCI:$GITHUB_TOKEN@github.com/$TRAVIS_REPO_SLUG.git"
         - git checkout -f $TRAVIS_BRANCH
         - git remote -v
         - git status
@@ -70,7 +70,6 @@ jobs:
         - git status
 #        - git tag "$RELEASE_NUMBER"
 #        - git push deploy --tags &>/dev/null
-        - git push
         - git push deploy --tags
 
     - stage: deploy
