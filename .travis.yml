@@ -70,7 +70,8 @@ jobs:
         - git status
 #        - git tag "$RELEASE_NUMBER"
 #        - git push deploy --tags &>/dev/null
-        - git push deploy --tags
+        - git push deploy -v
+        - git push deploy --tags -v
 
     - stage: deploy
       skip_cleanup: true
