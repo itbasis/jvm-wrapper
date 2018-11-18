@@ -38,18 +38,18 @@ env:
     - DOCKER_IMAGES="centos:centos6 centos:centos7 debian:wheezy debian:jessie ubuntu:trusty opensuse:latest base/arch:latest"
   matrix:
     - ENV_TEST_FILE="openjdk-12_jdk"
-    - ENV_TEST_FILE="openjdk-11_jdk"
-    - ENV_TEST_FILE="openjdk-10_jdk"
-    - ENV_TEST_FILE="openjdk-8_jdk"
-    - ENV_TEST_FILE="oracle-11_jdk"
-    - ENV_TEST_FILE="oracle-10_jdk"
-    - ENV_TEST_FILE="oracle-9_jdk"
-    - ENV_TEST_FILE="oracle-9.0.1_jdk"
-    - ENV_TEST_FILE="oracle-8_jdk"
-    - ENV_TEST_FILE="oracle-8u171_jdk"
-    - ENV_TEST_FILE="oracle-1.8.0_171_jdk"
-    - ENV_TEST_FILE="oracle-1.8.0_171-b11_jdk"
-    - ENV_TEST_FILE="oracle-8u144_jdk"
+#    - ENV_TEST_FILE="openjdk-11_jdk"
+#    - ENV_TEST_FILE="openjdk-10_jdk"
+#    - ENV_TEST_FILE="openjdk-8_jdk"
+#    - ENV_TEST_FILE="oracle-11_jdk"
+#    - ENV_TEST_FILE="oracle-10_jdk"
+#    - ENV_TEST_FILE="oracle-9_jdk"
+#    - ENV_TEST_FILE="oracle-9.0.1_jdk"
+#    - ENV_TEST_FILE="oracle-8_jdk"
+#    - ENV_TEST_FILE="oracle-8u171_jdk"
+#    - ENV_TEST_FILE="oracle-1.8.0_171_jdk"
+#    - ENV_TEST_FILE="oracle-1.8.0_171-b11_jdk"
+#    - ENV_TEST_FILE="oracle-8u144_jdk"
 
 jobs:
   include:
@@ -58,7 +58,7 @@ jobs:
         - DOCKER_IMAGES=""   ENV_TEST_FILE="oracle-"
         - COMMIT_MESSAGE="Release `date +%Y%m%d_%H%M%S`"
       script:
-      - ./src/main/bash/builder.bash && cp ./build/jvmw ./ || travis_terminate 1
-#      - git config --local user.name "Victor Alenkov"
-#      - git config --local user.email "Victor@Alenkov.name"
-#      - git commit -a -m "$COMMIT_MESSAGE" && git tag "$COMMIT_MESSAGE" && git push --tags || travis_terminate 1
+        - ./src/main/bash/builder.bash && cp ./build/jvmw ./ || travis_terminate 1
+        - git config --local user.name "Victor Alenkov"
+        - git config --local user.email "Victor@Alenkov.name"
+        - git commit -a -m "$COMMIT_MESSAGE" && git tag "$COMMIT_MESSAGE" && git push --tags || travis_terminate 1
