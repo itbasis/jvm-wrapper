@@ -30,7 +30,7 @@ script:
   - cp ./build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
 
 os:
-#  - linux
+  - linux
   - osx
 
 env:
@@ -53,7 +53,7 @@ env:
 
 jobs:
   include:
-    - stage: deploy
+    - stage: before_deploy
       env:
         - DOCKER_IMAGES=""   ENV_TEST_FILE="oracle-"
         - RELEASE_NUMBER=`date +%Y%m%d_%H%M%S`
@@ -62,3 +62,10 @@ jobs:
         - git config --local user.name "Victor Alenkov"
         - git config --local user.email "Victor@Alenkov.name"
         - git commit -a -m ""Release $RELEASE_NUMBER" && git tag "$RELEASE_NUMBER" && git push --tags || travis_terminate 1
+
+    - stage: deploy
+      skip_cleanup: true
+      provider: releases
+      api_key: "$GITHUB_TOKEN"
+      overwrite: true
+      files: ./jvmw
