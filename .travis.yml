@@ -63,8 +63,8 @@ jobs:
         - git config --local user.email "Victor@Alenkov.name"
         - git commit -a -m "Release $RELEASE_NUMBER"
         - git tag "$RELEASE_NUMBER"
-        - git remote add deploy "https://$GIT_TOKEN@github.com/$TRAVIS_REPO_SLUG.git"
-        - git push deploy --tags
+        - git remote add deploy "https://$GITHUB_TOKEN@github.com/$TRAVIS_REPO_SLUG.git"
+        - git push deploy --tags &>/dev/null
 
     - stage: deploy
       skip_cleanup: true
