@@ -53,7 +53,7 @@ env:
 
 jobs:
   include:
-    - include: before_deploy
+    - stage: before_deploy
       env:
         - DOCKER_IMAGES=""   ENV_TEST_FILE="oracle-"
         - RELEASE_NUMBER=`date +%Y%m%d_%H%M%S`
@@ -63,7 +63,7 @@ jobs:
         - git config --local user.email "Victor@Alenkov.name"
         - git commit -a -m ""Release $RELEASE_NUMBER" && git tag "$RELEASE_NUMBER" && git push --tags || travis_terminate 1
 
-    - include: deploy
+    - stage: deploy
       skip_cleanup: true
       provider: releases
       api_key: "$GITHUB_TOKEN"
