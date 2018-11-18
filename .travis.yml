@@ -61,7 +61,7 @@ jobs:
         - ./src/main/bash/builder.bash && cp ./build/jvmw ./ || travis_terminate 1
         - git config --local user.name "Victor Alenkov"
         - git config --local user.email "Victor@Alenkov.name"
-        - git commit -a -m ""Release $RELEASE_NUMBER" && git tag "$RELEASE_NUMBER" && git push --tags || travis_terminate 1
+        - git commit -a -m "Release $RELEASE_NUMBER" && git tag "$RELEASE_NUMBER" && git push --tags || travis_terminate 1
 
     - stage: deploy
       skip_cleanup: true
@@ -69,3 +69,5 @@ jobs:
       api_key: "$GITHUB_TOKEN"
       overwrite: true
       files: ./jvmw
+      env:
+        - DOCKER_IMAGES=""   ENV_TEST_FILE="oracle-"
