@@ -70,6 +70,7 @@ jobs:
         - git status
 #        - git tag "$RELEASE_NUMBER"
 #        - git push deploy --tags &>/dev/null
+        - git push
         - git push deploy --tags
 
     - stage: deploy
