@@ -38,49 +38,40 @@ env:
     - DOCKER_IMAGES="centos:centos6 centos:centos7 debian:wheezy debian:jessie ubuntu:trusty opensuse:latest base/arch:latest"
   matrix:
     - ENV_TEST_FILE="openjdk-12_jdk"
-#    - ENV_TEST_FILE="openjdk-11_jdk"
-#    - ENV_TEST_FILE="openjdk-10_jdk"
-#    - ENV_TEST_FILE="openjdk-8_jdk"
-#    - ENV_TEST_FILE="oracle-11_jdk"
-#    - ENV_TEST_FILE="oracle-10_jdk"
-#    - ENV_TEST_FILE="oracle-9_jdk"
-#    - ENV_TEST_FILE="oracle-9.0.1_jdk"
-#    - ENV_TEST_FILE="oracle-8_jdk"
-#    - ENV_TEST_FILE="oracle-8u171_jdk"
-#    - ENV_TEST_FILE="oracle-1.8.0_171_jdk"
-#    - ENV_TEST_FILE="oracle-1.8.0_171-b11_jdk"
-#    - ENV_TEST_FILE="oracle-8u144_jdk"
+    - ENV_TEST_FILE="openjdk-11_jdk"
+    - ENV_TEST_FILE="openjdk-10_jdk"
+    - ENV_TEST_FILE="openjdk-8_jdk"
+    - ENV_TEST_FILE="oracle-11_jdk"
+    - ENV_TEST_FILE="oracle-10_jdk"
+    - ENV_TEST_FILE="oracle-9_jdk"
+    - ENV_TEST_FILE="oracle-9.0.1_jdk"
+    - ENV_TEST_FILE="oracle-8_jdk"
+    - ENV_TEST_FILE="oracle-8u171_jdk"
+    - ENV_TEST_FILE="oracle-1.8.0_171_jdk"
+    - ENV_TEST_FILE="oracle-1.8.0_171-b11_jdk"
+    - ENV_TEST_FILE="oracle-8u144_jdk"
 
-jobs:
-  include:
-    - stage: before_deploy
-      env:
-        - DOCKER_IMAGES=""   ENV_TEST_FILE="oracle-"
-        - RELEASE_NUMBER=`date +%Y%m%d_%H%M%S`
-      script:
-        - git config --global user.name "TravisCI"
-        - git config --global user.email "deploy@travis-ci.org"
-        - git remote add deploy "https://TravisCI:$GITHUB_TOKEN@github.com/$TRAVIS_REPO_SLUG.git"
-        - git checkout -f $TRAVIS_BRANCH
-        - git remote -v
-        - git status
-        - ./src/main/bash/builder.bash && cp ./build/jvmw ./
-        - git status
-        - git commit -a -m "Release $RELEASE_NUMBER"
-        - git status
+#jobs:
+#  include:
+#    - stage: before_deploy
+#      env:
+#        - DOCKER_IMAGES=""   ENV_TEST_FILE="oracle-"
+#        - RELEASE_NUMBER=`date +%Y%m%d_%H%M%S`
+#      script:
+#        - git config --global user.name "TravisCI"
+#        - git config --global user.email "deploy@travis-ci.org"
+#        - git remote add deploy "https://TravisCI:$GITHUB_TOKEN@github.com/$TRAVIS_REPO_SLUG.git"
+#        - ./src/main/bash/builder.bash && cp ./build/jvmw ./
+#        - git commit -a -m "Release $RELEASE_NUMBER"
 #        - git tag "$RELEASE_NUMBER"
-#        - git push deploy --tags &>/dev/null
-        - git push deploy -v
-        - git push deploy --tags -v
-
-    - stage: deploy
-      skip_cleanup: true
-      provider: releases
-      api_key: "$GITHUB_TOKEN"
-      overwrite: true
-      files:
-        - "jvmw"
-      on:
-        tags: true
-      env:
-        - DOCKER_IMAGES=""   ENV_TEST_FILE="oracle-"
+#
+#    - stage: deploy
+#      skip_cleanup: true
+#      provider: releases
+#      api_key: "$GITHUB_TOKEN"
+#      files:
+#        - "jvmw"
+#      on:
+#        tags: true
+#      env:
+#        - DOCKER_IMAGES=""   ENV_TEST_FILE="oracle-"
