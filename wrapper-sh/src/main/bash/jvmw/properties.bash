@@ -5,6 +5,9 @@ OS=${OS}
 JVMW_HOME=${JVMW_HOME}
 JVM_VERSION=${JVM_VERSION}
 JVM_VENDOR=${JVM_VENDOR}
+ARCHIVE_FILE=${ARCHIVE_FILE}
+ARCHIVE_EXT=${ARCHIVE_EXT}
+LAST_UPDATE_FILE=${LAST_UPDATE_FILE}
 
 # BEGIN SCRIPT
 function properties_parser() {
@@ -57,5 +60,7 @@ function properties_build() {
 	JDK_HOME_DIR=${JDK_ROOT_DIR}/$([[ "${OS}" == 'darwin' ]] && echo 'Home/')
 }
 
-
 # END SCRIPT
+
+# Hack for code verification
+export ARCHIVE_FILE LAST_UPDATE_FILE JDK_HOME_DIR

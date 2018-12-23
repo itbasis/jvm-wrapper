@@ -63,10 +63,11 @@ function openjdk_archive_parser() {
 	local awk_mask='https://download.java.net/java/.*?jdk-'${JVM_VERSION_MAJOR}'.*?'${os}'.*?-'${arch}'.*?.'${ARCHIVE_EXT}''
 	debug "awk_mask=${awk_mask}"
 
-	# shellcheck disable=SC2090
+	# shellcheck disable=SC2090,SC2086
 	ARCHIVE_JVM_URL=$(echo "${content}" | awk '{ if (match($0, "\"'${awk_mask}'\"")) print substr($0,RSTART+1, RLENGTH-2)}')
 
 	if [[ ${JVM_VERSION_MAJOR} -ge 9 ]]; then
+		# shellcheck disable=SC2086
 		local -r content_url=$(echo "${content}" | awk '{ if (match($0, "\"'${awk_mask}'.sha256\"")) print substr($0,RSTART+1, RLENGTH-2)}')
 		ARCHIVE_JVM_CHECKSUM=$(curl -s "${content_url}")
 	fi

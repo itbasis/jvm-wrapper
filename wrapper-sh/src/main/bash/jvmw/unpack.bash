@@ -32,8 +32,8 @@ function unpack_tar_gz() {
 	rm -Rf "${tmp_dir}"
 
 	if [[ -d "${JDK_ROOT_DIR}/Contents" ]]; then
-		mv ${JDK_ROOT_DIR}/Contents/* ${JDK_ROOT_DIR}/
-		rm -Rf ${JDK_ROOT_DIR}/Contents/
+		mv "${JDK_ROOT_DIR}"/Contents/* "${JDK_ROOT_DIR}/"
+		rm -Rf "${JDK_ROOT_DIR}"/Contents/
 	fi
 }
 

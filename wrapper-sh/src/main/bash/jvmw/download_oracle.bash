@@ -136,7 +136,7 @@ function oracle_download_jdk() {
 	fi
 	#
 
-	if [[ ! `check_checksum` ]]; then
+	if [[ ! $(check_checksum) ]]; then
 		die
 	fi
 }
