@@ -13,8 +13,8 @@
 ![Support OpenJDK 8](https://img.shields.io/badge/support%20OpenJDK-8-green.svg?style=flat-square)
 
 ![Support Oracle JDK 11](https://img.shields.io/badge/support%20Oracle%20JDK-11-green.svg?style=flat-square)
-![Support Oracle JDK 10](https://img.shields.io/badge/support%20Oracle%20JDK-10-green.svg?style=flat-square)
-![Support Oracle JDK 9](https://img.shields.io/badge/support%20Oracle%20JDK-9-green.svg?style=flat-square)
+![Support Oracle JDK 10](https://img.shields.io/badge/support%20Oracle%20JDK-10-red.svg?style=flat-square)
+![Support Oracle JDK 9](https://img.shields.io/badge/support%20Oracle%20JDK-9-red.svg?style=flat-square)
 ![Support Oracle JDK 8](https://img.shields.io/badge/support%20Oracle%20JDK-8-green.svg?style=flat-square)
 
 ## Install

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Build date: 20181224_110647
+# Build date: 20181224_133803
 #
 # Hack for code verification
 JVM_VERSION_MAJOR=${JVM_VERSION_MAJOR}
@@ -336,7 +336,9 @@ function oracle_download_jdk() {
 		ls -laFh "${ARCHIVE_FILE}"
 	fi
 	#
-	if [[ ! $(check_checksum) ]]; then
+	check_checksum
+	local status=$?
+	if [[ ${status} -ne 0 ]]; then
 		die
 	fi
 }

@@ -135,8 +135,9 @@ function oracle_download_jdk() {
 		ls -laFh "${ARCHIVE_FILE}"
 	fi
 	#
-
-	if [[ ! $(check_checksum) ]]; then
+	check_checksum
+	local status=$?
+	if [[ ${status} -ne 0 ]]; then
 		die
 	fi
 }

@@ -20,7 +20,7 @@ install:
 #  - git clone https://github.com/bats-core/bats-core.git && cd bats-core && ./install.sh /usr/local && ls -laFh /usr/local/bats && cd .. && rm -Rf ./bats-core/
 
 before_script:
-  - while IFS='' read -r line || [[ -n "$line" ]]; do eval "export $line"; done < "samples.properties/${ENV_TEST_FILE}.env"
+  - while IFS='' read -r line || [[ -n "$line" ]]; do eval "export ${line}"; done < "samples.properties/${ENV_TEST_FILE}.env"
   - env
   - make build_sh || travis_terminate 1
 
@@ -42,8 +42,8 @@ env:
     #    - ENV_TEST_FILE="openjdk-10_jdk"
     - ENV_TEST_FILE="openjdk-8"
     - ENV_TEST_FILE="oracle-11"
-    - ENV_TEST_FILE="oracle-10"
-    - ENV_TEST_FILE="oracle-9"
+#    - ENV_TEST_FILE="oracle-10"
+#    - ENV_TEST_FILE="oracle-9"
 #    - ENV_TEST_FILE="oracle-9.0.1_jdk"
     - ENV_TEST_FILE="oracle-8"
 #    - ENV_TEST_FILE="oracle-8u171_jdk"
