@@ -8,6 +8,7 @@ export JVM_WRAPPER_VERSION
 export ENV_TEST_FILE
 
 prepare_core:
+	env
 	@echo "WORKING_DIR=$(WORKING_DIR)"
 	echo "$(JVM_WRAPPER_VERSION)" > $(WORKING_DIR)/version.txt
 
