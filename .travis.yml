@@ -55,7 +55,8 @@ jobs:
   include:
     - stage: deploy
       env:
-        - DOCKER_IMAGES=""   ENV_TEST_FILE="oracle-"
+        - ENV_TEST_FILE="openjdk-12"
+        - DOCKER_IMAGES=""
         - COMMIT_MESSAGE="Release ${JVM_WRAPPER_VERSION}"
       script:
         - make build_sh || travis_terminate 1
