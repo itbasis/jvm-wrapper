@@ -11,6 +11,8 @@ build/
 tmp.*
 *.swp
 
+*.iml
+
 .idea/*
 !.idea/externalDependencies.xml
 !.idea/vcs.xml

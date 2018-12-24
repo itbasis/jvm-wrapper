@@ -5,7 +5,7 @@ services:
   - docker
 
 install:
-#  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew tap caskroom/versions; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew tap caskroom/versions; fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update; fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew reinstall shellcheck bats-core; fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew cask uninstall java; fi
@@ -36,15 +36,15 @@ env:
     - JVM_WRAPPER_VERSION="`date +%Y%m%d_%H%M%S`"
     - DOCKER_IMAGES="centos:centos6 centos:centos7 debian:wheezy debian:jessie ubuntu:trusty opensuse:latest base/arch:latest"
   matrix:
-    #    - ENV_TEST_FILE="openjdk-12_jdk"
-    #    - ENV_TEST_FILE="openjdk-11_jdk"
+    - ENV_TEST_FILE="openjdk-12"
+    - ENV_TEST_FILE="openjdk-11"
     #    - ENV_TEST_FILE="openjdk-10_jdk"
-    - ENV_TEST_FILE="openjdk-8_jdk"
-#    - ENV_TEST_FILE="oracle-11_jdk"
-#    - ENV_TEST_FILE="oracle-10_jdk"
-#    - ENV_TEST_FILE="oracle-9_jdk"
+    - ENV_TEST_FILE="openjdk-8"
+    - ENV_TEST_FILE="oracle-11_jdk"
+    - ENV_TEST_FILE="oracle-10_jdk"
+    - ENV_TEST_FILE="oracle-9_jdk"
 #    - ENV_TEST_FILE="oracle-9.0.1_jdk"
-#    - ENV_TEST_FILE="oracle-8_jdk"
+    - ENV_TEST_FILE="oracle-8_jdk"
 #    - ENV_TEST_FILE="oracle-8u171_jdk"
 #    - ENV_TEST_FILE="oracle-1.8.0_171_jdk"
 #    - ENV_TEST_FILE="oracle-1.8.0_171-b11_jdk"

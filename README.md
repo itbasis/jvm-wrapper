@@ -10,7 +10,7 @@
 ![Support OpenJDK 12](https://img.shields.io/badge/support%20OpenJDK-12-green.svg?style=flat-square)
 ![Support OpenJDK 11](https://img.shields.io/badge/support%20OpenJDK-11-green.svg?style=flat-square)
 ![Support OpenJDK 10](https://img.shields.io/badge/support%20OpenJDK-10-green.svg?style=flat-square)
-![Support OpenJDK 0](https://img.shields.io/badge/support%20OpenJDK-8-green.svg?style=flat-square)
+![Support OpenJDK 8](https://img.shields.io/badge/support%20OpenJDK-8-green.svg?style=flat-square)
 
 ![Support Oracle JDK 11](https://img.shields.io/badge/support%20Oracle%20JDK-11-green.svg?style=flat-square)
 ![Support Oracle JDK 10](https://img.shields.io/badge/support%20Oracle%20JDK-10-green.svg?style=flat-square)
