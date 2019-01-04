@@ -35,7 +35,8 @@ install:
 before_script:
   - while IFS='' read -r line || [[ -n "${line}" ]]; do eval "export ${line}"; done < "samples.properties/${ENV_TEST_FILE}.env"
   - env
-  - make build_sh || travis_terminate 1
+  - bats -v
+  - shellcheck -V
 
 jobs:
   include:
@@ -45,254 +46,318 @@ jobs:
         - ENV_TEST_FILE="openjdk-12"
         - DOCKER_IMAGE=""
       script:
-        - make check_sh || travis_terminate 1
-        - cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
+        - cd ./wrapper-sh/
+        - shellcheck builder.bash && bash builder.bash || travis_terminate 1
+        - bats -p src/test/bash/jvmw.bats && bats -p src/test/bash/jvmw/*.bats || travis_terminate 1
+        - cd .. && cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
         
     - stage: test
       env:
         - ENV_TEST_FILE="openjdk-8"
         - DOCKER_IMAGE=""
       script:
-        - make check_sh || travis_terminate 1
-        - cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
+        - cd ./wrapper-sh/
+        - shellcheck builder.bash && bash builder.bash || travis_terminate 1
+        - bats -p src/test/bash/jvmw.bats && bats -p src/test/bash/jvmw/*.bats || travis_terminate 1
+        - cd .. && cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
         
     - stage: test
       env:
         - ENV_TEST_FILE="oracle-11"
         - DOCKER_IMAGE=""
       script:
-        - make check_sh || travis_terminate 1
-        - cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
+        - cd ./wrapper-sh/
+        - shellcheck builder.bash && bash builder.bash || travis_terminate 1
+        - bats -p src/test/bash/jvmw.bats && bats -p src/test/bash/jvmw/*.bats || travis_terminate 1
+        - cd .. && cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
         
     - stage: test
       env:
         - ENV_TEST_FILE="oracle-8"
         - DOCKER_IMAGE=""
       script:
-        - make check_sh || travis_terminate 1
-        - cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
+        - cd ./wrapper-sh/
+        - shellcheck builder.bash && bash builder.bash || travis_terminate 1
+        - bats -p src/test/bash/jvmw.bats && bats -p src/test/bash/jvmw/*.bats || travis_terminate 1
+        - cd .. && cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
         
     - stage: test
       env:
         - ENV_TEST_FILE="openjdk-12"
         - DOCKER_IMAGE="centos:centos6"
       script:
-        - make check_sh || travis_terminate 1
-        - cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
+        - cd ./wrapper-sh/
+        - shellcheck builder.bash && bash builder.bash || travis_terminate 1
+        - bats -p src/test/bash/jvmw.bats && bats -p src/test/bash/jvmw/*.bats || travis_terminate 1
+        - cd .. && cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
         
     - stage: test
       env:
         - ENV_TEST_FILE="openjdk-8"
         - DOCKER_IMAGE="centos:centos6"
       script:
-        - make check_sh || travis_terminate 1
-        - cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
+        - cd ./wrapper-sh/
+        - shellcheck builder.bash && bash builder.bash || travis_terminate 1
+        - bats -p src/test/bash/jvmw.bats && bats -p src/test/bash/jvmw/*.bats || travis_terminate 1
+        - cd .. && cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
         
     - stage: test
       env:
         - ENV_TEST_FILE="oracle-11"
         - DOCKER_IMAGE="centos:centos6"
       script:
-        - make check_sh || travis_terminate 1
-        - cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
+        - cd ./wrapper-sh/
+        - shellcheck builder.bash && bash builder.bash || travis_terminate 1
+        - bats -p src/test/bash/jvmw.bats && bats -p src/test/bash/jvmw/*.bats || travis_terminate 1
+        - cd .. && cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
         
     - stage: test
       env:
         - ENV_TEST_FILE="oracle-8"
         - DOCKER_IMAGE="centos:centos6"
       script:
-        - make check_sh || travis_terminate 1
-        - cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
+        - cd ./wrapper-sh/
+        - shellcheck builder.bash && bash builder.bash || travis_terminate 1
+        - bats -p src/test/bash/jvmw.bats && bats -p src/test/bash/jvmw/*.bats || travis_terminate 1
+        - cd .. && cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
         
     - stage: test
       env:
         - ENV_TEST_FILE="openjdk-12"
         - DOCKER_IMAGE="centos:centos7"
       script:
-        - make check_sh || travis_terminate 1
-        - cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
+        - cd ./wrapper-sh/
+        - shellcheck builder.bash && bash builder.bash || travis_terminate 1
+        - bats -p src/test/bash/jvmw.bats && bats -p src/test/bash/jvmw/*.bats || travis_terminate 1
+        - cd .. && cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
         
     - stage: test
       env:
         - ENV_TEST_FILE="openjdk-8"
         - DOCKER_IMAGE="centos:centos7"
       script:
-        - make check_sh || travis_terminate 1
-        - cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
+        - cd ./wrapper-sh/
+        - shellcheck builder.bash && bash builder.bash || travis_terminate 1
+        - bats -p src/test/bash/jvmw.bats && bats -p src/test/bash/jvmw/*.bats || travis_terminate 1
+        - cd .. && cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
         
     - stage: test
       env:
         - ENV_TEST_FILE="oracle-11"
         - DOCKER_IMAGE="centos:centos7"
       script:
-        - make check_sh || travis_terminate 1
-        - cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
+        - cd ./wrapper-sh/
+        - shellcheck builder.bash && bash builder.bash || travis_terminate 1
+        - bats -p src/test/bash/jvmw.bats && bats -p src/test/bash/jvmw/*.bats || travis_terminate 1
+        - cd .. && cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
         
     - stage: test
       env:
         - ENV_TEST_FILE="oracle-8"
         - DOCKER_IMAGE="centos:centos7"
       script:
-        - make check_sh || travis_terminate 1
-        - cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
+        - cd ./wrapper-sh/
+        - shellcheck builder.bash && bash builder.bash || travis_terminate 1
+        - bats -p src/test/bash/jvmw.bats && bats -p src/test/bash/jvmw/*.bats || travis_terminate 1
+        - cd .. && cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
         
     - stage: test
       env:
         - ENV_TEST_FILE="openjdk-12"
         - DOCKER_IMAGE="debian:wheezy"
       script:
-        - make check_sh || travis_terminate 1
-        - cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
+        - cd ./wrapper-sh/
+        - shellcheck builder.bash && bash builder.bash || travis_terminate 1
+        - bats -p src/test/bash/jvmw.bats && bats -p src/test/bash/jvmw/*.bats || travis_terminate 1
+        - cd .. && cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
         
     - stage: test
       env:
         - ENV_TEST_FILE="openjdk-8"
         - DOCKER_IMAGE="debian:wheezy"
       script:
-        - make check_sh || travis_terminate 1
-        - cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
+        - cd ./wrapper-sh/
+        - shellcheck builder.bash && bash builder.bash || travis_terminate 1
+        - bats -p src/test/bash/jvmw.bats && bats -p src/test/bash/jvmw/*.bats || travis_terminate 1
+        - cd .. && cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
         
     - stage: test
       env:
         - ENV_TEST_FILE="oracle-11"
         - DOCKER_IMAGE="debian:wheezy"
       script:
-        - make check_sh || travis_terminate 1
-        - cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
+        - cd ./wrapper-sh/
+        - shellcheck builder.bash && bash builder.bash || travis_terminate 1
+        - bats -p src/test/bash/jvmw.bats && bats -p src/test/bash/jvmw/*.bats || travis_terminate 1
+        - cd .. && cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
         
     - stage: test
       env:
         - ENV_TEST_FILE="oracle-8"
         - DOCKER_IMAGE="debian:wheezy"
       script:
-        - make check_sh || travis_terminate 1
-        - cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
+        - cd ./wrapper-sh/
+        - shellcheck builder.bash && bash builder.bash || travis_terminate 1
+        - bats -p src/test/bash/jvmw.bats && bats -p src/test/bash/jvmw/*.bats || travis_terminate 1
+        - cd .. && cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
         
     - stage: test
       env:
         - ENV_TEST_FILE="openjdk-12"
         - DOCKER_IMAGE="debian:jessie"
       script:
-        - make check_sh || travis_terminate 1
-        - cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
+        - cd ./wrapper-sh/
+        - shellcheck builder.bash && bash builder.bash || travis_terminate 1
+        - bats -p src/test/bash/jvmw.bats && bats -p src/test/bash/jvmw/*.bats || travis_terminate 1
+        - cd .. && cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
         
     - stage: test
       env:
         - ENV_TEST_FILE="openjdk-8"
         - DOCKER_IMAGE="debian:jessie"
       script:
-        - make check_sh || travis_terminate 1
-        - cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
+        - cd ./wrapper-sh/
+        - shellcheck builder.bash && bash builder.bash || travis_terminate 1
+        - bats -p src/test/bash/jvmw.bats && bats -p src/test/bash/jvmw/*.bats || travis_terminate 1
+        - cd .. && cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
         
     - stage: test
       env:
         - ENV_TEST_FILE="oracle-11"
         - DOCKER_IMAGE="debian:jessie"
       script:
-        - make check_sh || travis_terminate 1
-        - cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
+        - cd ./wrapper-sh/
+        - shellcheck builder.bash && bash builder.bash || travis_terminate 1
+        - bats -p src/test/bash/jvmw.bats && bats -p src/test/bash/jvmw/*.bats || travis_terminate 1
+        - cd .. && cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
         
     - stage: test
       env:
         - ENV_TEST_FILE="oracle-8"
         - DOCKER_IMAGE="debian:jessie"
       script:
-        - make check_sh || travis_terminate 1
-        - cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
+        - cd ./wrapper-sh/
+        - shellcheck builder.bash && bash builder.bash || travis_terminate 1
+        - bats -p src/test/bash/jvmw.bats && bats -p src/test/bash/jvmw/*.bats || travis_terminate 1
+        - cd .. && cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
         
     - stage: test
       env:
         - ENV_TEST_FILE="openjdk-12"
         - DOCKER_IMAGE="ubuntu:trusty"
       script:
-        - make check_sh || travis_terminate 1
-        - cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
+        - cd ./wrapper-sh/
+        - shellcheck builder.bash && bash builder.bash || travis_terminate 1
+        - bats -p src/test/bash/jvmw.bats && bats -p src/test/bash/jvmw/*.bats || travis_terminate 1
+        - cd .. && cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
         
     - stage: test
       env:
         - ENV_TEST_FILE="openjdk-8"
         - DOCKER_IMAGE="ubuntu:trusty"
       script:
-        - make check_sh || travis_terminate 1
-        - cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
+        - cd ./wrapper-sh/
+        - shellcheck builder.bash && bash builder.bash || travis_terminate 1
+        - bats -p src/test/bash/jvmw.bats && bats -p src/test/bash/jvmw/*.bats || travis_terminate 1
+        - cd .. && cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
         
     - stage: test
       env:
         - ENV_TEST_FILE="oracle-11"
         - DOCKER_IMAGE="ubuntu:trusty"
       script:
-        - make check_sh || travis_terminate 1
-        - cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
+        - cd ./wrapper-sh/
+        - shellcheck builder.bash && bash builder.bash || travis_terminate 1
+        - bats -p src/test/bash/jvmw.bats && bats -p src/test/bash/jvmw/*.bats || travis_terminate 1
+        - cd .. && cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
         
     - stage: test
       env:
         - ENV_TEST_FILE="oracle-8"
         - DOCKER_IMAGE="ubuntu:trusty"
       script:
-        - make check_sh || travis_terminate 1
-        - cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
+        - cd ./wrapper-sh/
+        - shellcheck builder.bash && bash builder.bash || travis_terminate 1
+        - bats -p src/test/bash/jvmw.bats && bats -p src/test/bash/jvmw/*.bats || travis_terminate 1
+        - cd .. && cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
         
     - stage: test
       env:
         - ENV_TEST_FILE="openjdk-12"
         - DOCKER_IMAGE="opensuse:latest"
       script:
-        - make check_sh || travis_terminate 1
-        - cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
+        - cd ./wrapper-sh/
+        - shellcheck builder.bash && bash builder.bash || travis_terminate 1
+        - bats -p src/test/bash/jvmw.bats && bats -p src/test/bash/jvmw/*.bats || travis_terminate 1
+        - cd .. && cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
         
     - stage: test
       env:
         - ENV_TEST_FILE="openjdk-8"
         - DOCKER_IMAGE="opensuse:latest"
       script:
-        - make check_sh || travis_terminate 1
-        - cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
+        - cd ./wrapper-sh/
+        - shellcheck builder.bash && bash builder.bash || travis_terminate 1
+        - bats -p src/test/bash/jvmw.bats && bats -p src/test/bash/jvmw/*.bats || travis_terminate 1
+        - cd .. && cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
         
     - stage: test
       env:
         - ENV_TEST_FILE="oracle-11"
         - DOCKER_IMAGE="opensuse:latest"
       script:
-        - make check_sh || travis_terminate 1
-        - cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
+        - cd ./wrapper-sh/
+        - shellcheck builder.bash && bash builder.bash || travis_terminate 1
+        - bats -p src/test/bash/jvmw.bats && bats -p src/test/bash/jvmw/*.bats || travis_terminate 1
+        - cd .. && cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
         
     - stage: test
       env:
         - ENV_TEST_FILE="oracle-8"
         - DOCKER_IMAGE="opensuse:latest"
       script:
-        - make check_sh || travis_terminate 1
-        - cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
+        - cd ./wrapper-sh/
+        - shellcheck builder.bash && bash builder.bash || travis_terminate 1
+        - bats -p src/test/bash/jvmw.bats && bats -p src/test/bash/jvmw/*.bats || travis_terminate 1
+        - cd .. && cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
         
     - stage: test
       env:
         - ENV_TEST_FILE="openjdk-12"
         - DOCKER_IMAGE="base/arch:latest"
       script:
-        - make check_sh || travis_terminate 1
-        - cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
+        - cd ./wrapper-sh/
+        - shellcheck builder.bash && bash builder.bash || travis_terminate 1
+        - bats -p src/test/bash/jvmw.bats && bats -p src/test/bash/jvmw/*.bats || travis_terminate 1
+        - cd .. && cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
         
     - stage: test
       env:
         - ENV_TEST_FILE="openjdk-8"
         - DOCKER_IMAGE="base/arch:latest"
       script:
-        - make check_sh || travis_terminate 1
-        - cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
+        - cd ./wrapper-sh/
+        - shellcheck builder.bash && bash builder.bash || travis_terminate 1
+        - bats -p src/test/bash/jvmw.bats && bats -p src/test/bash/jvmw/*.bats || travis_terminate 1
+        - cd .. && cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
         
     - stage: test
       env:
         - ENV_TEST_FILE="oracle-11"
         - DOCKER_IMAGE="base/arch:latest"
       script:
-        - make check_sh || travis_terminate 1
-        - cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
+        - cd ./wrapper-sh/
+        - shellcheck builder.bash && bash builder.bash || travis_terminate 1
+        - bats -p src/test/bash/jvmw.bats && bats -p src/test/bash/jvmw/*.bats || travis_terminate 1
+        - cd .. && cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
         
     - stage: test
       env:
         - ENV_TEST_FILE="oracle-8"
         - DOCKER_IMAGE="base/arch:latest"
       script:
-        - make check_sh || travis_terminate 1
-        - cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
+        - cd ./wrapper-sh/
+        - shellcheck builder.bash && bash builder.bash || travis_terminate 1
+        - bats -p src/test/bash/jvmw.bats && bats -p src/test/bash/jvmw/*.bats || travis_terminate 1
+        - cd .. && cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
         
