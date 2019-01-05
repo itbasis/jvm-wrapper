@@ -40,7 +40,7 @@ function ont_form_data_build() {
 		fld_name=$(echo "${fld}" | awk 'match($0, /name="([^"]+)/) { print substr($0, RSTART+6, RLENGTH-6) }')
 		fld_value=$(echo "${fld}" | awk 'match($0, /value="([^"]+)/) { print substr($0, RSTART+7, RLENGTH-7) }')
 
-		if [[ ! -z "${fld_name}" ]]; then
+		if [[ -n "${fld_name}" ]]; then
 			if [[ "${fld_name}" == "userid" ]]; then
 				fld_value=${ORACLE_USER}
 			elif [[ "${fld_name}" == "pass" ]]; then
@@ -88,10 +88,10 @@ function oracle_otn_login() {
 	if [[ -z "${ORACLE_USER}" ]] || [[ -z "${ORACLE_PASSWORD}" ]]; then
 		case "${OS}" in
 			darwin)
-				if [[ ! -z "${JVMW_ORACLE_KEYCHAIN}" ]]; then
+				if [[ -n "${JVMW_ORACLE_KEYCHAIN}" ]]; then
 					ORACLE_USER="$(security 2>&1 find-generic-password -l "${JVMW_ORACLE_KEYCHAIN}" | awk 'match($0, /\"acct\"<blob>=\"([^\"]+)/) { print substr($0, RSTART+14, RLENGTH-14) }')"
 				fi
-				if [[ ! -z "${ORACLE_USER}" ]]; then
+				if [[ -n "${ORACLE_USER}" ]]; then
 					ORACLE_PASSWORD="$(security 2>&1 find-generic-password -g -a "${ORACLE_USER}" | awk 'match($0, /password: \"([^\"]+)/) { print substr($0, RSTART+11, RLENGTH-11) }')"
 				fi
 			;;
@@ -170,7 +170,7 @@ function oracle_otn_page_latest_version_jdk_page_parser() {
 
 	if [[ "${JVM_PAGE_URL}" != "https://www.oracle.com" ]]; then
 		oracle_otn_page_archive_jdk_parser
-		if [[ ! -z "${ARCHIVE_JVM_URL}" ]]; then
+		if [[ -n "${ARCHIVE_JVM_URL}" ]]; then
 			return 0
 		fi
 	fi

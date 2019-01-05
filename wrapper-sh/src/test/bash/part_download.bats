@@ -10,11 +10,11 @@ setup() {
 		eval "export $line"
 	done < "src/test/resources/test.env/$ENV_TEST_FILE.properties"
 
-	load ../../../main/bash/jvmw/core
-	load ../../../main/bash/jvmw/download
-	load ../../../main/bash/jvmw/download_oracle
-	load ../../../main/bash/jvmw/download_openjdk
-	load ../../../main/bash/jvmw/unpack
+	load ../../main/bash/core
+	load ../../main/bash/download
+	load ../../main/bash/download_oracle
+	load ../../main/bash/download_openjdk
+	load ../../main/bash/unpack
 
 	echo '----------'
 	env

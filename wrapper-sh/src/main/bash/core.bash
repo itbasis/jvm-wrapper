@@ -48,7 +48,7 @@ REQUIRED_COMMANDS_DARWIN='hdiutil xar cpio shasum'
 REQUIRED_COMMANDS_LINUX='sha256sum tar'
 
 function log_2() {
-	if [[ ! -z "$1" ]]; then
+	if [[ -n "$1" ]]; then
 		printf "[%s] [%s" "$1" "${BASH_SOURCE[1]}"
 		for i in "${!FUNCNAME[@]}"; do
 			printf ":%s(%s)" "${FUNCNAME[$i]}" "${BASH_LINENO[$i]}"

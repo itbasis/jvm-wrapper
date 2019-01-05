@@ -12,7 +12,7 @@ LAST_UPDATE_FILE=${LAST_UPDATE_FILE}
 # BEGIN SCRIPT
 function properties_parser() {
 	while IFS='=' read -r key value || [[ -n "$key" ]]; do
-		[[ ! -z "${key}" ]] && [[ -z "${!key}" ]] && { debug "${key}='${value}'"; eval "${key}='${value}'"; }
+		[[ -n "${key}" ]] && [[ -z "${!key}" ]] && { debug "${key}='${value}'"; eval "${key}='${value}'"; }
 	done <<<"$1"
 }
 
@@ -45,7 +45,7 @@ function properties_build() {
 	JVM_FULL_NAME="${JVM_VENDOR}-jdk-"
 	if [[ ${JVM_VERSION_MAJOR} -lt 9 ]]; then
 		JVM_FULL_NAME="${JVM_FULL_NAME}${JVM_VERSION_MAJOR}"
-		if [[ ! -z "${JVM_VERSION_UPDATE}" ]]; then
+		if [[ -n "${JVM_VERSION_UPDATE}" ]]; then
 			JVM_FULL_NAME="${JVM_FULL_NAME}u${JVM_VERSION_UPDATE}"
 		fi
 	else

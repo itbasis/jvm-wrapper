@@ -17,6 +17,10 @@
 ![Support Oracle JDK 9](https://img.shields.io/badge/support%20Oracle%20JDK-9-red.svg?style=flat-square)
 ![Support Oracle JDK 8](https://img.shields.io/badge/support%20Oracle%20JDK-8-green.svg?style=flat-square)
 
+
+## Testing in docker images
+`centos:centos6`, `centos:centos7`, `debian:wheezy`, `debian:jessie`, `ubuntu:trusty`, `opensuse:latest`, `base/archlinux:latest`
+
 ## Install
 
 download file [jvmw](jvmw) in `~/.jvm/` or project directory

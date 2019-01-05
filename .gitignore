@@ -5,6 +5,7 @@
 .gradle/
 build/
 .sandbox/
+.sandbox-*/
 
 *.log
 *.bak
