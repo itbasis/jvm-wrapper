@@ -47,9 +47,8 @@ jobs:
         - DOCKER_IMAGE=""
       script:
         - cd ./wrapper-sh/
-        - ./src/test/bash/test_suite.sh && ./jvmw java -fullversion || travis_terminate 1
+        - ./src/test/bash/test_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        - pwd && ls -laFh ./wrapper-sh/build/
         - cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
         
     - stage: test
@@ -58,9 +57,8 @@ jobs:
         - DOCKER_IMAGE=""
       script:
         - cd ./wrapper-sh/
-        - ./src/test/bash/test_suite.sh && ./jvmw java -fullversion || travis_terminate 1
+        - ./src/test/bash/test_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        - pwd && ls -laFh ./wrapper-sh/build/
         - cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
         
     - stage: test
@@ -69,9 +67,8 @@ jobs:
         - DOCKER_IMAGE=""
       script:
         - cd ./wrapper-sh/
-        - ./src/test/bash/test_suite.sh && ./jvmw java -fullversion || travis_terminate 1
+        - ./src/test/bash/test_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        - pwd && ls -laFh ./wrapper-sh/build/
         - cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
         
     - stage: test
@@ -80,9 +77,8 @@ jobs:
         - DOCKER_IMAGE=""
       script:
         - cd ./wrapper-sh/
-        - ./src/test/bash/test_suite.sh && ./jvmw java -fullversion || travis_terminate 1
+        - ./src/test/bash/test_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        - pwd && ls -laFh ./wrapper-sh/build/
         - cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
         
     - stage: test
@@ -91,9 +87,8 @@ jobs:
         - DOCKER_IMAGE=""
       script:
         - cd ./wrapper-sh/
-        - ./src/test/bash/test_suite.sh && ./jvmw java -fullversion || travis_terminate 1
+        - ./src/test/bash/test_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        - pwd && ls -laFh ./wrapper-sh/build/
         - cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
         
     - stage: test
@@ -102,9 +97,8 @@ jobs:
         - DOCKER_IMAGE=""
       script:
         - cd ./wrapper-sh/
-        - ./src/test/bash/test_suite.sh && ./jvmw java -fullversion || travis_terminate 1
+        - ./src/test/bash/test_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        - pwd && ls -laFh ./wrapper-sh/build/
         - cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
         
     - stage: test
@@ -113,9 +107,8 @@ jobs:
         - DOCKER_IMAGE="centos:centos6"
       script:
         - cd ./wrapper-sh/
-        - ./src/test/bash/test_docker_suite.sh && ./jvmw java -fullversion || travis_terminate 1
+        - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        - pwd && ls -laFh ./wrapper-sh/build/
         - cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
         
     - stage: test
@@ -124,9 +117,8 @@ jobs:
         - DOCKER_IMAGE="centos:centos6"
       script:
         - cd ./wrapper-sh/
-        - ./src/test/bash/test_docker_suite.sh && ./jvmw java -fullversion || travis_terminate 1
+        - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        - pwd && ls -laFh ./wrapper-sh/build/
         - cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
         
     - stage: test
@@ -135,9 +127,8 @@ jobs:
         - DOCKER_IMAGE="centos:centos6"
       script:
         - cd ./wrapper-sh/
-        - ./src/test/bash/test_docker_suite.sh && ./jvmw java -fullversion || travis_terminate 1
+        - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        - pwd && ls -laFh ./wrapper-sh/build/
         - cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
         
     - stage: test
@@ -146,9 +137,8 @@ jobs:
         - DOCKER_IMAGE="centos:centos6"
       script:
         - cd ./wrapper-sh/
-        - ./src/test/bash/test_docker_suite.sh && ./jvmw java -fullversion || travis_terminate 1
+        - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        - pwd && ls -laFh ./wrapper-sh/build/
         - cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
         
     - stage: test
@@ -157,9 +147,8 @@ jobs:
         - DOCKER_IMAGE="centos:centos6"
       script:
         - cd ./wrapper-sh/
-        - ./src/test/bash/test_docker_suite.sh && ./jvmw java -fullversion || travis_terminate 1
+        - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        - pwd && ls -laFh ./wrapper-sh/build/
         - cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
         
     - stage: test
@@ -168,9 +157,8 @@ jobs:
         - DOCKER_IMAGE="centos:centos6"
       script:
         - cd ./wrapper-sh/
-        - ./src/test/bash/test_docker_suite.sh && ./jvmw java -fullversion || travis_terminate 1
+        - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        - pwd && ls -laFh ./wrapper-sh/build/
         - cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
         
     - stage: test
@@ -179,9 +167,8 @@ jobs:
         - DOCKER_IMAGE="centos:centos7"
       script:
         - cd ./wrapper-sh/
-        - ./src/test/bash/test_docker_suite.sh && ./jvmw java -fullversion || travis_terminate 1
+        - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        - pwd && ls -laFh ./wrapper-sh/build/
         - cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
         
     - stage: test
@@ -190,9 +177,8 @@ jobs:
         - DOCKER_IMAGE="centos:centos7"
       script:
         - cd ./wrapper-sh/
-        - ./src/test/bash/test_docker_suite.sh && ./jvmw java -fullversion || travis_terminate 1
+        - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        - pwd && ls -laFh ./wrapper-sh/build/
         - cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
         
     - stage: test
@@ -201,9 +187,8 @@ jobs:
         - DOCKER_IMAGE="centos:centos7"
       script:
         - cd ./wrapper-sh/
-        - ./src/test/bash/test_docker_suite.sh && ./jvmw java -fullversion || travis_terminate 1
+        - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        - pwd && ls -laFh ./wrapper-sh/build/
         - cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
         
     - stage: test
@@ -212,9 +197,8 @@ jobs:
         - DOCKER_IMAGE="centos:centos7"
       script:
         - cd ./wrapper-sh/
-        - ./src/test/bash/test_docker_suite.sh && ./jvmw java -fullversion || travis_terminate 1
+        - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        - pwd && ls -laFh ./wrapper-sh/build/
         - cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
         
     - stage: test
@@ -223,9 +207,8 @@ jobs:
         - DOCKER_IMAGE="centos:centos7"
       script:
         - cd ./wrapper-sh/
-        - ./src/test/bash/test_docker_suite.sh && ./jvmw java -fullversion || travis_terminate 1
+        - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        - pwd && ls -laFh ./wrapper-sh/build/
         - cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
         
     - stage: test
@@ -234,9 +217,8 @@ jobs:
         - DOCKER_IMAGE="centos:centos7"
       script:
         - cd ./wrapper-sh/
-        - ./src/test/bash/test_docker_suite.sh && ./jvmw java -fullversion || travis_terminate 1
+        - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        - pwd && ls -laFh ./wrapper-sh/build/
         - cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
         
     - stage: test
@@ -245,9 +227,8 @@ jobs:
         - DOCKER_IMAGE="debian:wheezy"
       script:
         - cd ./wrapper-sh/
-        - ./src/test/bash/test_docker_suite.sh && ./jvmw java -fullversion || travis_terminate 1
+        - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        - pwd && ls -laFh ./wrapper-sh/build/
         - cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
         
     - stage: test
@@ -256,9 +237,8 @@ jobs:
         - DOCKER_IMAGE="debian:wheezy"
       script:
         - cd ./wrapper-sh/
-        - ./src/test/bash/test_docker_suite.sh && ./jvmw java -fullversion || travis_terminate 1
+        - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        - pwd && ls -laFh ./wrapper-sh/build/
         - cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
         
     - stage: test
@@ -267,9 +247,8 @@ jobs:
         - DOCKER_IMAGE="debian:wheezy"
       script:
         - cd ./wrapper-sh/
-        - ./src/test/bash/test_docker_suite.sh && ./jvmw java -fullversion || travis_terminate 1
+        - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        - pwd && ls -laFh ./wrapper-sh/build/
         - cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
         
     - stage: test
@@ -278,9 +257,8 @@ jobs:
         - DOCKER_IMAGE="debian:wheezy"
       script:
         - cd ./wrapper-sh/
-        - ./src/test/bash/test_docker_suite.sh && ./jvmw java -fullversion || travis_terminate 1
+        - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        - pwd && ls -laFh ./wrapper-sh/build/
         - cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
         
     - stage: test
@@ -289,9 +267,8 @@ jobs:
         - DOCKER_IMAGE="debian:wheezy"
       script:
         - cd ./wrapper-sh/
-        - ./src/test/bash/test_docker_suite.sh && ./jvmw java -fullversion || travis_terminate 1
+        - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        - pwd && ls -laFh ./wrapper-sh/build/
         - cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
         
     - stage: test
@@ -300,9 +277,8 @@ jobs:
         - DOCKER_IMAGE="debian:wheezy"
       script:
         - cd ./wrapper-sh/
-        - ./src/test/bash/test_docker_suite.sh && ./jvmw java -fullversion || travis_terminate 1
+        - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        - pwd && ls -laFh ./wrapper-sh/build/
         - cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
         
     - stage: test
@@ -311,9 +287,8 @@ jobs:
         - DOCKER_IMAGE="debian:jessie"
       script:
         - cd ./wrapper-sh/
-        - ./src/test/bash/test_docker_suite.sh && ./jvmw java -fullversion || travis_terminate 1
+        - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        - pwd && ls -laFh ./wrapper-sh/build/
         - cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
         
     - stage: test
@@ -322,9 +297,8 @@ jobs:
         - DOCKER_IMAGE="debian:jessie"
       script:
         - cd ./wrapper-sh/
-        - ./src/test/bash/test_docker_suite.sh && ./jvmw java -fullversion || travis_terminate 1
+        - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        - pwd && ls -laFh ./wrapper-sh/build/
         - cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
         
     - stage: test
@@ -333,9 +307,8 @@ jobs:
         - DOCKER_IMAGE="debian:jessie"
       script:
         - cd ./wrapper-sh/
-        - ./src/test/bash/test_docker_suite.sh && ./jvmw java -fullversion || travis_terminate 1
+        - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        - pwd && ls -laFh ./wrapper-sh/build/
         - cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
         
     - stage: test
@@ -344,9 +317,8 @@ jobs:
         - DOCKER_IMAGE="debian:jessie"
       script:
         - cd ./wrapper-sh/
-        - ./src/test/bash/test_docker_suite.sh && ./jvmw java -fullversion || travis_terminate 1
+        - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        - pwd && ls -laFh ./wrapper-sh/build/
         - cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
         
     - stage: test
@@ -355,9 +327,8 @@ jobs:
         - DOCKER_IMAGE="debian:jessie"
       script:
         - cd ./wrapper-sh/
-        - ./src/test/bash/test_docker_suite.sh && ./jvmw java -fullversion || travis_terminate 1
+        - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        - pwd && ls -laFh ./wrapper-sh/build/
         - cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
         
     - stage: test
@@ -366,9 +337,8 @@ jobs:
         - DOCKER_IMAGE="debian:jessie"
       script:
         - cd ./wrapper-sh/
-        - ./src/test/bash/test_docker_suite.sh && ./jvmw java -fullversion || travis_terminate 1
+        - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        - pwd && ls -laFh ./wrapper-sh/build/
         - cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
         
     - stage: test
@@ -377,9 +347,8 @@ jobs:
         - DOCKER_IMAGE="ubuntu:trusty"
       script:
         - cd ./wrapper-sh/
-        - ./src/test/bash/test_docker_suite.sh && ./jvmw java -fullversion || travis_terminate 1
+        - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        - pwd && ls -laFh ./wrapper-sh/build/
         - cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
         
     - stage: test
@@ -388,9 +357,8 @@ jobs:
         - DOCKER_IMAGE="ubuntu:trusty"
       script:
         - cd ./wrapper-sh/
-        - ./src/test/bash/test_docker_suite.sh && ./jvmw java -fullversion || travis_terminate 1
+        - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        - pwd && ls -laFh ./wrapper-sh/build/
         - cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
         
     - stage: test
@@ -399,9 +367,8 @@ jobs:
         - DOCKER_IMAGE="ubuntu:trusty"
       script:
         - cd ./wrapper-sh/
-        - ./src/test/bash/test_docker_suite.sh && ./jvmw java -fullversion || travis_terminate 1
+        - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        - pwd && ls -laFh ./wrapper-sh/build/
         - cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
         
     - stage: test
@@ -410,9 +377,8 @@ jobs:
         - DOCKER_IMAGE="ubuntu:trusty"
       script:
         - cd ./wrapper-sh/
-        - ./src/test/bash/test_docker_suite.sh && ./jvmw java -fullversion || travis_terminate 1
+        - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        - pwd && ls -laFh ./wrapper-sh/build/
         - cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
         
     - stage: test
@@ -421,9 +387,8 @@ jobs:
         - DOCKER_IMAGE="ubuntu:trusty"
       script:
         - cd ./wrapper-sh/
-        - ./src/test/bash/test_docker_suite.sh && ./jvmw java -fullversion || travis_terminate 1
+        - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        - pwd && ls -laFh ./wrapper-sh/build/
         - cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
         
     - stage: test
@@ -432,9 +397,8 @@ jobs:
         - DOCKER_IMAGE="ubuntu:trusty"
       script:
         - cd ./wrapper-sh/
-        - ./src/test/bash/test_docker_suite.sh && ./jvmw java -fullversion || travis_terminate 1
+        - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        - pwd && ls -laFh ./wrapper-sh/build/
         - cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
         
     - stage: test
@@ -443,9 +407,8 @@ jobs:
         - DOCKER_IMAGE="opensuse:latest"
       script:
         - cd ./wrapper-sh/
-        - ./src/test/bash/test_docker_suite.sh && ./jvmw java -fullversion || travis_terminate 1
+        - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        - pwd && ls -laFh ./wrapper-sh/build/
         - cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
         
     - stage: test
@@ -454,9 +417,8 @@ jobs:
         - DOCKER_IMAGE="opensuse:latest"
       script:
         - cd ./wrapper-sh/
-        - ./src/test/bash/test_docker_suite.sh && ./jvmw java -fullversion || travis_terminate 1
+        - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        - pwd && ls -laFh ./wrapper-sh/build/
         - cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
         
     - stage: test
@@ -465,9 +427,8 @@ jobs:
         - DOCKER_IMAGE="opensuse:latest"
       script:
         - cd ./wrapper-sh/
-        - ./src/test/bash/test_docker_suite.sh && ./jvmw java -fullversion || travis_terminate 1
+        - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        - pwd && ls -laFh ./wrapper-sh/build/
         - cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
         
     - stage: test
@@ -476,9 +437,8 @@ jobs:
         - DOCKER_IMAGE="opensuse:latest"
       script:
         - cd ./wrapper-sh/
-        - ./src/test/bash/test_docker_suite.sh && ./jvmw java -fullversion || travis_terminate 1
+        - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        - pwd && ls -laFh ./wrapper-sh/build/
         - cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
         
     - stage: test
@@ -487,9 +447,8 @@ jobs:
         - DOCKER_IMAGE="opensuse:latest"
       script:
         - cd ./wrapper-sh/
-        - ./src/test/bash/test_docker_suite.sh && ./jvmw java -fullversion || travis_terminate 1
+        - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        - pwd && ls -laFh ./wrapper-sh/build/
         - cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
         
     - stage: test
@@ -498,9 +457,8 @@ jobs:
         - DOCKER_IMAGE="opensuse:latest"
       script:
         - cd ./wrapper-sh/
-        - ./src/test/bash/test_docker_suite.sh && ./jvmw java -fullversion || travis_terminate 1
+        - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        - pwd && ls -laFh ./wrapper-sh/build/
         - cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
         
     - stage: test
@@ -509,9 +467,8 @@ jobs:
         - DOCKER_IMAGE="base/archlinux:latest"
       script:
         - cd ./wrapper-sh/
-        - ./src/test/bash/test_docker_suite.sh && ./jvmw java -fullversion || travis_terminate 1
+        - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        - pwd && ls -laFh ./wrapper-sh/build/
         - cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
         
     - stage: test
@@ -520,9 +477,8 @@ jobs:
         - DOCKER_IMAGE="base/archlinux:latest"
       script:
         - cd ./wrapper-sh/
-        - ./src/test/bash/test_docker_suite.sh && ./jvmw java -fullversion || travis_terminate 1
+        - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        - pwd && ls -laFh ./wrapper-sh/build/
         - cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
         
     - stage: test
@@ -531,9 +487,8 @@ jobs:
         - DOCKER_IMAGE="base/archlinux:latest"
       script:
         - cd ./wrapper-sh/
-        - ./src/test/bash/test_docker_suite.sh && ./jvmw java -fullversion || travis_terminate 1
+        - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        - pwd && ls -laFh ./wrapper-sh/build/
         - cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
         
     - stage: test
@@ -542,9 +497,8 @@ jobs:
         - DOCKER_IMAGE="base/archlinux:latest"
       script:
         - cd ./wrapper-sh/
-        - ./src/test/bash/test_docker_suite.sh && ./jvmw java -fullversion || travis_terminate 1
+        - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        - pwd && ls -laFh ./wrapper-sh/build/
         - cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
         
     - stage: test
@@ -553,9 +507,8 @@ jobs:
         - DOCKER_IMAGE="base/archlinux:latest"
       script:
         - cd ./wrapper-sh/
-        - ./src/test/bash/test_docker_suite.sh && ./jvmw java -fullversion || travis_terminate 1
+        - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        - pwd && ls -laFh ./wrapper-sh/build/
         - cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
         
     - stage: test
@@ -564,8 +517,7 @@ jobs:
         - DOCKER_IMAGE="base/archlinux:latest"
       script:
         - cd ./wrapper-sh/
-        - ./src/test/bash/test_docker_suite.sh && ./jvmw java -fullversion || travis_terminate 1
+        - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        - pwd && ls -laFh ./wrapper-sh/build/
         - cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
         
