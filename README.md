@@ -7,15 +7,14 @@
 ![Support Linux](https://img.shields.io/badge/support%20OS-Linux-green.svg?style=flat-square)
 ![Support Mac OS](https://img.shields.io/badge/support%20OS-Mac%20OS-green.svg?style=flat-square)
 
-![Support OpenJDK 12](https://img.shields.io/badge/support%20OpenJDK-12-green.svg?style=flat-square)
-![Support OpenJDK 11](https://img.shields.io/badge/support%20OpenJDK-11-green.svg?style=flat-square)
-![Support OpenJDK 10](https://img.shields.io/badge/support%20OpenJDK-10-green.svg?style=flat-square)
-![Support OpenJDK 8](https://img.shields.io/badge/support%20OpenJDK-8-green.svg?style=flat-square)
+![OpenJDK 13](https://img.shields.io/badge/OpenJDK-13-green.svg?style=flat-square)
+![OpenJDK 12](https://img.shields.io/badge/OpenJDK-12-green.svg?style=flat-square)
+![OpenJDK 11](https://img.shields.io/badge/OpenJDK-11-green.svg?style=flat-square)
+![OpenJDK 10](https://img.shields.io/badge/OpenJDK-10-green.svg?style=flat-square)
+![OpenJDK 8](https://img.shields.io/badge/OpenJDK-8-green.svg?style=flat-square)
 
-![Support Oracle JDK 11](https://img.shields.io/badge/support%20Oracle%20JDK-11-green.svg?style=flat-square)
-![Support Oracle JDK 10](https://img.shields.io/badge/support%20Oracle%20JDK-10-red.svg?style=flat-square)
-![Support Oracle JDK 9](https://img.shields.io/badge/support%20Oracle%20JDK-9-red.svg?style=flat-square)
-![Support Oracle JDK 8](https://img.shields.io/badge/support%20Oracle%20JDK-8-green.svg?style=flat-square)
+![Oracle JDK 11](https://img.shields.io/badge/Oracle%20JDK-11-green.svg?style=flat-square)
+![Oracle JDK 8](https://img.shields.io/badge/Oracle%20JDK-8-green.svg?style=flat-square)
 
 
 ## Testing in docker images
