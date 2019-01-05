@@ -49,7 +49,6 @@ jobs:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        - cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
         
     - stage: test
       env:
@@ -59,7 +58,6 @@ jobs:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        - cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
         
     - stage: test
       env:
@@ -69,7 +67,6 @@ jobs:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        - cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
         
     - stage: test
       env:
@@ -79,7 +76,6 @@ jobs:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        - cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
         
     - stage: test
       env:
@@ -89,7 +85,6 @@ jobs:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        - cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
         
     - stage: test
       env:
@@ -99,7 +94,6 @@ jobs:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        - cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
         
     - stage: test
       env:
@@ -109,7 +103,6 @@ jobs:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        - cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
         
     - stage: test
       env:
@@ -119,7 +112,6 @@ jobs:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        - cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
         
     - stage: test
       env:
@@ -129,7 +121,6 @@ jobs:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        - cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
         
     - stage: test
       env:
@@ -139,7 +130,6 @@ jobs:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        - cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
         
     - stage: test
       env:
@@ -149,7 +139,6 @@ jobs:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        - cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
         
     - stage: test
       env:
@@ -159,7 +148,6 @@ jobs:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        - cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
         
     - stage: test
       env:
@@ -169,7 +157,6 @@ jobs:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        - cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
         
     - stage: test
       env:
@@ -179,7 +166,6 @@ jobs:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        - cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
         
     - stage: test
       env:
@@ -189,7 +175,6 @@ jobs:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        - cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
         
     - stage: test
       env:
@@ -199,7 +184,6 @@ jobs:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        - cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
         
     - stage: test
       env:
@@ -209,7 +193,6 @@ jobs:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        - cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
         
     - stage: test
       env:
@@ -219,7 +202,6 @@ jobs:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        - cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
         
     - stage: test
       env:
@@ -229,7 +211,6 @@ jobs:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        - cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
         
     - stage: test
       env:
@@ -239,7 +220,6 @@ jobs:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        - cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
         
     - stage: test
       env:
@@ -249,7 +229,6 @@ jobs:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        - cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
         
     - stage: test
       env:
@@ -259,7 +238,6 @@ jobs:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        - cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
         
     - stage: test
       env:
@@ -269,7 +247,6 @@ jobs:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        - cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
         
     - stage: test
       env:
@@ -279,7 +256,6 @@ jobs:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        - cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
         
     - stage: test
       env:
@@ -289,7 +265,6 @@ jobs:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        - cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
         
     - stage: test
       env:
@@ -299,7 +274,6 @@ jobs:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        - cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
         
     - stage: test
       env:
@@ -309,7 +283,6 @@ jobs:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        - cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
         
     - stage: test
       env:
@@ -319,7 +292,6 @@ jobs:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        - cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
         
     - stage: test
       env:
@@ -329,7 +301,6 @@ jobs:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        - cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
         
     - stage: test
       env:
@@ -339,7 +310,6 @@ jobs:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        - cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
         
     - stage: test
       env:
@@ -349,7 +319,6 @@ jobs:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        - cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
         
     - stage: test
       env:
@@ -359,7 +328,6 @@ jobs:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        - cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
         
     - stage: test
       env:
@@ -369,7 +337,6 @@ jobs:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        - cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
         
     - stage: test
       env:
@@ -379,7 +346,6 @@ jobs:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        - cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
         
     - stage: test
       env:
@@ -389,7 +355,6 @@ jobs:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        - cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
         
     - stage: test
       env:
@@ -399,7 +364,6 @@ jobs:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        - cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
         
     - stage: test
       env:
@@ -409,7 +373,6 @@ jobs:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        - cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
         
     - stage: test
       env:
@@ -419,7 +382,6 @@ jobs:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        - cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
         
     - stage: test
       env:
@@ -429,7 +391,6 @@ jobs:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        - cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
         
     - stage: test
       env:
@@ -439,7 +400,6 @@ jobs:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        - cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
         
     - stage: test
       env:
@@ -449,7 +409,6 @@ jobs:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        - cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
         
     - stage: test
       env:
@@ -459,7 +418,6 @@ jobs:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        - cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
         
     - stage: test
       env:
@@ -469,7 +427,6 @@ jobs:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        - cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
         
     - stage: test
       env:
@@ -479,7 +436,6 @@ jobs:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        - cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
         
     - stage: test
       env:
@@ -489,7 +445,6 @@ jobs:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        - cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
         
     - stage: test
       env:
@@ -499,7 +454,6 @@ jobs:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        - cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
         
     - stage: test
       env:
@@ -509,7 +463,6 @@ jobs:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        - cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
         
     - stage: test
       env:
@@ -519,5 +472,4 @@ jobs:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        - cp ./wrapper-sh/build/jvmw ./ && ./jvmw java -fullversion || travis_terminate 1
         
