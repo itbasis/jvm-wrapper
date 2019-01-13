@@ -9,8 +9,6 @@ env:
 
 install:
     
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew tap caskroom/versions; fi
-      
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update; fi
       
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew reinstall shellcheck bats-core; fi
