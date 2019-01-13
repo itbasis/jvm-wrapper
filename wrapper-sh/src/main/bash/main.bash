@@ -116,7 +116,7 @@ else
 fi
 
 if [[ "$1" == "upgrade" ]]; then
-	curl -sS https://raw.githubusercontent.com/itbasis/jvm-wrapper/master/jvmw >"$0"
+	curl -sS https://raw.githubusercontent.com/itbasis/jvm-wrapper/master/jvmw >"$0" && chmod u+x "$0"
 	exit 0
 fi
 
