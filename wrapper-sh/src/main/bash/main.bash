@@ -1,0 +1,174 @@
+#!/usr/bin/env bash
+
+# Hack for code verification
+OS=${OS}
+JVMW_HOME=${JVMW_HOME}
+JVM_VERSION_UPDATE=${JVM_VERSION_UPDATE}
+JVMW_PROPERTY_FILE=${JVMW_PROPERTY_FILE}
+JVM_VENDOR=${JVM_VENDOR}
+JVM_VERSION_MAJOR=${JVM_VERSION_MAJOR}
+JVM_VERSION=${JVM_VERSION}
+JVM_PAGE_URL=${JVM_PAGE_URL}
+ARCHIVE_JVM_URL=${ARCHIVE_JVM_URL}
+ARCHIVE_FILE=${ARCHIVE_FILE}
+REQUIRED_COMMANDS_CORE=${REQUIRED_COMMANDS_CORE}
+REQUIRED_COMMANDS_DARWIN=${REQUIRED_COMMANDS_DARWIN}
+REQUIRED_COMMANDS_LINUX=${REQUIRED_COMMANDS_LINUX}
+LAST_UPDATE_FILE=${LAST_UPDATE_FILE}
+REQUIRED_UPDATE=${REQUIRED_UPDATE}
+
+
+# BEGIN SCRIPT
+
+function main_properties() {
+	[[ -f "${JVMW_HOME}/${JVMW_PROPERTY_FILE}" ]] && { properties_parser "$(cat "${JVMW_HOME}/${JVMW_PROPERTY_FILE}")"; }
+	[[ -f "${JVMW_PROPERTY_FILE}" ]] && { properties_parser "$(cat "${JVMW_PROPERTY_FILE}")"; }
+	properties_parser "$(properties_default)"
+	properties_build
+}
+
+function check_is_out_of_date() {
+	REQUIRED_UPDATE=N
+	if [[ ! -f "${LAST_UPDATE_FILE}" ]]; then
+		debug "not found file: '${LAST_UPDATE_FILE}'"
+		REQUIRED_UPDATE=Y
+	else
+		local -r luf_date="$(head -1 <"${LAST_UPDATE_FILE}")"
+		# shellcheck disable=SC2005
+		local -r prev_date=$([[ "${OS}" == "darwin" ]] && echo "$(date -jf '%F %R' "${luf_date}" +%j)" || echo "$(date --date="${luf_date}" '+%j')")
+		local -r curr_date=$(date +%j)
+		debug "prev_date='${prev_date}', curr_date='${curr_date}'"
+		if [[ ${curr_date} > ${prev_date} ]]; then
+			REQUIRED_UPDATE=Y
+		fi
+	fi
+	return 0
+}
+
+function detect_system_jdk() {
+	local -r cmd="javac"
+	cmd_path=$(whereis "${cmd}")
+
+	if [[ -z "${cmd_path}" ]]; then
+		USE_SYSTEM_JVM=N
+		return 0
+	fi
+
+	ls_output="$(ls -l "${cmd_path}")"
+	while [[ "${ls_output}" == *"${cmd_path} "* ]]; do
+		cmd_path="$(readlink "${cmd_path}")"
+		ls_output="$(ls -l "${cmd_path}")"
+	done
+
+	jvm_dir=$(dirname "${cmd_path}")
+	if [[ -f "${jvm_dir}/java_home" ]]; then
+		jvm_dir=$("${jvm_dir}/java_home" 2>&1)
+	fi
+
+	if [[ -z "${jvm_dir}" ]] || [[ "${jvm_dir}" == *"Unable to find any JVMs matching version"* ]]; then
+		USE_SYSTEM_JVM=N
+		return 0
+	fi
+
+	local -r jdk_output="$(java -XshowSettings:properties -version 2>&1)"
+	if [[ "${jdk_output}" == *"command not found"* ]]; then
+		USE_SYSTEM_JVM=N
+		return 0
+	fi
+
+	if [[ "${jdk_output}" != *"java.runtime.version = ${JVM_VERSION_MAJOR}."* ]] && [[ "${jdk_output}" != *"java.runtime.version = 1.${JVM_VERSION_MAJOR}."* ]] && [[ "${jdk_output}" != *"java.runtime.version = ${JVM_VERSION_MAJOR}+"* ]]; then
+		USE_SYSTEM_JVM=N
+		return 0
+	fi
+
+	USE_SYSTEM_JVM=Y
+	eval "JDK_HOME_DIR='${jvm_dir}/'"
+
+	return 0
+}
+
+function detect_reuse_jdk() {
+	if [[ -z "${JVM_VERSION_UPDATE}" ]]; then
+		return 0;
+	fi
+	local -r jvm_root_dir=${JVMW_HOME}/${JVM_VENDOR}-jdk-${JVM_VERSION_MAJOR}/$([[ "${OS}" == 'darwin' ]] && echo 'Home/')
+	if [[ ! -d "${jvm_root_dir}" ]]; then
+		return 0;
+	fi
+	local -r jdk_output="$("${jvm_root_dir}/bin/java" -fullversion 2>&1)"
+
+	if [[ "${jdk_output}" != *"java full version \"${JVM_VERSION_MAJOR}.0.${JVM_VERSION_UPDATE}+"* ]] && [[ "${jdk_output}" != *"java full version \"1.${JVM_VERSION_MAJOR}.0_${JVM_VERSION_UPDATE}-"* ]] && [[ "${jdk_output}" != *"java full version \"${JVM_VERSION_MAJOR}+"* ]]; then
+		return 0
+	fi
+
+	JVM_FULL_NAME="${JVM_VENDOR}-jdk-${JVM_VERSION_MAJOR}"
+	JDK_ROOT_DIR=${JVMW_HOME}/${JVM_FULL_NAME}
+	JDK_HOME_DIR=${JDK_ROOT_DIR}/$([[ "${OS}" == 'darwin' ]] && echo 'Home/')
+	REQUIRED_UPDATE=N
+
+	return 0
+}
+
+if [[ "${OS}" == "darwin" ]]; then
+	system_check_program_exists "${REQUIRED_COMMANDS_CORE}" "${REQUIRED_COMMANDS_DARWIN}"
+else
+	system_check_program_exists "${REQUIRED_COMMANDS_CORE}" "${REQUIRED_COMMANDS_LINUX}"
+fi
+
+if [[ "$1" == "upgrade" ]]; then
+	curl -sS https://raw.githubusercontent.com/itbasis/jvm-wrapper/master/jvmw >"$0" && chmod u+x "$0"
+	exit 0
+fi
+
+main_properties
+detect_reuse_jdk
+if [[ "${USE_SYSTEM_JVM}" == "Y" ]]; then
+	detect_system_jdk
+fi
+
+if [[ "${USE_SYSTEM_JVM}" -eq "Y" ]]; then
+	JVM_HOME_DIR="${JDK_HOME_DIR}"
+fi
+
+export JDK_HOME=${JDK_HOME_DIR%%/bin/*}
+export JAVA_HOME=${JVM_HOME_DIR%%/bin/*}
+
+if [[ -z "$1" ]] || [[ "$1" == "info" ]]; then
+	print_debug_info
+	echo "JDK_HOME=${JDK_HOME}"
+	echo "JAVA_HOME=${JAVA_HOME}"
+
+else
+	eval "${JVM_VENDOR}_prepare_actions"
+	download_jdk
+
+	if [[ -z "${JVM_HOME_DIR}" ]]; then
+		die "can't JVM_HOME_DIR"
+	fi
+
+	print_debug_info
+
+	if [[ "$1" == "javac" ]] && [[ "${USE_SYSTEM_JVM}" != "Y" ]]; then
+		PATH=.:${JDK_HOME}/bin:$PATH
+		EXEC_PATH=${JDK_HOME}/bin/$1
+	elif [[ "$1" == "java" ]] && [[ "${USE_SYSTEM_JVM}" != "Y" ]]; then
+		PATH=.:${JAVA_HOME}/bin:$PATH
+		EXEC_PATH=${JDK_HOME}/bin/$1
+	else
+		PATH=.:$PATH
+		if [[ "${1:0:2}" == "./" ]]; then
+			EXEC_PATH="$1"
+		else
+			EXEC_PATH=$(whereis "$1")
+		fi
+	fi
+
+	if [[ -z "${EXEC_PATH}" ]]; then
+		die "No program found to execute: $1"
+	fi
+
+	# execute program
+	debug "command: ${EXEC_PATH}" "${@:2}"
+	eval "${EXEC_PATH}" "${@:2}"
+fi
+# END SCRIPT

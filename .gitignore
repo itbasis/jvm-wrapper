@@ -5,11 +5,14 @@
 .gradle/
 build/
 .sandbox/
+.sandbox-*/
 
 *.log
 *.bak
 tmp.*
 *.swp
+
+*.iml
 
 .idea/*
 !.idea/externalDependencies.xml

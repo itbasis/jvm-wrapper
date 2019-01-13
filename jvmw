@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Build date: 20181119_065300
+# Build date: 20190113_175926
 #
 # Hack for code verification
 JVM_VERSION_MAJOR=${JVM_VERSION_MAJOR}
@@ -39,7 +39,7 @@ REQUIRED_COMMANDS_CORE='awk tr head rm mv cd curl readlink dirname'
 REQUIRED_COMMANDS_DARWIN='hdiutil xar cpio shasum'
 REQUIRED_COMMANDS_LINUX='sha256sum tar'
 function log_2() {
-	if [[ ! -z "$1" ]]; then
+	if [[ -n "$1" ]]; then
 		printf "[%s] [%s" "$1" "${BASH_SOURCE[1]}"
 		for i in "${!FUNCNAME[@]}"; do
 			printf ":%s(%s)" "${FUNCNAME[$i]}" "${BASH_LINENO[$i]}"
@@ -110,7 +110,7 @@ function system_check_program_exists() {
 }
 function properties_parser() {
 	while IFS='=' read -r key value || [[ -n "$key" ]]; do
-		[[ ! -z "${key}" ]] && [[ -z "${!key}" ]] && { debug "${key}='${value}'"; eval "${key}='${value}'"; }
+		[[ -n "${key}" ]] && [[ -z "${!key}" ]] && { debug "${key}='${value}'"; eval "${key}='${value}'"; }
 	done <<<"$1"
 }
 function properties_default() {
@@ -140,7 +140,7 @@ function properties_build() {
 	JVM_FULL_NAME="${JVM_VENDOR}-jdk-"
 	if [[ ${JVM_VERSION_MAJOR} -lt 9 ]]; then
 		JVM_FULL_NAME="${JVM_FULL_NAME}${JVM_VERSION_MAJOR}"
-		if [[ ! -z "${JVM_VERSION_UPDATE}" ]]; then
+		if [[ -n "${JVM_VERSION_UPDATE}" ]]; then
 			JVM_FULL_NAME="${JVM_FULL_NAME}u${JVM_VERSION_UPDATE}"
 		fi
 	else
@@ -205,8 +205,8 @@ function unpack_tar_gz() {
 		die 'error move unpacked jdk...'; }
 	rm -Rf "${tmp_dir}"
 	if [[ -d "${JDK_ROOT_DIR}/Contents" ]]; then
-		mv ${JDK_ROOT_DIR}/Contents/* ${JDK_ROOT_DIR}/
-		rm -Rf ${JDK_ROOT_DIR}/Contents/
+		mv "${JDK_ROOT_DIR}"/Contents/* "${JDK_ROOT_DIR}/"
+		rm -Rf "${JDK_ROOT_DIR}"/Contents/
 	fi
 }
 function unpack_dmg() {
@@ -255,7 +255,7 @@ function ont_form_data_build() {
 	for fld in $(echo "$1" | awk '{ if (match($0, "<input")) print }'); do
 		fld_name=$(echo "${fld}" | awk 'match($0, /name="([^"]+)/) { print substr($0, RSTART+6, RLENGTH-6) }')
 		fld_value=$(echo "${fld}" | awk 'match($0, /value="([^"]+)/) { print substr($0, RSTART+7, RLENGTH-7) }')
-		if [[ ! -z "${fld_name}" ]]; then
+		if [[ -n "${fld_name}" ]]; then
 			if [[ "${fld_name}" == "userid" ]]; then
 				fld_value=${ORACLE_USER}
 			elif [[ "${fld_name}" == "pass" ]]; then
@@ -296,10 +296,10 @@ function oracle_otn_login() {
 	if [[ -z "${ORACLE_USER}" ]] || [[ -z "${ORACLE_PASSWORD}" ]]; then
 		case "${OS}" in
 			darwin)
-				if [[ ! -z "${JVMW_ORACLE_KEYCHAIN}" ]]; then
+				if [[ -n "${JVMW_ORACLE_KEYCHAIN}" ]]; then
 					ORACLE_USER="$(security 2>&1 find-generic-password -l "${JVMW_ORACLE_KEYCHAIN}" | awk 'match($0, /\"acct\"<blob>=\"([^\"]+)/) { print substr($0, RSTART+14, RLENGTH-14) }')"
 				fi
-				if [[ ! -z "${ORACLE_USER}" ]]; then
+				if [[ -n "${ORACLE_USER}" ]]; then
 					ORACLE_PASSWORD="$(security 2>&1 find-generic-password -g -a "${ORACLE_USER}" | awk 'match($0, /password: \"([^\"]+)/) { print substr($0, RSTART+11, RLENGTH-11) }')"
 				fi
 			;;
@@ -336,7 +336,9 @@ function oracle_download_jdk() {
 		ls -laFh "${ARCHIVE_FILE}"
 	fi
 	#
-	if [[ ! `check_checksum` ]]; then
+	check_checksum
+	local status=$?
+	if [[ ${status} -ne 0 ]]; then
 		die
 	fi
 }
@@ -363,7 +365,7 @@ function oracle_otn_page_latest_version_jdk_page_parser() {
 	JVM_PAGE_URL=https://www.oracle.com$(curl -s https://www.oracle.com/technetwork/java/javase/downloads/index.html | awk 'match($0, /(\/technetwork\/java\/javase\/downloads\/jdk'"${JVM_VERSION_MAJOR}"'-downloads-[^\"]+)/) { print substr($0, RSTART, RLENGTH) }' | head -1)
 	if [[ "${JVM_PAGE_URL}" != "https://www.oracle.com" ]]; then
 		oracle_otn_page_archive_jdk_parser
-		if [[ ! -z "${ARCHIVE_JVM_URL}" ]]; then
+		if [[ -n "${ARCHIVE_JVM_URL}" ]]; then
 			return 0
 		fi
 	fi
@@ -440,9 +442,10 @@ function openjdk_archive_parser() {
 	local -r content=$(curl -s "${JVM_PAGE_URL}")
 	local awk_mask='https://download.java.net/java/.*?jdk-'${JVM_VERSION_MAJOR}'.*?'${os}'.*?-'${arch}'.*?.'${ARCHIVE_EXT}''
 	debug "awk_mask=${awk_mask}"
-	# shellcheck disable=SC2090
-	ARCHIVE_JVM_URL=$(echo "${content}" | awk '{ if (match($0, "\"'${awk_mask}'\"")) print substr($0,RSTART+1, RLENGTH-2)}')
+	# shellcheck disable=SC2090,SC2086
+	ARCHIVE_JVM_URL=$(echo "${content}" | awk '{ if (match($0, "\"'${awk_mask}'\"")) print substr($0,RSTART+1, RLENGTH-2)}' | head -n 1)
 	if [[ ${JVM_VERSION_MAJOR} -ge 9 ]]; then
+		# shellcheck disable=SC2086
 		local -r content_url=$(echo "${content}" | awk '{ if (match($0, "\"'${awk_mask}'.sha256\"")) print substr($0,RSTART+1, RLENGTH-2)}')
 		ARCHIVE_JVM_CHECKSUM=$(curl -s "${content_url}")
 	fi
@@ -537,7 +540,7 @@ else
 	system_check_program_exists "${REQUIRED_COMMANDS_CORE}" "${REQUIRED_COMMANDS_LINUX}"
 fi
 if [[ "$1" == "upgrade" ]]; then
-	curl -sS https://raw.githubusercontent.com/itbasis/jvm-wrapper/master/jvmw >"$0" && chmod u+x "$0"
+	curl -sS https://raw.githubusercontent.com/itbasis/jvm-wrapper/master/jvmw >"$0"
 	exit 0
 fi
 main_properties
