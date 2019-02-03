@@ -11,7 +11,6 @@
 ![OpenJDK 12](https://img.shields.io/badge/OpenJDK-12-green.svg?style=flat-square)
 ![OpenJDK 11](https://img.shields.io/badge/OpenJDK-11-green.svg?style=flat-square)
 ![OpenJDK 10](https://img.shields.io/badge/OpenJDK-10-green.svg?style=flat-square)
-![OpenJDK 8](https://img.shields.io/badge/OpenJDK-8-green.svg?style=flat-square)
 
 ![Oracle JDK 11](https://img.shields.io/badge/Oracle%20JDK-11-green.svg?style=flat-square)
 ![Oracle JDK 8](https://img.shields.io/badge/Oracle%20JDK-8-green.svg?style=flat-square)
