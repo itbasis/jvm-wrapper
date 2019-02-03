@@ -7,6 +7,10 @@ import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.TaskAction
 import org.intellij.lang.annotations.Language
+import ru.itbasis.gradle.plugins.travis_ci.TravisCIPlugin.Companion.SUPPORTED_OS
+import ru.itbasis.gradle.plugins.travis_ci.TravisCIPlugin.Companion.SUPPORTED_OS.ANY
+import ru.itbasis.gradle.plugins.travis_ci.TravisCIPlugin.Companion.SUPPORTED_OS.LINUX
+import ru.itbasis.gradle.plugins.travis_ci.TravisCIPlugin.Companion.SUPPORTED_OS.OSX
 
 open class GenerateConfigFile : DefaultTask(), Runnable {
   @OutputFile
@@ -73,21 +77,28 @@ jobs:
   }
 
   private fun blockJobsStageTest() {
-    val dockerImages = arrayOf(
+    val dockerImages = listOf(
       "centos:centos6", "centos:centos7", "debian:wheezy", "debian:jessie", "ubuntu:trusty", "opensuse:latest", "base/archlinux:latest"
     )
-    val envTestFiles = arrayOf(
-      "openjdk-13", "openjdk-12", "openjdk-11", "openjdk-10", "openjdk-9", "openjdk-8", "openjdk-7",
+
+    val supportedJvm = mapOf(
+      ANY to listOf(
+        "openjdk-13", "openjdk-12", "openjdk-11"
+        //
+        , "oracle-11", "oracle-8"
+      )
       //
-      "oracle-11", "oracle-8"
+      , LINUX to listOf(
+//        "openjdk-10", "openjdk-9",
+        "openjdk-8", "openjdk-7"
+      )
     )
 
-    arrayListOf("osx", "linux").forEach { os ->
-      envTestFiles.forEach { envTestFile ->
-        outputFile.appendText(
-          """
+    val block: (envTestFile: String, os: SUPPORTED_OS) -> Unit = { envTestFile, os ->
+      outputFile.appendText(
+        """
     - stage: test
-      os: $os
+      os: ${os.name.toLowerCase()}
       env:
         - ENV_TEST_FILE="$envTestFile"
       script:
@@ -95,11 +106,16 @@ jobs:
         - ./src/test/bash/test_suite.sh
         - cd ${'$'}TRAVIS_BUILD_DIR
         """
-        )
+      )
+    }
+
+    arrayListOf(OSX, LINUX).forEach { os ->
+      supportedJvm.filterKeys { it == ANY || it == os }.values.flatten().forEach {
+        block.invoke(it, os)
       }
     }
     dockerImages.forEach { dockerImage ->
-      envTestFiles.forEach { envTestFile ->
+      supportedJvm.filterKeys { it == ANY || it == LINUX }.values.flatten().forEach { envTestFile ->
         outputFile.appendText(
           """
     - stage: test
