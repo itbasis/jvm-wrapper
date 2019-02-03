@@ -1,13 +1,22 @@
+@file:Suppress("UnstableApiUsage")
+
 package ru.itbasis.gradle.plugins.travis_ci
 
 import org.gradle.api.DefaultTask
+import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.TaskAction
 import org.intellij.lang.annotations.Language
 
 open class GenerateConfigFile : DefaultTask(), Runnable {
   @OutputFile
-  var outputFile = project.file(".travis.yml")
+  var outputFile = project.objects.fileProperty()
+
+  @Suppress("NOTHING_TO_INLINE")
+  private inline fun RegularFileProperty.writeText(text: String) = get().asFile.writeText(text)
+
+  @Suppress("NOTHING_TO_INLINE")
+  private inline fun RegularFileProperty.appendText(text: String) = get().asFile.appendText(text)
 
   @TaskAction
   override fun run() {
@@ -67,7 +76,11 @@ jobs:
     val dockerImages = arrayOf(
       "centos:centos6", "centos:centos7", "debian:wheezy", "debian:jessie", "ubuntu:trusty", "opensuse:latest", "base/archlinux:latest"
     )
-    val envTestFiles = arrayOf("openjdk-13", "openjdk-12", "openjdk-11", "oracle-11", "oracle-8")
+    val envTestFiles = arrayOf(
+      "openjdk-13", "openjdk-12", "openjdk-11", "openjdk-10", "openjdk-9", "openjdk-8", "openjdk-7",
+      //
+      "oracle-11", "oracle-8"
+    )
 
     arrayListOf("osx", "linux").forEach { os ->
       envTestFiles.forEach { envTestFile ->

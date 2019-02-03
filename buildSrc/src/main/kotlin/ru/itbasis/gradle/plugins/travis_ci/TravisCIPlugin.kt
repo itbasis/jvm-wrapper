@@ -1,3 +1,5 @@
+@file:Suppress("UnstableApiUsage")
+
 package ru.itbasis.gradle.plugins.travis_ci
 
 import org.gradle.api.Plugin
@@ -14,6 +16,8 @@ class TravisCIPlugin : Plugin<Project> {
     tasks {
       val generateConfig by register<GenerateConfigFile>(GenerateConfigFile.TASK_NAME) {
         group = GROUP_NAME
+
+        outputFile.set(layout.projectDirectory.file(".travis.yml"))
       }
 
       maybeCreate(JavaPlugin.PROCESS_RESOURCES_TASK_NAME).dependsOn(generateConfig)
