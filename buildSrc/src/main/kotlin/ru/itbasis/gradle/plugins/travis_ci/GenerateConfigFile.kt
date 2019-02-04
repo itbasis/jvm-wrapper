@@ -107,14 +107,13 @@ jobs:
     }
 
     arrayListOf(OSX, LINUX).forEach { os ->
-      supportedJvm.filterKeys { it == ANY || it == os }.values.flatten().forEach {
-        block.invoke(it, os)
-      }
-    }
-    dockerImages.forEach { dockerImage ->
-      supportedJvm.filterKeys { it == ANY || it == LINUX }.values.flatten().forEach { envTestFile ->
-        outputFile.appendText(
-          """
+      supportedJvm.filterKeys { it == ANY || it == os }.values.flatten().forEach { envTestFile ->
+        block.invoke(envTestFile, os)
+
+        if (os == LINUX) {
+          dockerImages.forEach { dockerImage ->
+            outputFile.appendText(
+              """
     - stage: test
       os: linux
       services:
@@ -127,7 +126,9 @@ jobs:
         - ./src/test/bash/test_docker_suite.sh
         - cd ${'$'}TRAVIS_BUILD_DIR
         """
-        )
+            )
+          }
+        }
       }
     }
   }

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Build date: 20190204_175310
+# Build date: 20190204_201129
 #
 # Hack for code verification
 JVM_VERSION_MAJOR=${JVM_VERSION_MAJOR}
