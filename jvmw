@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Build date: 20190204_023552
+# Build date: 20190204_125718
 #
 # Hack for code verification
 JVM_VERSION_MAJOR=${JVM_VERSION_MAJOR}
@@ -27,6 +27,7 @@ mkdir -p "${JVMW_HOME}"
 #
 OTN_USER_AGENT='Mozilla/5.0 https://github.com/itbasis/jvm-wrapper'
 #
+ARCHIVE_EXT_ZIP="zip"
 ARCHIVE_EXT_TAR_GZ="tar.gz"
 ARCHIVE_EXT_DMG="dmg"
 #
@@ -191,17 +192,21 @@ function unpack() {
 		unpack_tar_gz
 	elif [[ "${ARCHIVE_EXT}" == "${ARCHIVE_EXT_DMG}" ]]; then
 		unpack_dmg
+	elif [[ "${ARCHIVE_EXT}" == "${ARCHIVE_EXT_ZIP}" ]]; then
+		unpack_zip
 	else
 		eval "${JVM_VENDOR}_unpack_${OS}"
 	fi
 	rm -f "${ARCHIVE_FILE}"
 }
 function unpack_tar_gz() {
+	local sub_dir
 	local -r tmp_dir=$(mktemp -d -t "${JVM_FULL_NAME}.XXXXXX")/
 	debug "tmp_dir=${tmp_dir}"
 	tar xf "${ARCHIVE_FILE}" -C "${tmp_dir}" || { rm -Rf "${tmp_dir}";
 		die 'error unpack archive...'; }
-	mv "$(find "${tmp_dir}" -mindepth 1 -maxdepth 1 -type d)" "${JDK_ROOT_DIR}" || { rm -Rf "${tmp_dir}";
+	sub_dir=$(find "${tmp_dir}" -mindepth 1 -maxdepth 1 -type d)
+	mv "${sub_dir}" "${JDK_ROOT_DIR}" || { rm -Rf "${tmp_dir}";
 		die 'error move unpacked jdk...'; }
 	rm -Rf "${tmp_dir}"
 	if [[ -d "${JDK_ROOT_DIR}/Contents" ]]; then
@@ -226,6 +231,19 @@ function unpack_dmg() {
 	rm -Rf "${tmp_dir}"
 	#
 	hdiutil detach "/Volumes/${JVM_FULL_NAME}" -force || die
+}
+function unpack_zip() {
+	local sub_dir
+	local -r tmp_dir=$(mktemp -d -t "${JVM_FULL_NAME}.XXXXXX")
+	debug "tmp_dir=${tmp_dir}"
+	unzip "${ARCHIVE_FILE}" -d ${tmp_dir} > /dev/null || { rm -Rf "${tmp_dir}";
+		die 'error unpack archive...'; }
+	sub_dir=$(find "${tmp_dir}" -mindepth 1 -maxdepth 1 -type d)
+	sub_dir=$(find "${sub_dir}" -mindepth 1 -maxdepth 1 -type d)
+	debug "sub_dir=${sub_dir}"
+	mv "${sub_dir}" "${JDK_ROOT_DIR}" || { rm -Rf "${tmp_dir}";
+		die 'error move unpacked jdk...'; }
+	rm -Rf "${tmp_dir}"
 }
 # Hack for code verification
 OTN_HEADERS_FILE=${OTN_HEADERS_FILE}
@@ -449,7 +467,10 @@ function openjdk_archive_parser() {
 	if [[ ${JVM_VERSION_MAJOR} -gt ${RI_VERSION_MAX} ]]; then
 		awk_mask='https://download.java.net/java/.*?jdk-'${JVM_VERSION_MAJOR}'.*?'${os}'.*?-'${arch}'.*?.'${ARCHIVE_EXT}''
 	else
-		awk_mask='https://download.java.net/openjdk/jdk'${JVM_VERSION_MAJOR}'.*?/ri/openjdk-'${JVM_VERSION_MAJOR}'.*?-'${os}'.*?.'${ARCHIVE_EXT}''
+		if [[ ${JVM_VERSION_MAJOR} -eq '9' ]]; then
+			ARCHIVE_EXT=${ARCHIVE_EXT_ZIP}
+		fi
+		awk_mask='https://download.java.net/openjdk/jdk'${JVM_VERSION_MAJOR}'.*?/ri/.*?'${os}'.*?.'${ARCHIVE_EXT}''
 	fi
 	debug "awk_mask=${awk_mask}"
 	# shellcheck disable=SC2090,SC2086

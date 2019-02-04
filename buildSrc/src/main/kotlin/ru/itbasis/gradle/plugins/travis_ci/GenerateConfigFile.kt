@@ -88,10 +88,7 @@ jobs:
         , "oracle-11", "oracle-8"
       )
       //
-      , LINUX to listOf(
-//        "openjdk-10", "openjdk-9",
-        "openjdk-8", "openjdk-7"
-      )
+      , LINUX to listOf("openjdk-10", "openjdk-9", "openjdk-8", "openjdk-7")
     )
 
     val block: (envTestFile: String, os: SUPPORTED_OS) -> Unit = { envTestFile, os ->

@@ -7,6 +7,7 @@ JVMW_DEBUG=${JVMW_DEBUG}
 ARCHIVE_JVM_URL=${ARCHIVE_JVM_URL}
 ARCHIVE_EXT=${ARCHIVE_EXT}
 ARCHIVE_EXT_TAR_GZ=${ARCHIVE_EXT_TAR_GZ}
+ARCHIVE_EXT_ZIP=${ARCHIVE_EXT_ZIP}
 ARCHIVE_FILE=${ARCHIVE_FILE}
 ARCH=${ARCH}
 OS=${OS}
@@ -71,7 +72,10 @@ function openjdk_archive_parser() {
 	if [[ ${JVM_VERSION_MAJOR} -gt ${RI_VERSION_MAX} ]]; then
 		awk_mask='https://download.java.net/java/.*?jdk-'${JVM_VERSION_MAJOR}'.*?'${os}'.*?-'${arch}'.*?.'${ARCHIVE_EXT}''
 	else
-		awk_mask='https://download.java.net/openjdk/jdk'${JVM_VERSION_MAJOR}'.*?/ri/openjdk-'${JVM_VERSION_MAJOR}'.*?-'${os}'.*?.'${ARCHIVE_EXT}''
+		if [[ ${JVM_VERSION_MAJOR} -eq '9' ]]; then
+			ARCHIVE_EXT=${ARCHIVE_EXT_ZIP}
+		fi
+		awk_mask='https://download.java.net/openjdk/jdk'${JVM_VERSION_MAJOR}'.*?/ri/.*?'${os}'.*?.'${ARCHIVE_EXT}''
 	fi
 	debug "awk_mask=${awk_mask}"
 
