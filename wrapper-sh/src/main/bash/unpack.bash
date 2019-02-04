@@ -65,7 +65,7 @@ function unpack_zip() {
 	local sub_dir
 	local -r tmp_dir=$(mktemp -d -t "${JVM_FULL_NAME}.XXXXXX")
 	debug "tmp_dir=${tmp_dir}"
-	unzip "${ARCHIVE_FILE}" -d ${tmp_dir} > /dev/null || { rm -Rf "${tmp_dir}";
+	unzip "${ARCHIVE_FILE}" -d "${tmp_dir}" > /dev/null || { rm -Rf "${tmp_dir}";
 		die 'error unpack archive...'; }
 	sub_dir=$(find "${tmp_dir}" -mindepth 1 -maxdepth 1 -type d)
 	sub_dir=$(find "${sub_dir}" -mindepth 1 -maxdepth 1 -type d)

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Build date: 20190204_125718
+# Build date: 20190204_175310
 #
 # Hack for code verification
 JVM_VERSION_MAJOR=${JVM_VERSION_MAJOR}
@@ -36,7 +36,7 @@ OS=$(uname | tr '[:upper:]' '[:lower:]')
 ARCH=$([[ "$(uname -m)" == "x86_64" ]] && echo "x64" || echo "i586")
 ARCHIVE_EXT=$([[ "${OS}" == "darwin" ]] && echo ${ARCHIVE_EXT_DMG} || echo ${ARCHIVE_EXT_TAR_GZ})
 #
-REQUIRED_COMMANDS_CORE='awk tr head rm mv cd curl readlink dirname'
+REQUIRED_COMMANDS_CORE='awk tr head rm mv cd curl readlink dirname unzip'
 REQUIRED_COMMANDS_DARWIN='hdiutil xar cpio shasum'
 REQUIRED_COMMANDS_LINUX='sha256sum tar'
 function log_2() {
@@ -236,7 +236,7 @@ function unpack_zip() {
 	local sub_dir
 	local -r tmp_dir=$(mktemp -d -t "${JVM_FULL_NAME}.XXXXXX")
 	debug "tmp_dir=${tmp_dir}"
-	unzip "${ARCHIVE_FILE}" -d ${tmp_dir} > /dev/null || { rm -Rf "${tmp_dir}";
+	unzip "${ARCHIVE_FILE}" -d "${tmp_dir}" > /dev/null || { rm -Rf "${tmp_dir}";
 		die 'error unpack archive...'; }
 	sub_dir=$(find "${tmp_dir}" -mindepth 1 -maxdepth 1 -type d)
 	sub_dir=$(find "${sub_dir}" -mindepth 1 -maxdepth 1 -type d)

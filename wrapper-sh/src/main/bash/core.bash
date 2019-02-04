@@ -45,7 +45,7 @@ OS=$(uname | tr '[:upper:]' '[:lower:]')
 ARCH=$([[ "$(uname -m)" == "x86_64" ]] && echo "x64" || echo "i586")
 ARCHIVE_EXT=$([[ "${OS}" == "darwin" ]] && echo ${ARCHIVE_EXT_DMG} || echo ${ARCHIVE_EXT_TAR_GZ})
 #
-REQUIRED_COMMANDS_CORE='awk tr head rm mv cd curl readlink dirname'
+REQUIRED_COMMANDS_CORE='awk tr head rm mv cd curl readlink dirname unzip'
 REQUIRED_COMMANDS_DARWIN='hdiutil xar cpio shasum'
 REQUIRED_COMMANDS_LINUX='sha256sum tar'
 
