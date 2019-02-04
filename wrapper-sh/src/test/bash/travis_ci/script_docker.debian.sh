@@ -13,4 +13,4 @@ docker run \
 -v "${PWD}/src":"/opt/jvmw-prj/src":ro \
 -v "${PWD}/builder.bash":"/opt/jvmw-prj/builder.bash":ro \
 -v "${PWD}/../samples.properties":/opt/jvmw-prj/samples.properties \
- ${DOCKER_IMAGE} bash -c "apt-get update && apt-get install -y curl wget xz-utils git && /opt/jvmw-prj/src/test/bash/docker_tests.sh"
+ ${DOCKER_IMAGE} bash -c "apt-get update && apt-get install -y curl wget xz-utils git unzip && /opt/jvmw-prj/src/test/bash/docker_tests.sh"

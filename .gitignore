@@ -12,16 +12,23 @@ build/
 tmp.*
 *.swp
 
-*.iml
-
+### IntelliJ IDEA ###
 .idea/*
+!.idea/encodings.xml
 !.idea/externalDependencies.xml
 !.idea/vcs.xml
+!.idea/gradle.xml
+!.idea/compiler.xml
+!.idea/kotlinc.xml
+!.idea/kotlinScripting.xml
 !.idea/bashsupport_project.xml
 !.idea/runConfigurations/
 !.idea/dictionaries/
 !.idea/codeStyles/
 !.idea/inspectionProfiles/
-!.idea/compiler.xml
-!.idea/gradle.xml
-!.idea/kotlinc.xml
+!.idea/sqldialects.xml
+!.idea/misc.xml
+!.idea/shellcheckPlugin.xml
+*.iml
+*.iws
+*.ipr

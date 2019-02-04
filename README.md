@@ -4,18 +4,12 @@
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](/LICENSE)
 [![Powered By: Victor Alenkov](https://img.shields.io/badge/powered%20by-Victor%20Alenkov-green.svg?style=flat-square)](https://github.com/BorzdeG)
 
-![Support Linux](https://img.shields.io/badge/support%20OS-Linux-green.svg?style=flat-square)
-![Support Mac OS](https://img.shields.io/badge/support%20OS-Mac%20OS-green.svg?style=flat-square)
+## Supported JVM
 
-![OpenJDK 13](https://img.shields.io/badge/OpenJDK-13-green.svg?style=flat-square)
-![OpenJDK 12](https://img.shields.io/badge/OpenJDK-12-green.svg?style=flat-square)
-![OpenJDK 11](https://img.shields.io/badge/OpenJDK-11-green.svg?style=flat-square)
-![OpenJDK 10](https://img.shields.io/badge/OpenJDK-10-green.svg?style=flat-square)
-![OpenJDK 8](https://img.shields.io/badge/OpenJDK-8-green.svg?style=flat-square)
-
-![Oracle JDK 11](https://img.shields.io/badge/Oracle%20JDK-11-green.svg?style=flat-square)
-![Oracle JDK 8](https://img.shields.io/badge/Oracle%20JDK-8-green.svg?style=flat-square)
-
+|OS|JVM|
+|---|---|
+|Linux|`OpenJDK 13`, `OpenJDK 12`, `OpenJDK 11`, `OpenJDK 10`, `OpenJDK 9`, `OpenJDK 8`, `OpenJDK 7`<br/>`Oracle JDK 11`, `Oracle JDK 8`|
+|OSX|`OpenJDK 13`, `OpenJDK 12`, `OpenJDK 11`<br/>`Oracle JDK 11`, `Oracle JDK 8`|
 
 ## Testing in docker images
 `centos:centos6`, `centos:centos7`, `debian:wheezy`, `debian:jessie`, `ubuntu:trusty`, `opensuse:latest`, `base/archlinux:latest`
