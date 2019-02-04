@@ -62,6 +62,8 @@ function unpack_dmg() {
 }
 
 function unpack_zip() {
+	system_check_program_exists "unzip"
+
 	local sub_dir
 	local -r tmp_dir=$(mktemp -d -t "${JVM_FULL_NAME}.XXXXXX")
 	debug "tmp_dir=${tmp_dir}"
