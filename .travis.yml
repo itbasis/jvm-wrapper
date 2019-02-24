@@ -92,179 +92,11 @@ jobs:
         
     - stage: test
       os: linux
-      services:
-        - docker
-      env:
-        - ENV_TEST_FILE="openjdk-13"
-        - DOCKER_IMAGE="centos:centos6"
-      script:
-        - cd ./wrapper-sh/
-        - ./src/test/bash/test_docker_suite.sh
-        - cd $TRAVIS_BUILD_DIR
-        
-    - stage: test
-      os: linux
-      services:
-        - docker
-      env:
-        - ENV_TEST_FILE="openjdk-13"
-        - DOCKER_IMAGE="centos:centos7"
-      script:
-        - cd ./wrapper-sh/
-        - ./src/test/bash/test_docker_suite.sh
-        - cd $TRAVIS_BUILD_DIR
-        
-    - stage: test
-      os: linux
-      services:
-        - docker
-      env:
-        - ENV_TEST_FILE="openjdk-13"
-        - DOCKER_IMAGE="debian:wheezy"
-      script:
-        - cd ./wrapper-sh/
-        - ./src/test/bash/test_docker_suite.sh
-        - cd $TRAVIS_BUILD_DIR
-        
-    - stage: test
-      os: linux
-      services:
-        - docker
-      env:
-        - ENV_TEST_FILE="openjdk-13"
-        - DOCKER_IMAGE="debian:jessie"
-      script:
-        - cd ./wrapper-sh/
-        - ./src/test/bash/test_docker_suite.sh
-        - cd $TRAVIS_BUILD_DIR
-        
-    - stage: test
-      os: linux
-      services:
-        - docker
-      env:
-        - ENV_TEST_FILE="openjdk-13"
-        - DOCKER_IMAGE="ubuntu:trusty"
-      script:
-        - cd ./wrapper-sh/
-        - ./src/test/bash/test_docker_suite.sh
-        - cd $TRAVIS_BUILD_DIR
-        
-    - stage: test
-      os: linux
-      services:
-        - docker
-      env:
-        - ENV_TEST_FILE="openjdk-13"
-        - DOCKER_IMAGE="opensuse:latest"
-      script:
-        - cd ./wrapper-sh/
-        - ./src/test/bash/test_docker_suite.sh
-        - cd $TRAVIS_BUILD_DIR
-        
-    - stage: test
-      os: linux
-      services:
-        - docker
-      env:
-        - ENV_TEST_FILE="openjdk-13"
-        - DOCKER_IMAGE="base/archlinux:latest"
-      script:
-        - cd ./wrapper-sh/
-        - ./src/test/bash/test_docker_suite.sh
-        - cd $TRAVIS_BUILD_DIR
-        
-    - stage: test
-      os: linux
       env:
         - ENV_TEST_FILE="openjdk-12"
       script:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_suite.sh
-        - cd $TRAVIS_BUILD_DIR
-        
-    - stage: test
-      os: linux
-      services:
-        - docker
-      env:
-        - ENV_TEST_FILE="openjdk-12"
-        - DOCKER_IMAGE="centos:centos6"
-      script:
-        - cd ./wrapper-sh/
-        - ./src/test/bash/test_docker_suite.sh
-        - cd $TRAVIS_BUILD_DIR
-        
-    - stage: test
-      os: linux
-      services:
-        - docker
-      env:
-        - ENV_TEST_FILE="openjdk-12"
-        - DOCKER_IMAGE="centos:centos7"
-      script:
-        - cd ./wrapper-sh/
-        - ./src/test/bash/test_docker_suite.sh
-        - cd $TRAVIS_BUILD_DIR
-        
-    - stage: test
-      os: linux
-      services:
-        - docker
-      env:
-        - ENV_TEST_FILE="openjdk-12"
-        - DOCKER_IMAGE="debian:wheezy"
-      script:
-        - cd ./wrapper-sh/
-        - ./src/test/bash/test_docker_suite.sh
-        - cd $TRAVIS_BUILD_DIR
-        
-    - stage: test
-      os: linux
-      services:
-        - docker
-      env:
-        - ENV_TEST_FILE="openjdk-12"
-        - DOCKER_IMAGE="debian:jessie"
-      script:
-        - cd ./wrapper-sh/
-        - ./src/test/bash/test_docker_suite.sh
-        - cd $TRAVIS_BUILD_DIR
-        
-    - stage: test
-      os: linux
-      services:
-        - docker
-      env:
-        - ENV_TEST_FILE="openjdk-12"
-        - DOCKER_IMAGE="ubuntu:trusty"
-      script:
-        - cd ./wrapper-sh/
-        - ./src/test/bash/test_docker_suite.sh
-        - cd $TRAVIS_BUILD_DIR
-        
-    - stage: test
-      os: linux
-      services:
-        - docker
-      env:
-        - ENV_TEST_FILE="openjdk-12"
-        - DOCKER_IMAGE="opensuse:latest"
-      script:
-        - cd ./wrapper-sh/
-        - ./src/test/bash/test_docker_suite.sh
-        - cd $TRAVIS_BUILD_DIR
-        
-    - stage: test
-      os: linux
-      services:
-        - docker
-      env:
-        - ENV_TEST_FILE="openjdk-12"
-        - DOCKER_IMAGE="base/archlinux:latest"
-      script:
-        - cd ./wrapper-sh/
-        - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
         
     - stage: test
@@ -278,179 +110,11 @@ jobs:
         
     - stage: test
       os: linux
-      services:
-        - docker
-      env:
-        - ENV_TEST_FILE="openjdk-11"
-        - DOCKER_IMAGE="centos:centos6"
-      script:
-        - cd ./wrapper-sh/
-        - ./src/test/bash/test_docker_suite.sh
-        - cd $TRAVIS_BUILD_DIR
-        
-    - stage: test
-      os: linux
-      services:
-        - docker
-      env:
-        - ENV_TEST_FILE="openjdk-11"
-        - DOCKER_IMAGE="centos:centos7"
-      script:
-        - cd ./wrapper-sh/
-        - ./src/test/bash/test_docker_suite.sh
-        - cd $TRAVIS_BUILD_DIR
-        
-    - stage: test
-      os: linux
-      services:
-        - docker
-      env:
-        - ENV_TEST_FILE="openjdk-11"
-        - DOCKER_IMAGE="debian:wheezy"
-      script:
-        - cd ./wrapper-sh/
-        - ./src/test/bash/test_docker_suite.sh
-        - cd $TRAVIS_BUILD_DIR
-        
-    - stage: test
-      os: linux
-      services:
-        - docker
-      env:
-        - ENV_TEST_FILE="openjdk-11"
-        - DOCKER_IMAGE="debian:jessie"
-      script:
-        - cd ./wrapper-sh/
-        - ./src/test/bash/test_docker_suite.sh
-        - cd $TRAVIS_BUILD_DIR
-        
-    - stage: test
-      os: linux
-      services:
-        - docker
-      env:
-        - ENV_TEST_FILE="openjdk-11"
-        - DOCKER_IMAGE="ubuntu:trusty"
-      script:
-        - cd ./wrapper-sh/
-        - ./src/test/bash/test_docker_suite.sh
-        - cd $TRAVIS_BUILD_DIR
-        
-    - stage: test
-      os: linux
-      services:
-        - docker
-      env:
-        - ENV_TEST_FILE="openjdk-11"
-        - DOCKER_IMAGE="opensuse:latest"
-      script:
-        - cd ./wrapper-sh/
-        - ./src/test/bash/test_docker_suite.sh
-        - cd $TRAVIS_BUILD_DIR
-        
-    - stage: test
-      os: linux
-      services:
-        - docker
-      env:
-        - ENV_TEST_FILE="openjdk-11"
-        - DOCKER_IMAGE="base/archlinux:latest"
-      script:
-        - cd ./wrapper-sh/
-        - ./src/test/bash/test_docker_suite.sh
-        - cd $TRAVIS_BUILD_DIR
-        
-    - stage: test
-      os: linux
       env:
         - ENV_TEST_FILE="oracle-11"
       script:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_suite.sh
-        - cd $TRAVIS_BUILD_DIR
-        
-    - stage: test
-      os: linux
-      services:
-        - docker
-      env:
-        - ENV_TEST_FILE="oracle-11"
-        - DOCKER_IMAGE="centos:centos6"
-      script:
-        - cd ./wrapper-sh/
-        - ./src/test/bash/test_docker_suite.sh
-        - cd $TRAVIS_BUILD_DIR
-        
-    - stage: test
-      os: linux
-      services:
-        - docker
-      env:
-        - ENV_TEST_FILE="oracle-11"
-        - DOCKER_IMAGE="centos:centos7"
-      script:
-        - cd ./wrapper-sh/
-        - ./src/test/bash/test_docker_suite.sh
-        - cd $TRAVIS_BUILD_DIR
-        
-    - stage: test
-      os: linux
-      services:
-        - docker
-      env:
-        - ENV_TEST_FILE="oracle-11"
-        - DOCKER_IMAGE="debian:wheezy"
-      script:
-        - cd ./wrapper-sh/
-        - ./src/test/bash/test_docker_suite.sh
-        - cd $TRAVIS_BUILD_DIR
-        
-    - stage: test
-      os: linux
-      services:
-        - docker
-      env:
-        - ENV_TEST_FILE="oracle-11"
-        - DOCKER_IMAGE="debian:jessie"
-      script:
-        - cd ./wrapper-sh/
-        - ./src/test/bash/test_docker_suite.sh
-        - cd $TRAVIS_BUILD_DIR
-        
-    - stage: test
-      os: linux
-      services:
-        - docker
-      env:
-        - ENV_TEST_FILE="oracle-11"
-        - DOCKER_IMAGE="ubuntu:trusty"
-      script:
-        - cd ./wrapper-sh/
-        - ./src/test/bash/test_docker_suite.sh
-        - cd $TRAVIS_BUILD_DIR
-        
-    - stage: test
-      os: linux
-      services:
-        - docker
-      env:
-        - ENV_TEST_FILE="oracle-11"
-        - DOCKER_IMAGE="opensuse:latest"
-      script:
-        - cd ./wrapper-sh/
-        - ./src/test/bash/test_docker_suite.sh
-        - cd $TRAVIS_BUILD_DIR
-        
-    - stage: test
-      os: linux
-      services:
-        - docker
-      env:
-        - ENV_TEST_FILE="oracle-11"
-        - DOCKER_IMAGE="base/archlinux:latest"
-      script:
-        - cd ./wrapper-sh/
-        - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
         
     - stage: test
@@ -464,179 +128,11 @@ jobs:
         
     - stage: test
       os: linux
-      services:
-        - docker
-      env:
-        - ENV_TEST_FILE="oracle-8"
-        - DOCKER_IMAGE="centos:centos6"
-      script:
-        - cd ./wrapper-sh/
-        - ./src/test/bash/test_docker_suite.sh
-        - cd $TRAVIS_BUILD_DIR
-        
-    - stage: test
-      os: linux
-      services:
-        - docker
-      env:
-        - ENV_TEST_FILE="oracle-8"
-        - DOCKER_IMAGE="centos:centos7"
-      script:
-        - cd ./wrapper-sh/
-        - ./src/test/bash/test_docker_suite.sh
-        - cd $TRAVIS_BUILD_DIR
-        
-    - stage: test
-      os: linux
-      services:
-        - docker
-      env:
-        - ENV_TEST_FILE="oracle-8"
-        - DOCKER_IMAGE="debian:wheezy"
-      script:
-        - cd ./wrapper-sh/
-        - ./src/test/bash/test_docker_suite.sh
-        - cd $TRAVIS_BUILD_DIR
-        
-    - stage: test
-      os: linux
-      services:
-        - docker
-      env:
-        - ENV_TEST_FILE="oracle-8"
-        - DOCKER_IMAGE="debian:jessie"
-      script:
-        - cd ./wrapper-sh/
-        - ./src/test/bash/test_docker_suite.sh
-        - cd $TRAVIS_BUILD_DIR
-        
-    - stage: test
-      os: linux
-      services:
-        - docker
-      env:
-        - ENV_TEST_FILE="oracle-8"
-        - DOCKER_IMAGE="ubuntu:trusty"
-      script:
-        - cd ./wrapper-sh/
-        - ./src/test/bash/test_docker_suite.sh
-        - cd $TRAVIS_BUILD_DIR
-        
-    - stage: test
-      os: linux
-      services:
-        - docker
-      env:
-        - ENV_TEST_FILE="oracle-8"
-        - DOCKER_IMAGE="opensuse:latest"
-      script:
-        - cd ./wrapper-sh/
-        - ./src/test/bash/test_docker_suite.sh
-        - cd $TRAVIS_BUILD_DIR
-        
-    - stage: test
-      os: linux
-      services:
-        - docker
-      env:
-        - ENV_TEST_FILE="oracle-8"
-        - DOCKER_IMAGE="base/archlinux:latest"
-      script:
-        - cd ./wrapper-sh/
-        - ./src/test/bash/test_docker_suite.sh
-        - cd $TRAVIS_BUILD_DIR
-        
-    - stage: test
-      os: linux
       env:
         - ENV_TEST_FILE="openjdk-10"
       script:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_suite.sh
-        - cd $TRAVIS_BUILD_DIR
-        
-    - stage: test
-      os: linux
-      services:
-        - docker
-      env:
-        - ENV_TEST_FILE="openjdk-10"
-        - DOCKER_IMAGE="centos:centos6"
-      script:
-        - cd ./wrapper-sh/
-        - ./src/test/bash/test_docker_suite.sh
-        - cd $TRAVIS_BUILD_DIR
-        
-    - stage: test
-      os: linux
-      services:
-        - docker
-      env:
-        - ENV_TEST_FILE="openjdk-10"
-        - DOCKER_IMAGE="centos:centos7"
-      script:
-        - cd ./wrapper-sh/
-        - ./src/test/bash/test_docker_suite.sh
-        - cd $TRAVIS_BUILD_DIR
-        
-    - stage: test
-      os: linux
-      services:
-        - docker
-      env:
-        - ENV_TEST_FILE="openjdk-10"
-        - DOCKER_IMAGE="debian:wheezy"
-      script:
-        - cd ./wrapper-sh/
-        - ./src/test/bash/test_docker_suite.sh
-        - cd $TRAVIS_BUILD_DIR
-        
-    - stage: test
-      os: linux
-      services:
-        - docker
-      env:
-        - ENV_TEST_FILE="openjdk-10"
-        - DOCKER_IMAGE="debian:jessie"
-      script:
-        - cd ./wrapper-sh/
-        - ./src/test/bash/test_docker_suite.sh
-        - cd $TRAVIS_BUILD_DIR
-        
-    - stage: test
-      os: linux
-      services:
-        - docker
-      env:
-        - ENV_TEST_FILE="openjdk-10"
-        - DOCKER_IMAGE="ubuntu:trusty"
-      script:
-        - cd ./wrapper-sh/
-        - ./src/test/bash/test_docker_suite.sh
-        - cd $TRAVIS_BUILD_DIR
-        
-    - stage: test
-      os: linux
-      services:
-        - docker
-      env:
-        - ENV_TEST_FILE="openjdk-10"
-        - DOCKER_IMAGE="opensuse:latest"
-      script:
-        - cd ./wrapper-sh/
-        - ./src/test/bash/test_docker_suite.sh
-        - cd $TRAVIS_BUILD_DIR
-        
-    - stage: test
-      os: linux
-      services:
-        - docker
-      env:
-        - ENV_TEST_FILE="openjdk-10"
-        - DOCKER_IMAGE="base/archlinux:latest"
-      script:
-        - cd ./wrapper-sh/
-        - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
         
     - stage: test
@@ -650,179 +146,11 @@ jobs:
         
     - stage: test
       os: linux
-      services:
-        - docker
-      env:
-        - ENV_TEST_FILE="openjdk-9"
-        - DOCKER_IMAGE="centos:centos6"
-      script:
-        - cd ./wrapper-sh/
-        - ./src/test/bash/test_docker_suite.sh
-        - cd $TRAVIS_BUILD_DIR
-        
-    - stage: test
-      os: linux
-      services:
-        - docker
-      env:
-        - ENV_TEST_FILE="openjdk-9"
-        - DOCKER_IMAGE="centos:centos7"
-      script:
-        - cd ./wrapper-sh/
-        - ./src/test/bash/test_docker_suite.sh
-        - cd $TRAVIS_BUILD_DIR
-        
-    - stage: test
-      os: linux
-      services:
-        - docker
-      env:
-        - ENV_TEST_FILE="openjdk-9"
-        - DOCKER_IMAGE="debian:wheezy"
-      script:
-        - cd ./wrapper-sh/
-        - ./src/test/bash/test_docker_suite.sh
-        - cd $TRAVIS_BUILD_DIR
-        
-    - stage: test
-      os: linux
-      services:
-        - docker
-      env:
-        - ENV_TEST_FILE="openjdk-9"
-        - DOCKER_IMAGE="debian:jessie"
-      script:
-        - cd ./wrapper-sh/
-        - ./src/test/bash/test_docker_suite.sh
-        - cd $TRAVIS_BUILD_DIR
-        
-    - stage: test
-      os: linux
-      services:
-        - docker
-      env:
-        - ENV_TEST_FILE="openjdk-9"
-        - DOCKER_IMAGE="ubuntu:trusty"
-      script:
-        - cd ./wrapper-sh/
-        - ./src/test/bash/test_docker_suite.sh
-        - cd $TRAVIS_BUILD_DIR
-        
-    - stage: test
-      os: linux
-      services:
-        - docker
-      env:
-        - ENV_TEST_FILE="openjdk-9"
-        - DOCKER_IMAGE="opensuse:latest"
-      script:
-        - cd ./wrapper-sh/
-        - ./src/test/bash/test_docker_suite.sh
-        - cd $TRAVIS_BUILD_DIR
-        
-    - stage: test
-      os: linux
-      services:
-        - docker
-      env:
-        - ENV_TEST_FILE="openjdk-9"
-        - DOCKER_IMAGE="base/archlinux:latest"
-      script:
-        - cd ./wrapper-sh/
-        - ./src/test/bash/test_docker_suite.sh
-        - cd $TRAVIS_BUILD_DIR
-        
-    - stage: test
-      os: linux
       env:
         - ENV_TEST_FILE="openjdk-8"
       script:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_suite.sh
-        - cd $TRAVIS_BUILD_DIR
-        
-    - stage: test
-      os: linux
-      services:
-        - docker
-      env:
-        - ENV_TEST_FILE="openjdk-8"
-        - DOCKER_IMAGE="centos:centos6"
-      script:
-        - cd ./wrapper-sh/
-        - ./src/test/bash/test_docker_suite.sh
-        - cd $TRAVIS_BUILD_DIR
-        
-    - stage: test
-      os: linux
-      services:
-        - docker
-      env:
-        - ENV_TEST_FILE="openjdk-8"
-        - DOCKER_IMAGE="centos:centos7"
-      script:
-        - cd ./wrapper-sh/
-        - ./src/test/bash/test_docker_suite.sh
-        - cd $TRAVIS_BUILD_DIR
-        
-    - stage: test
-      os: linux
-      services:
-        - docker
-      env:
-        - ENV_TEST_FILE="openjdk-8"
-        - DOCKER_IMAGE="debian:wheezy"
-      script:
-        - cd ./wrapper-sh/
-        - ./src/test/bash/test_docker_suite.sh
-        - cd $TRAVIS_BUILD_DIR
-        
-    - stage: test
-      os: linux
-      services:
-        - docker
-      env:
-        - ENV_TEST_FILE="openjdk-8"
-        - DOCKER_IMAGE="debian:jessie"
-      script:
-        - cd ./wrapper-sh/
-        - ./src/test/bash/test_docker_suite.sh
-        - cd $TRAVIS_BUILD_DIR
-        
-    - stage: test
-      os: linux
-      services:
-        - docker
-      env:
-        - ENV_TEST_FILE="openjdk-8"
-        - DOCKER_IMAGE="ubuntu:trusty"
-      script:
-        - cd ./wrapper-sh/
-        - ./src/test/bash/test_docker_suite.sh
-        - cd $TRAVIS_BUILD_DIR
-        
-    - stage: test
-      os: linux
-      services:
-        - docker
-      env:
-        - ENV_TEST_FILE="openjdk-8"
-        - DOCKER_IMAGE="opensuse:latest"
-      script:
-        - cd ./wrapper-sh/
-        - ./src/test/bash/test_docker_suite.sh
-        - cd $TRAVIS_BUILD_DIR
-        
-    - stage: test
-      os: linux
-      services:
-        - docker
-      env:
-        - ENV_TEST_FILE="openjdk-8"
-        - DOCKER_IMAGE="base/archlinux:latest"
-      script:
-        - cd ./wrapper-sh/
-        - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
         
     - stage: test
@@ -832,6 +160,678 @@ jobs:
       script:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_suite.sh
+        - cd $TRAVIS_BUILD_DIR
+        
+    - stage: test
+      os: linux
+      services:
+        - docker
+      env:
+        - ENV_TEST_FILE="openjdk-13"
+        - DOCKER_IMAGE="centos:centos6"
+      script:
+        - cd ./wrapper-sh/
+        - ./src/test/bash/test_docker_suite.sh
+        - cd $TRAVIS_BUILD_DIR
+        
+    - stage: test
+      os: linux
+      services:
+        - docker
+      env:
+        - ENV_TEST_FILE="openjdk-13"
+        - DOCKER_IMAGE="centos:centos7"
+      script:
+        - cd ./wrapper-sh/
+        - ./src/test/bash/test_docker_suite.sh
+        - cd $TRAVIS_BUILD_DIR
+        
+    - stage: test
+      os: linux
+      services:
+        - docker
+      env:
+        - ENV_TEST_FILE="openjdk-13"
+        - DOCKER_IMAGE="debian:wheezy"
+      script:
+        - cd ./wrapper-sh/
+        - ./src/test/bash/test_docker_suite.sh
+        - cd $TRAVIS_BUILD_DIR
+        
+    - stage: test
+      os: linux
+      services:
+        - docker
+      env:
+        - ENV_TEST_FILE="openjdk-13"
+        - DOCKER_IMAGE="debian:jessie"
+      script:
+        - cd ./wrapper-sh/
+        - ./src/test/bash/test_docker_suite.sh
+        - cd $TRAVIS_BUILD_DIR
+        
+    - stage: test
+      os: linux
+      services:
+        - docker
+      env:
+        - ENV_TEST_FILE="openjdk-13"
+        - DOCKER_IMAGE="ubuntu:trusty"
+      script:
+        - cd ./wrapper-sh/
+        - ./src/test/bash/test_docker_suite.sh
+        - cd $TRAVIS_BUILD_DIR
+        
+    - stage: test
+      os: linux
+      services:
+        - docker
+      env:
+        - ENV_TEST_FILE="openjdk-13"
+        - DOCKER_IMAGE="opensuse:latest"
+      script:
+        - cd ./wrapper-sh/
+        - ./src/test/bash/test_docker_suite.sh
+        - cd $TRAVIS_BUILD_DIR
+        
+    - stage: test
+      os: linux
+      services:
+        - docker
+      env:
+        - ENV_TEST_FILE="openjdk-13"
+        - DOCKER_IMAGE="base/archlinux:latest"
+      script:
+        - cd ./wrapper-sh/
+        - ./src/test/bash/test_docker_suite.sh
+        - cd $TRAVIS_BUILD_DIR
+        
+    - stage: test
+      os: linux
+      services:
+        - docker
+      env:
+        - ENV_TEST_FILE="openjdk-12"
+        - DOCKER_IMAGE="centos:centos6"
+      script:
+        - cd ./wrapper-sh/
+        - ./src/test/bash/test_docker_suite.sh
+        - cd $TRAVIS_BUILD_DIR
+        
+    - stage: test
+      os: linux
+      services:
+        - docker
+      env:
+        - ENV_TEST_FILE="openjdk-12"
+        - DOCKER_IMAGE="centos:centos7"
+      script:
+        - cd ./wrapper-sh/
+        - ./src/test/bash/test_docker_suite.sh
+        - cd $TRAVIS_BUILD_DIR
+        
+    - stage: test
+      os: linux
+      services:
+        - docker
+      env:
+        - ENV_TEST_FILE="openjdk-12"
+        - DOCKER_IMAGE="debian:wheezy"
+      script:
+        - cd ./wrapper-sh/
+        - ./src/test/bash/test_docker_suite.sh
+        - cd $TRAVIS_BUILD_DIR
+        
+    - stage: test
+      os: linux
+      services:
+        - docker
+      env:
+        - ENV_TEST_FILE="openjdk-12"
+        - DOCKER_IMAGE="debian:jessie"
+      script:
+        - cd ./wrapper-sh/
+        - ./src/test/bash/test_docker_suite.sh
+        - cd $TRAVIS_BUILD_DIR
+        
+    - stage: test
+      os: linux
+      services:
+        - docker
+      env:
+        - ENV_TEST_FILE="openjdk-12"
+        - DOCKER_IMAGE="ubuntu:trusty"
+      script:
+        - cd ./wrapper-sh/
+        - ./src/test/bash/test_docker_suite.sh
+        - cd $TRAVIS_BUILD_DIR
+        
+    - stage: test
+      os: linux
+      services:
+        - docker
+      env:
+        - ENV_TEST_FILE="openjdk-12"
+        - DOCKER_IMAGE="opensuse:latest"
+      script:
+        - cd ./wrapper-sh/
+        - ./src/test/bash/test_docker_suite.sh
+        - cd $TRAVIS_BUILD_DIR
+        
+    - stage: test
+      os: linux
+      services:
+        - docker
+      env:
+        - ENV_TEST_FILE="openjdk-12"
+        - DOCKER_IMAGE="base/archlinux:latest"
+      script:
+        - cd ./wrapper-sh/
+        - ./src/test/bash/test_docker_suite.sh
+        - cd $TRAVIS_BUILD_DIR
+        
+    - stage: test
+      os: linux
+      services:
+        - docker
+      env:
+        - ENV_TEST_FILE="openjdk-11"
+        - DOCKER_IMAGE="centos:centos6"
+      script:
+        - cd ./wrapper-sh/
+        - ./src/test/bash/test_docker_suite.sh
+        - cd $TRAVIS_BUILD_DIR
+        
+    - stage: test
+      os: linux
+      services:
+        - docker
+      env:
+        - ENV_TEST_FILE="openjdk-11"
+        - DOCKER_IMAGE="centos:centos7"
+      script:
+        - cd ./wrapper-sh/
+        - ./src/test/bash/test_docker_suite.sh
+        - cd $TRAVIS_BUILD_DIR
+        
+    - stage: test
+      os: linux
+      services:
+        - docker
+      env:
+        - ENV_TEST_FILE="openjdk-11"
+        - DOCKER_IMAGE="debian:wheezy"
+      script:
+        - cd ./wrapper-sh/
+        - ./src/test/bash/test_docker_suite.sh
+        - cd $TRAVIS_BUILD_DIR
+        
+    - stage: test
+      os: linux
+      services:
+        - docker
+      env:
+        - ENV_TEST_FILE="openjdk-11"
+        - DOCKER_IMAGE="debian:jessie"
+      script:
+        - cd ./wrapper-sh/
+        - ./src/test/bash/test_docker_suite.sh
+        - cd $TRAVIS_BUILD_DIR
+        
+    - stage: test
+      os: linux
+      services:
+        - docker
+      env:
+        - ENV_TEST_FILE="openjdk-11"
+        - DOCKER_IMAGE="ubuntu:trusty"
+      script:
+        - cd ./wrapper-sh/
+        - ./src/test/bash/test_docker_suite.sh
+        - cd $TRAVIS_BUILD_DIR
+        
+    - stage: test
+      os: linux
+      services:
+        - docker
+      env:
+        - ENV_TEST_FILE="openjdk-11"
+        - DOCKER_IMAGE="opensuse:latest"
+      script:
+        - cd ./wrapper-sh/
+        - ./src/test/bash/test_docker_suite.sh
+        - cd $TRAVIS_BUILD_DIR
+        
+    - stage: test
+      os: linux
+      services:
+        - docker
+      env:
+        - ENV_TEST_FILE="openjdk-11"
+        - DOCKER_IMAGE="base/archlinux:latest"
+      script:
+        - cd ./wrapper-sh/
+        - ./src/test/bash/test_docker_suite.sh
+        - cd $TRAVIS_BUILD_DIR
+        
+    - stage: test
+      os: linux
+      services:
+        - docker
+      env:
+        - ENV_TEST_FILE="oracle-11"
+        - DOCKER_IMAGE="centos:centos6"
+      script:
+        - cd ./wrapper-sh/
+        - ./src/test/bash/test_docker_suite.sh
+        - cd $TRAVIS_BUILD_DIR
+        
+    - stage: test
+      os: linux
+      services:
+        - docker
+      env:
+        - ENV_TEST_FILE="oracle-11"
+        - DOCKER_IMAGE="centos:centos7"
+      script:
+        - cd ./wrapper-sh/
+        - ./src/test/bash/test_docker_suite.sh
+        - cd $TRAVIS_BUILD_DIR
+        
+    - stage: test
+      os: linux
+      services:
+        - docker
+      env:
+        - ENV_TEST_FILE="oracle-11"
+        - DOCKER_IMAGE="debian:wheezy"
+      script:
+        - cd ./wrapper-sh/
+        - ./src/test/bash/test_docker_suite.sh
+        - cd $TRAVIS_BUILD_DIR
+        
+    - stage: test
+      os: linux
+      services:
+        - docker
+      env:
+        - ENV_TEST_FILE="oracle-11"
+        - DOCKER_IMAGE="debian:jessie"
+      script:
+        - cd ./wrapper-sh/
+        - ./src/test/bash/test_docker_suite.sh
+        - cd $TRAVIS_BUILD_DIR
+        
+    - stage: test
+      os: linux
+      services:
+        - docker
+      env:
+        - ENV_TEST_FILE="oracle-11"
+        - DOCKER_IMAGE="ubuntu:trusty"
+      script:
+        - cd ./wrapper-sh/
+        - ./src/test/bash/test_docker_suite.sh
+        - cd $TRAVIS_BUILD_DIR
+        
+    - stage: test
+      os: linux
+      services:
+        - docker
+      env:
+        - ENV_TEST_FILE="oracle-11"
+        - DOCKER_IMAGE="opensuse:latest"
+      script:
+        - cd ./wrapper-sh/
+        - ./src/test/bash/test_docker_suite.sh
+        - cd $TRAVIS_BUILD_DIR
+        
+    - stage: test
+      os: linux
+      services:
+        - docker
+      env:
+        - ENV_TEST_FILE="oracle-11"
+        - DOCKER_IMAGE="base/archlinux:latest"
+      script:
+        - cd ./wrapper-sh/
+        - ./src/test/bash/test_docker_suite.sh
+        - cd $TRAVIS_BUILD_DIR
+        
+    - stage: test
+      os: linux
+      services:
+        - docker
+      env:
+        - ENV_TEST_FILE="oracle-8"
+        - DOCKER_IMAGE="centos:centos6"
+      script:
+        - cd ./wrapper-sh/
+        - ./src/test/bash/test_docker_suite.sh
+        - cd $TRAVIS_BUILD_DIR
+        
+    - stage: test
+      os: linux
+      services:
+        - docker
+      env:
+        - ENV_TEST_FILE="oracle-8"
+        - DOCKER_IMAGE="centos:centos7"
+      script:
+        - cd ./wrapper-sh/
+        - ./src/test/bash/test_docker_suite.sh
+        - cd $TRAVIS_BUILD_DIR
+        
+    - stage: test
+      os: linux
+      services:
+        - docker
+      env:
+        - ENV_TEST_FILE="oracle-8"
+        - DOCKER_IMAGE="debian:wheezy"
+      script:
+        - cd ./wrapper-sh/
+        - ./src/test/bash/test_docker_suite.sh
+        - cd $TRAVIS_BUILD_DIR
+        
+    - stage: test
+      os: linux
+      services:
+        - docker
+      env:
+        - ENV_TEST_FILE="oracle-8"
+        - DOCKER_IMAGE="debian:jessie"
+      script:
+        - cd ./wrapper-sh/
+        - ./src/test/bash/test_docker_suite.sh
+        - cd $TRAVIS_BUILD_DIR
+        
+    - stage: test
+      os: linux
+      services:
+        - docker
+      env:
+        - ENV_TEST_FILE="oracle-8"
+        - DOCKER_IMAGE="ubuntu:trusty"
+      script:
+        - cd ./wrapper-sh/
+        - ./src/test/bash/test_docker_suite.sh
+        - cd $TRAVIS_BUILD_DIR
+        
+    - stage: test
+      os: linux
+      services:
+        - docker
+      env:
+        - ENV_TEST_FILE="oracle-8"
+        - DOCKER_IMAGE="opensuse:latest"
+      script:
+        - cd ./wrapper-sh/
+        - ./src/test/bash/test_docker_suite.sh
+        - cd $TRAVIS_BUILD_DIR
+        
+    - stage: test
+      os: linux
+      services:
+        - docker
+      env:
+        - ENV_TEST_FILE="oracle-8"
+        - DOCKER_IMAGE="base/archlinux:latest"
+      script:
+        - cd ./wrapper-sh/
+        - ./src/test/bash/test_docker_suite.sh
+        - cd $TRAVIS_BUILD_DIR
+        
+    - stage: test
+      os: linux
+      services:
+        - docker
+      env:
+        - ENV_TEST_FILE="openjdk-10"
+        - DOCKER_IMAGE="centos:centos6"
+      script:
+        - cd ./wrapper-sh/
+        - ./src/test/bash/test_docker_suite.sh
+        - cd $TRAVIS_BUILD_DIR
+        
+    - stage: test
+      os: linux
+      services:
+        - docker
+      env:
+        - ENV_TEST_FILE="openjdk-10"
+        - DOCKER_IMAGE="centos:centos7"
+      script:
+        - cd ./wrapper-sh/
+        - ./src/test/bash/test_docker_suite.sh
+        - cd $TRAVIS_BUILD_DIR
+        
+    - stage: test
+      os: linux
+      services:
+        - docker
+      env:
+        - ENV_TEST_FILE="openjdk-10"
+        - DOCKER_IMAGE="debian:wheezy"
+      script:
+        - cd ./wrapper-sh/
+        - ./src/test/bash/test_docker_suite.sh
+        - cd $TRAVIS_BUILD_DIR
+        
+    - stage: test
+      os: linux
+      services:
+        - docker
+      env:
+        - ENV_TEST_FILE="openjdk-10"
+        - DOCKER_IMAGE="debian:jessie"
+      script:
+        - cd ./wrapper-sh/
+        - ./src/test/bash/test_docker_suite.sh
+        - cd $TRAVIS_BUILD_DIR
+        
+    - stage: test
+      os: linux
+      services:
+        - docker
+      env:
+        - ENV_TEST_FILE="openjdk-10"
+        - DOCKER_IMAGE="ubuntu:trusty"
+      script:
+        - cd ./wrapper-sh/
+        - ./src/test/bash/test_docker_suite.sh
+        - cd $TRAVIS_BUILD_DIR
+        
+    - stage: test
+      os: linux
+      services:
+        - docker
+      env:
+        - ENV_TEST_FILE="openjdk-10"
+        - DOCKER_IMAGE="opensuse:latest"
+      script:
+        - cd ./wrapper-sh/
+        - ./src/test/bash/test_docker_suite.sh
+        - cd $TRAVIS_BUILD_DIR
+        
+    - stage: test
+      os: linux
+      services:
+        - docker
+      env:
+        - ENV_TEST_FILE="openjdk-10"
+        - DOCKER_IMAGE="base/archlinux:latest"
+      script:
+        - cd ./wrapper-sh/
+        - ./src/test/bash/test_docker_suite.sh
+        - cd $TRAVIS_BUILD_DIR
+        
+    - stage: test
+      os: linux
+      services:
+        - docker
+      env:
+        - ENV_TEST_FILE="openjdk-9"
+        - DOCKER_IMAGE="centos:centos6"
+      script:
+        - cd ./wrapper-sh/
+        - ./src/test/bash/test_docker_suite.sh
+        - cd $TRAVIS_BUILD_DIR
+        
+    - stage: test
+      os: linux
+      services:
+        - docker
+      env:
+        - ENV_TEST_FILE="openjdk-9"
+        - DOCKER_IMAGE="centos:centos7"
+      script:
+        - cd ./wrapper-sh/
+        - ./src/test/bash/test_docker_suite.sh
+        - cd $TRAVIS_BUILD_DIR
+        
+    - stage: test
+      os: linux
+      services:
+        - docker
+      env:
+        - ENV_TEST_FILE="openjdk-9"
+        - DOCKER_IMAGE="debian:wheezy"
+      script:
+        - cd ./wrapper-sh/
+        - ./src/test/bash/test_docker_suite.sh
+        - cd $TRAVIS_BUILD_DIR
+        
+    - stage: test
+      os: linux
+      services:
+        - docker
+      env:
+        - ENV_TEST_FILE="openjdk-9"
+        - DOCKER_IMAGE="debian:jessie"
+      script:
+        - cd ./wrapper-sh/
+        - ./src/test/bash/test_docker_suite.sh
+        - cd $TRAVIS_BUILD_DIR
+        
+    - stage: test
+      os: linux
+      services:
+        - docker
+      env:
+        - ENV_TEST_FILE="openjdk-9"
+        - DOCKER_IMAGE="ubuntu:trusty"
+      script:
+        - cd ./wrapper-sh/
+        - ./src/test/bash/test_docker_suite.sh
+        - cd $TRAVIS_BUILD_DIR
+        
+    - stage: test
+      os: linux
+      services:
+        - docker
+      env:
+        - ENV_TEST_FILE="openjdk-9"
+        - DOCKER_IMAGE="opensuse:latest"
+      script:
+        - cd ./wrapper-sh/
+        - ./src/test/bash/test_docker_suite.sh
+        - cd $TRAVIS_BUILD_DIR
+        
+    - stage: test
+      os: linux
+      services:
+        - docker
+      env:
+        - ENV_TEST_FILE="openjdk-9"
+        - DOCKER_IMAGE="base/archlinux:latest"
+      script:
+        - cd ./wrapper-sh/
+        - ./src/test/bash/test_docker_suite.sh
+        - cd $TRAVIS_BUILD_DIR
+        
+    - stage: test
+      os: linux
+      services:
+        - docker
+      env:
+        - ENV_TEST_FILE="openjdk-8"
+        - DOCKER_IMAGE="centos:centos6"
+      script:
+        - cd ./wrapper-sh/
+        - ./src/test/bash/test_docker_suite.sh
+        - cd $TRAVIS_BUILD_DIR
+        
+    - stage: test
+      os: linux
+      services:
+        - docker
+      env:
+        - ENV_TEST_FILE="openjdk-8"
+        - DOCKER_IMAGE="centos:centos7"
+      script:
+        - cd ./wrapper-sh/
+        - ./src/test/bash/test_docker_suite.sh
+        - cd $TRAVIS_BUILD_DIR
+        
+    - stage: test
+      os: linux
+      services:
+        - docker
+      env:
+        - ENV_TEST_FILE="openjdk-8"
+        - DOCKER_IMAGE="debian:wheezy"
+      script:
+        - cd ./wrapper-sh/
+        - ./src/test/bash/test_docker_suite.sh
+        - cd $TRAVIS_BUILD_DIR
+        
+    - stage: test
+      os: linux
+      services:
+        - docker
+      env:
+        - ENV_TEST_FILE="openjdk-8"
+        - DOCKER_IMAGE="debian:jessie"
+      script:
+        - cd ./wrapper-sh/
+        - ./src/test/bash/test_docker_suite.sh
+        - cd $TRAVIS_BUILD_DIR
+        
+    - stage: test
+      os: linux
+      services:
+        - docker
+      env:
+        - ENV_TEST_FILE="openjdk-8"
+        - DOCKER_IMAGE="ubuntu:trusty"
+      script:
+        - cd ./wrapper-sh/
+        - ./src/test/bash/test_docker_suite.sh
+        - cd $TRAVIS_BUILD_DIR
+        
+    - stage: test
+      os: linux
+      services:
+        - docker
+      env:
+        - ENV_TEST_FILE="openjdk-8"
+        - DOCKER_IMAGE="opensuse:latest"
+      script:
+        - cd ./wrapper-sh/
+        - ./src/test/bash/test_docker_suite.sh
+        - cd $TRAVIS_BUILD_DIR
+        
+    - stage: test
+      os: linux
+      services:
+        - docker
+      env:
+        - ENV_TEST_FILE="openjdk-8"
+        - DOCKER_IMAGE="base/archlinux:latest"
+      script:
+        - cd ./wrapper-sh/
+        - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
         
     - stage: test
