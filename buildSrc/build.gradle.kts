@@ -9,15 +9,19 @@ kotlinDslPluginOptions {
 }
 
 repositories {
-  jcenter()
   gradlePluginPortal()
+  mavenCentral()
+  jcenter()
 }
 
-val kotlinVersion = "1.3.20"
+val kotlinVersion = "1.3.+"
 
 dependencies {
   implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
-  implementation("io.gitlab.arturbosch.detekt:detekt-gradle-plugin:1.0.0-RC12")
+
+  implementation("io.gitlab.arturbosch.detekt:detekt-gradle-plugin:+")
+
+// TODO  implementation("gradle.plugin.org.jetbrains.intellij.plugins:gradle-intellij-plugin:+")
 }
 
 gradlePlugin {

@@ -26,9 +26,5 @@ class TravisCIPlugin : Plugin<Project> {
 
   companion object {
     const val GROUP_NAME = "ci"
-
-    enum class SUPPORTED_OS {
-      ANY, LINUX, OSX
-    }
   }
 }

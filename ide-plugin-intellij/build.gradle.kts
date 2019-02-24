@@ -1,15 +1,14 @@
-import org.jetbrains.intellij.IntelliJPlugin
-
 plugins {
   id("org.jetbrains.intellij")
 }
 
 intellij {
-  //  setPlugins("org.jetbrains.java")
 //  version = IntelliJPlugin.DEFAULT_IDEA_VERSION
+  // https://www.jetbrains.com/intellij-repository/releases/
   version = "2018.1.6"
   logger.lifecycle("IntelliJ version: ${this.version}")
   sandboxDirectory = projectDir.resolve(".sandbox-${this.version}").absolutePath
+//  setPlugins("com.intellij")
 }
 
 tasks {

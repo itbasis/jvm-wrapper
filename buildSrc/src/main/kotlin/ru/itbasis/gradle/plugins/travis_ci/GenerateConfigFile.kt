@@ -7,10 +7,9 @@ import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.TaskAction
 import org.intellij.lang.annotations.Language
-import ru.itbasis.gradle.plugins.travis_ci.TravisCIPlugin.Companion.SUPPORTED_OS
-import ru.itbasis.gradle.plugins.travis_ci.TravisCIPlugin.Companion.SUPPORTED_OS.ANY
-import ru.itbasis.gradle.plugins.travis_ci.TravisCIPlugin.Companion.SUPPORTED_OS.LINUX
-import ru.itbasis.gradle.plugins.travis_ci.TravisCIPlugin.Companion.SUPPORTED_OS.OSX
+import ru.itbasis.gradle.plugins.travis_ci.SupportedOS.ANY
+import ru.itbasis.gradle.plugins.travis_ci.SupportedOS.LINUX
+import ru.itbasis.gradle.plugins.travis_ci.SupportedOS.OSX
 
 open class GenerateConfigFile : DefaultTask(), Runnable {
   @OutputFile
@@ -91,7 +90,7 @@ jobs:
       , LINUX to listOf("openjdk-10", "openjdk-9", "openjdk-8", "openjdk-7")
     )
 
-    val block: (envTestFile: String, os: SUPPORTED_OS) -> Unit = { envTestFile, os ->
+    val block: (envTestFile: String, os: SupportedOS) -> Unit = { envTestFile, os ->
       outputFile.appendText(
         """
     - stage: test
@@ -106,14 +105,18 @@ jobs:
       )
     }
 
-    arrayListOf(OSX, LINUX).forEach { os ->
-      supportedJvm.filterKeys { it == ANY || it == os }.values.flatten().forEach { envTestFile ->
-        block.invoke(envTestFile, os)
+    val environments = arrayListOf(OSX, LINUX).flatMap { os ->
+      supportedJvm.filterKeys { it == ANY || it == os }.values.flatten().map { os to it }
+    }
 
-        if (os == LINUX) {
-          dockerImages.forEach { dockerImage ->
-            outputFile.appendText(
-              """
+    environments.forEach { (os, envTestFile) ->
+      block.invoke(envTestFile, os)
+    }
+
+    environments.filter { (os, _) -> os == LINUX }.onEach { (os, envTestFile) ->
+      dockerImages.forEach { dockerImage ->
+        outputFile.appendText(
+          """
     - stage: test
       os: linux
       services:
@@ -126,9 +129,7 @@ jobs:
         - ./src/test/bash/test_docker_suite.sh
         - cd ${'$'}TRAVIS_BUILD_DIR
         """
-            )
-          }
-        }
+        )
       }
     }
   }
