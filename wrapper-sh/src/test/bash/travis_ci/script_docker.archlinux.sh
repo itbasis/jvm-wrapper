@@ -13,4 +13,4 @@ docker run \
 -v "${PWD}/src":"/opt/jvmw-prj/src":ro \
 -v "${PWD}/builder.bash":"/opt/jvmw-prj/builder.bash":ro \
 -v "${PWD}/../samples.properties":/opt/jvmw-prj/samples.properties \
- ${DOCKER_IMAGE} bash -c "pacman -Sy --noconfirm curl wget xz git unzip && /opt/jvmw-prj/src/test/bash/docker_tests.sh"
+ ${DOCKER_IMAGE} bash -c "pacman -Sy --noconfirm curl wget xz git unzip awk tar shellcheck && ln -fs /usr/lib/libidn2.so /usr/lib/libidn2.so.4 && /opt/jvmw-prj/src/test/bash/docker_tests.sh"

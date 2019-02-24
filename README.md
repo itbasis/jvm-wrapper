@@ -12,7 +12,7 @@
 |OSX|`OpenJDK 13`, `OpenJDK 12`, `OpenJDK 11`<br/>`Oracle JDK 11`, `Oracle JDK 8`|
 
 ## Testing in docker images
-`centos:centos6`, `centos:centos7`, `debian:wheezy`, `debian:jessie`, `ubuntu:trusty`, `opensuse:latest`, `base/archlinux:latest`
+`centos:centos6`, `centos:centos7`, `debian:wheezy`, `debian:jessie`, `ubuntu:trusty`, `opensuse:latest`, `archlinux/base:latest`
 
 ## Install
 
