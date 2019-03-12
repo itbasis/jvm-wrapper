@@ -917,4 +917,3 @@ jobs:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        

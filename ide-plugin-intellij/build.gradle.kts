@@ -8,7 +8,6 @@ intellij {
   version = "2018.1.6"
   logger.lifecycle("IntelliJ version: ${this.version}")
   sandboxDirectory = projectDir.resolve(".sandbox-${this.version}").absolutePath
-//  setPlugins("com.intellij")
 }
 
 tasks {
@@ -22,4 +21,8 @@ tasks {
     untilBuild("184.*")
     setVersion(project.version)
   }
+}
+
+dependencies { 
+  
 }
