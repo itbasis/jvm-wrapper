@@ -8,7 +8,7 @@ env:
 
 
 install:
-    
+
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update; fi
       
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew reinstall shellcheck bats-core; fi
@@ -44,7 +44,7 @@ jobs:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        
+
     - stage: test
       os: osx
       env:
@@ -53,7 +53,7 @@ jobs:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        
+
     - stage: test
       os: osx
       env:
@@ -62,7 +62,7 @@ jobs:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        
+
     - stage: test
       os: osx
       env:
@@ -71,7 +71,7 @@ jobs:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        
+
     - stage: test
       os: osx
       env:
@@ -80,7 +80,7 @@ jobs:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        
+
     - stage: test
       os: linux
       env:
@@ -89,7 +89,7 @@ jobs:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        
+
     - stage: test
       os: linux
       env:
@@ -98,7 +98,7 @@ jobs:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        
+
     - stage: test
       os: linux
       env:
@@ -107,7 +107,7 @@ jobs:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        
+
     - stage: test
       os: linux
       env:
@@ -116,7 +116,7 @@ jobs:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        
+
     - stage: test
       os: linux
       env:
@@ -125,7 +125,7 @@ jobs:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        
+
     - stage: test
       os: linux
       env:
@@ -134,7 +134,7 @@ jobs:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        
+
     - stage: test
       os: linux
       env:
@@ -143,7 +143,7 @@ jobs:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        
+
     - stage: test
       os: linux
       env:
@@ -152,7 +152,7 @@ jobs:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        
+
     - stage: test
       os: linux
       env:
@@ -161,7 +161,7 @@ jobs:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        
+
     - stage: test
       os: linux
       services:
@@ -173,7 +173,7 @@ jobs:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        
+
     - stage: test
       os: linux
       services:
@@ -185,7 +185,7 @@ jobs:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        
+
     - stage: test
       os: linux
       services:
@@ -197,7 +197,7 @@ jobs:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        
+
     - stage: test
       os: linux
       services:
@@ -209,7 +209,7 @@ jobs:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        
+
     - stage: test
       os: linux
       services:
@@ -221,7 +221,7 @@ jobs:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        
+
     - stage: test
       os: linux
       services:
@@ -233,7 +233,7 @@ jobs:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        
+
     - stage: test
       os: linux
       services:
@@ -245,7 +245,7 @@ jobs:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        
+
     - stage: test
       os: linux
       services:
@@ -257,7 +257,7 @@ jobs:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        
+
     - stage: test
       os: linux
       services:
@@ -269,7 +269,7 @@ jobs:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        
+
     - stage: test
       os: linux
       services:
@@ -281,7 +281,7 @@ jobs:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        
+
     - stage: test
       os: linux
       services:
@@ -293,7 +293,7 @@ jobs:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        
+
     - stage: test
       os: linux
       services:
@@ -305,7 +305,7 @@ jobs:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        
+
     - stage: test
       os: linux
       services:
@@ -317,7 +317,7 @@ jobs:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        
+
     - stage: test
       os: linux
       services:
@@ -329,7 +329,7 @@ jobs:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        
+
     - stage: test
       os: linux
       services:
@@ -341,7 +341,7 @@ jobs:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        
+
     - stage: test
       os: linux
       services:
@@ -353,7 +353,7 @@ jobs:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        
+
     - stage: test
       os: linux
       services:
@@ -365,7 +365,7 @@ jobs:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        
+
     - stage: test
       os: linux
       services:
@@ -377,7 +377,7 @@ jobs:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        
+
     - stage: test
       os: linux
       services:
@@ -389,7 +389,7 @@ jobs:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        
+
     - stage: test
       os: linux
       services:
@@ -401,7 +401,7 @@ jobs:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        
+
     - stage: test
       os: linux
       services:
@@ -413,7 +413,7 @@ jobs:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        
+
     - stage: test
       os: linux
       services:
@@ -425,7 +425,7 @@ jobs:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        
+
     - stage: test
       os: linux
       services:
@@ -437,7 +437,7 @@ jobs:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        
+
     - stage: test
       os: linux
       services:
@@ -449,7 +449,7 @@ jobs:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        
+
     - stage: test
       os: linux
       services:
@@ -461,7 +461,7 @@ jobs:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        
+
     - stage: test
       os: linux
       services:
@@ -473,7 +473,7 @@ jobs:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        
+
     - stage: test
       os: linux
       services:
@@ -485,7 +485,7 @@ jobs:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        
+
     - stage: test
       os: linux
       services:
@@ -497,7 +497,7 @@ jobs:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        
+
     - stage: test
       os: linux
       services:
@@ -509,7 +509,7 @@ jobs:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        
+
     - stage: test
       os: linux
       services:
@@ -521,7 +521,7 @@ jobs:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        
+
     - stage: test
       os: linux
       services:
@@ -533,7 +533,7 @@ jobs:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        
+
     - stage: test
       os: linux
       services:
@@ -545,7 +545,7 @@ jobs:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        
+
     - stage: test
       os: linux
       services:
@@ -557,7 +557,7 @@ jobs:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        
+
     - stage: test
       os: linux
       services:
@@ -569,7 +569,7 @@ jobs:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        
+
     - stage: test
       os: linux
       services:
@@ -581,7 +581,7 @@ jobs:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        
+
     - stage: test
       os: linux
       services:
@@ -593,7 +593,7 @@ jobs:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        
+
     - stage: test
       os: linux
       services:
@@ -605,7 +605,7 @@ jobs:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        
+
     - stage: test
       os: linux
       services:
@@ -617,7 +617,7 @@ jobs:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        
+
     - stage: test
       os: linux
       services:
@@ -629,7 +629,7 @@ jobs:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        
+
     - stage: test
       os: linux
       services:
@@ -641,7 +641,7 @@ jobs:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        
+
     - stage: test
       os: linux
       services:
@@ -653,7 +653,7 @@ jobs:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        
+
     - stage: test
       os: linux
       services:
@@ -665,7 +665,7 @@ jobs:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        
+
     - stage: test
       os: linux
       services:
@@ -677,7 +677,7 @@ jobs:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        
+
     - stage: test
       os: linux
       services:
@@ -689,7 +689,7 @@ jobs:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        
+
     - stage: test
       os: linux
       services:
@@ -701,7 +701,7 @@ jobs:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        
+
     - stage: test
       os: linux
       services:
@@ -713,7 +713,7 @@ jobs:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        
+
     - stage: test
       os: linux
       services:
@@ -725,7 +725,7 @@ jobs:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        
+
     - stage: test
       os: linux
       services:
@@ -737,7 +737,7 @@ jobs:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        
+
     - stage: test
       os: linux
       services:
@@ -749,7 +749,7 @@ jobs:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        
+
     - stage: test
       os: linux
       services:
@@ -761,7 +761,7 @@ jobs:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        
+
     - stage: test
       os: linux
       services:
@@ -773,7 +773,7 @@ jobs:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        
+
     - stage: test
       os: linux
       services:
@@ -785,7 +785,7 @@ jobs:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        
+
     - stage: test
       os: linux
       services:
@@ -797,7 +797,7 @@ jobs:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        
+
     - stage: test
       os: linux
       services:
@@ -809,7 +809,7 @@ jobs:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        
+
     - stage: test
       os: linux
       services:
@@ -821,7 +821,7 @@ jobs:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        
+
     - stage: test
       os: linux
       services:
@@ -833,7 +833,7 @@ jobs:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        
+
     - stage: test
       os: linux
       services:
@@ -845,7 +845,7 @@ jobs:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        
+
     - stage: test
       os: linux
       services:
@@ -857,7 +857,7 @@ jobs:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        
+
     - stage: test
       os: linux
       services:
@@ -869,7 +869,7 @@ jobs:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        
+
     - stage: test
       os: linux
       services:
@@ -881,7 +881,7 @@ jobs:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        
+
     - stage: test
       os: linux
       services:
@@ -893,7 +893,7 @@ jobs:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        
+
     - stage: test
       os: linux
       services:
@@ -905,7 +905,7 @@ jobs:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_docker_suite.sh
         - cd $TRAVIS_BUILD_DIR
-        
+
     - stage: test
       os: linux
       services:

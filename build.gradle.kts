@@ -3,7 +3,7 @@ import org.gradle.api.tasks.wrapper.Wrapper.DistributionType.ALL
 plugins {
   `travis-ci`
 
-  id("org.jetbrains.intellij") version "0.4.3" apply false
+  id("org.jetbrains.intellij") version "0.4.5" apply false
 }
 
 tasks {

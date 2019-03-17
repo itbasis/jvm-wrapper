@@ -59,7 +59,7 @@ before_script:
     outputFile.appendText(
       """
 install:
-    """
+"""
     )
     blockInstallOSX()
     blockInstallLinux()
@@ -101,7 +101,7 @@ jobs:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_suite.sh
         - cd ${'$'}TRAVIS_BUILD_DIR
-        """
+"""
       )
     }
 
@@ -128,7 +128,7 @@ jobs:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_docker_suite.sh
         - cd ${'$'}TRAVIS_BUILD_DIR
-        """
+"""
         )
       }
     }
