@@ -84,7 +84,7 @@ jobs:
       ANY to listOf(
         "openjdk-13", "openjdk-12", "openjdk-11"
         //
-        , "oracle-11", "oracle-8"
+        , "oracle-12", "oracle-11", "oracle-8"
       )
       //
       , LINUX to listOf("openjdk-10", "openjdk-9", "openjdk-8", "openjdk-7")
