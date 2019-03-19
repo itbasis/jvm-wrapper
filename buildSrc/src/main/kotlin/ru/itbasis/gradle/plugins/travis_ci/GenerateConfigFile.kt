@@ -77,7 +77,17 @@ jobs:
 
   private fun blockJobsStageTest() {
     val dockerImages = listOf(
-      "centos:centos6", "centos:centos7", "debian:wheezy", "debian:jessie", "ubuntu:trusty", "opensuse:latest", "archlinux/base:latest"
+      "centos:centos6",
+      "centos:centos7",
+      "debian:stable",
+      "debian:testing",
+      "debian:unstable",
+      "ubuntu:rolling",
+      "ubuntu:latest",
+      "ubuntu:devel",
+      "opensuse:leap",
+      "opensuse:tumbleweed",
+      "archlinux/base:latest"
     )
 
     val supportedJvm = mapOf(
