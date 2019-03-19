@@ -282,7 +282,7 @@ jobs:
         - docker
       env:
         - ENV_TEST_FILE="openjdk-13"
-        - DOCKER_IMAGE="opensuse:leap"
+        - DOCKER_IMAGE="opensuse/leap:latest"
       script:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_docker_suite.sh
@@ -294,7 +294,7 @@ jobs:
         - docker
       env:
         - ENV_TEST_FILE="openjdk-13"
-        - DOCKER_IMAGE="opensuse:tumbleweed"
+        - DOCKER_IMAGE="opensuse/tumbleweed:latest"
       script:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_docker_suite.sh
@@ -414,7 +414,7 @@ jobs:
         - docker
       env:
         - ENV_TEST_FILE="openjdk-12"
-        - DOCKER_IMAGE="opensuse:leap"
+        - DOCKER_IMAGE="opensuse/leap:latest"
       script:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_docker_suite.sh
@@ -426,7 +426,7 @@ jobs:
         - docker
       env:
         - ENV_TEST_FILE="openjdk-12"
-        - DOCKER_IMAGE="opensuse:tumbleweed"
+        - DOCKER_IMAGE="opensuse/tumbleweed:latest"
       script:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_docker_suite.sh
@@ -546,7 +546,7 @@ jobs:
         - docker
       env:
         - ENV_TEST_FILE="openjdk-11"
-        - DOCKER_IMAGE="opensuse:leap"
+        - DOCKER_IMAGE="opensuse/leap:latest"
       script:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_docker_suite.sh
@@ -558,7 +558,7 @@ jobs:
         - docker
       env:
         - ENV_TEST_FILE="openjdk-11"
-        - DOCKER_IMAGE="opensuse:tumbleweed"
+        - DOCKER_IMAGE="opensuse/tumbleweed:latest"
       script:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_docker_suite.sh
@@ -678,7 +678,7 @@ jobs:
         - docker
       env:
         - ENV_TEST_FILE="oracle-12"
-        - DOCKER_IMAGE="opensuse:leap"
+        - DOCKER_IMAGE="opensuse/leap:latest"
       script:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_docker_suite.sh
@@ -690,7 +690,7 @@ jobs:
         - docker
       env:
         - ENV_TEST_FILE="oracle-12"
-        - DOCKER_IMAGE="opensuse:tumbleweed"
+        - DOCKER_IMAGE="opensuse/tumbleweed:latest"
       script:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_docker_suite.sh
@@ -810,7 +810,7 @@ jobs:
         - docker
       env:
         - ENV_TEST_FILE="oracle-11"
-        - DOCKER_IMAGE="opensuse:leap"
+        - DOCKER_IMAGE="opensuse/leap:latest"
       script:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_docker_suite.sh
@@ -822,7 +822,7 @@ jobs:
         - docker
       env:
         - ENV_TEST_FILE="oracle-11"
-        - DOCKER_IMAGE="opensuse:tumbleweed"
+        - DOCKER_IMAGE="opensuse/tumbleweed:latest"
       script:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_docker_suite.sh
@@ -942,7 +942,7 @@ jobs:
         - docker
       env:
         - ENV_TEST_FILE="oracle-8"
-        - DOCKER_IMAGE="opensuse:leap"
+        - DOCKER_IMAGE="opensuse/leap:latest"
       script:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_docker_suite.sh
@@ -954,7 +954,7 @@ jobs:
         - docker
       env:
         - ENV_TEST_FILE="oracle-8"
-        - DOCKER_IMAGE="opensuse:tumbleweed"
+        - DOCKER_IMAGE="opensuse/tumbleweed:latest"
       script:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_docker_suite.sh
@@ -1074,7 +1074,7 @@ jobs:
         - docker
       env:
         - ENV_TEST_FILE="openjdk-10"
-        - DOCKER_IMAGE="opensuse:leap"
+        - DOCKER_IMAGE="opensuse/leap:latest"
       script:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_docker_suite.sh
@@ -1086,7 +1086,7 @@ jobs:
         - docker
       env:
         - ENV_TEST_FILE="openjdk-10"
-        - DOCKER_IMAGE="opensuse:tumbleweed"
+        - DOCKER_IMAGE="opensuse/tumbleweed:latest"
       script:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_docker_suite.sh
@@ -1206,7 +1206,7 @@ jobs:
         - docker
       env:
         - ENV_TEST_FILE="openjdk-9"
-        - DOCKER_IMAGE="opensuse:leap"
+        - DOCKER_IMAGE="opensuse/leap:latest"
       script:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_docker_suite.sh
@@ -1218,7 +1218,7 @@ jobs:
         - docker
       env:
         - ENV_TEST_FILE="openjdk-9"
-        - DOCKER_IMAGE="opensuse:tumbleweed"
+        - DOCKER_IMAGE="opensuse/tumbleweed:latest"
       script:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_docker_suite.sh
@@ -1338,7 +1338,7 @@ jobs:
         - docker
       env:
         - ENV_TEST_FILE="openjdk-8"
-        - DOCKER_IMAGE="opensuse:leap"
+        - DOCKER_IMAGE="opensuse/leap:latest"
       script:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_docker_suite.sh
@@ -1350,7 +1350,7 @@ jobs:
         - docker
       env:
         - ENV_TEST_FILE="openjdk-8"
-        - DOCKER_IMAGE="opensuse:tumbleweed"
+        - DOCKER_IMAGE="opensuse/tumbleweed:latest"
       script:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_docker_suite.sh
@@ -1470,7 +1470,7 @@ jobs:
         - docker
       env:
         - ENV_TEST_FILE="openjdk-7"
-        - DOCKER_IMAGE="opensuse:leap"
+        - DOCKER_IMAGE="opensuse/leap:latest"
       script:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_docker_suite.sh
@@ -1482,7 +1482,7 @@ jobs:
         - docker
       env:
         - ENV_TEST_FILE="openjdk-7"
-        - DOCKER_IMAGE="opensuse:tumbleweed"
+        - DOCKER_IMAGE="opensuse/tumbleweed:latest"
       script:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_docker_suite.sh

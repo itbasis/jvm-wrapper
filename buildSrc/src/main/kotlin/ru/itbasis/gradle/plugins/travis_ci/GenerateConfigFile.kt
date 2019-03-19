@@ -85,8 +85,8 @@ jobs:
       "ubuntu:rolling",
       "ubuntu:latest",
       "ubuntu:devel",
-      "opensuse:leap",
-      "opensuse:tumbleweed",
+      "opensuse/leap:latest",
+      "opensuse/tumbleweed:latest",
       "archlinux/base:latest"
     )
 
