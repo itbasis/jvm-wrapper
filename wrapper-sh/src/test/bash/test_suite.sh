@@ -19,6 +19,6 @@ TEST_REUSE_JAVA_VERSION=${TEST_REUSE_JAVA_VERSION}
 
 shellcheck builder.bash
 bash builder.bash
-bats -p src/test/bash/jvmw.bats && bats -p src/test/bash/part_*.bats
-build/jvmw java -version
 build/jvmw java -fullversion
+build/jvmw java -version
+bats -p src/test/bash/jvmw.bats && bats -p src/test/bash/part_*.bats

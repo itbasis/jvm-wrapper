@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Build date: 20190526_084339
+# Build date: 20190526_092714
 #
 # Hack for code verification
 JVM_VERSION_MAJOR=${JVM_VERSION_MAJOR}
@@ -421,7 +421,7 @@ function oracle_otn_page_archive_jdk_parser() {
 	debug "ARCHIVE_JVM_URL='${ARCHIVE_JVM_URL}'"
 }
 function openjdk_prepare_actions() {
-	if [[ ${IS_MAC_OS} ]] && [[ ${JVM_VERSION_MAJOR} -ge 9 ]]; then
+	if ${IS_MAC_OS} && [[ ${JVM_VERSION_MAJOR} -ge 9 ]]; then
 		ARCHIVE_EXT=${ARCHIVE_EXT_TAR_GZ}
 		ARCHIVE_FILE=${JDK_ROOT_DIR}.${ARCHIVE_EXT}
 	fi
@@ -451,7 +451,7 @@ function openjdk_latest_version_page_parser() {
 	if [[ ${JVM_VERSION_MAJOR} -gt ${RI_VERSION_MAX} ]]; then
 		JVM_PAGE_URL="https://jdk.java.net/${JVM_VERSION_MAJOR}/"
 	else
-		if [[ ${IS_MAC_OS} ]]; then
+		if ${IS_MAC_OS}; then
 			die "MacOS does not support OpenJDK ${RI_VERSION_MAX} or below."
 		fi
 		JVM_PAGE_URL="https://jdk.java.net/java-se-ri/${JVM_VERSION_MAJOR}"
@@ -461,11 +461,11 @@ function openjdk_latest_version_page_parser() {
 function openjdk_archive_parser() {
 	debug "JVM_PAGE_URL='${JVM_PAGE_URL}'"
 	local os=${OS}
-	if [[ ${IS_MAC_OS} ]]; then
+	if ${IS_MAC_OS}; then
 		os=osx
 	fi
 	local arch=${ARCH}
-	if [[ ${IS_MAC_OS} ]] && [[ ${JVM_VERSION_MAJOR} -le 8 ]]; then
+	if ${IS_MAC_OS} && [[ ${JVM_VERSION_MAJOR} -le 8 ]]; then
 		arch="x86_64"
 	fi
 	local -r content=$(curl -s "${JVM_PAGE_URL}")
@@ -512,7 +512,7 @@ function check_is_out_of_date() {
 	else
 		local -r luf_date="$(head -1 <"${LAST_UPDATE_FILE}")"
 		# shellcheck disable=SC2005
-		local -r prev_date=$([[ ${IS_MAC_OS} ]] && echo "$(date -jf '%F %R' "${luf_date}" +%j)" || echo "$(date --date="${luf_date}" '+%j')")
+		local -r prev_date=$([[ "${IS_MAC_OS}" == "true" ]] && echo "$(date -jf '%F %R' "${luf_date}" +%j)" || echo "$(date --date="${luf_date}" '+%j')")
 		local -r curr_date=$(date +%j)
 		debug "prev_date='${prev_date}', curr_date='${curr_date}'"
 		if [[ ${curr_date} > ${prev_date} ]]; then
@@ -572,7 +572,7 @@ function detect_reuse_jdk() {
 	REQUIRED_UPDATE=N
 	return 0
 }
-if [[ ${IS_MAC_OS} ]]; then
+if ${IS_MAC_OS}; then
 	system_check_program_exists "${REQUIRED_COMMANDS_CORE}" "${REQUIRED_COMMANDS_DARWIN}"
 else
 	system_check_program_exists "${REQUIRED_COMMANDS_CORE}" "${REQUIRED_COMMANDS_LINUX}"
