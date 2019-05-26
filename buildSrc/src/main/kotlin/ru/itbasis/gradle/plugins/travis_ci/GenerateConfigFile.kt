@@ -145,7 +145,7 @@ jobs:
   private fun blockInstallLinux() {
     @Language("Bash") val cmds = arrayOf(
       "docker --version",
-      "sudo add-apt-repository -y ppa:duggan/bats",
+//      "sudo add-apt-repository -y ppa:duggan/bats",
       "sudo apt-get update",
       "sudo apt-get install -y shellcheck bats",
       "apt-cache search oracle-"
