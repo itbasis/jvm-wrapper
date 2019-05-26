@@ -7,10 +7,11 @@ ARCHIVE_EXT=${ARCHIVE_EXT}
 ARCHIVE_EXT_TAR_GZ=${ARCHIVE_EXT_TAR_GZ}
 ARCHIVE_FILE=${ARCHIVE_FILE}
 JDK_ROOT_DIR=${JDK_ROOT_DIR}
+IS_MAC_OS=${IS_MAC_OS}
 
 # BEGIN SCRIPT
 function openjdk_prepare_actions() {
-	if [[ "${OS}" == "darwin" ]] && [[ ${JVM_VERSION_MAJOR} -ge 9 ]]; then
+	if [[ ${IS_MAC_OS} ]] && [[ ${JVM_VERSION_MAJOR} -ge 9 ]]; then
 		ARCHIVE_EXT=${ARCHIVE_EXT_TAR_GZ}
 		ARCHIVE_FILE=${JDK_ROOT_DIR}.${ARCHIVE_EXT}
 	fi

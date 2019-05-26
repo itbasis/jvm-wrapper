@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+# Hack for code verification
+JVM_WRAPPER_VERSION=${JVM_WRAPPER_VERSION}
+
+# BEGIN SCRIPT
 SCRIPT_FILE=./build/jvmw
 
 SCRIPT_PARTS="core properties download unpack core_oracle download_oracle core_openjdk download_openjdk main"

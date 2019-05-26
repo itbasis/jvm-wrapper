@@ -40,7 +40,7 @@ env:
     - JVM_WRAPPER_VERSION="`date +%Y%m%d_%H%M%S`"
 
 """
-    )
+                        )
   }
 
   private fun blockBeforeScript() {
@@ -52,7 +52,7 @@ before_script:
   - bats -v
   - shellcheck -V
 """
-    )
+                         )
   }
 
   private fun blockInstall() {
@@ -60,7 +60,7 @@ before_script:
       """
 install:
 """
-    )
+                         )
     blockInstallOSX()
     blockInstallLinux()
   }
@@ -71,7 +71,7 @@ install:
 jobs:
   include:
 """
-    )
+                         )
     blockJobsStageTest()
   }
 
@@ -85,20 +85,18 @@ jobs:
       "ubuntu:rolling",
       "ubuntu:latest",
       "ubuntu:devel",
-      "opensuse/leap:latest",
-      "opensuse/tumbleweed:latest",
       "archlinux/base:latest"
-    )
+                             )
 
     val supportedJvm = mapOf(
       ANY to listOf(
-        "openjdk-13", "openjdk-12", "openjdk-11"
+        "openjdk-13", "openjdk-12"
         //
         , "oracle-12", "oracle-11", "oracle-8"
-      )
+                   )
       //
-      , LINUX to listOf("openjdk-10", "openjdk-9", "openjdk-8", "openjdk-7")
-    )
+      , LINUX to listOf("openjdk-11", "openjdk-10", "openjdk-9", "openjdk-8", "openjdk-7")
+                            )
 
     val block: (envTestFile: String, os: SupportedOS) -> Unit = { envTestFile, os ->
       outputFile.appendText(
@@ -112,7 +110,7 @@ jobs:
         - ./src/test/bash/test_suite.sh
         - cd ${'$'}TRAVIS_BUILD_DIR
 """
-      )
+                           )
     }
 
     val environments = arrayListOf(OSX, LINUX).flatMap { os ->
@@ -123,7 +121,7 @@ jobs:
       block.invoke(envTestFile, os)
     }
 
-    environments.filter { (os, _) -> os == LINUX }.onEach { (os, envTestFile) ->
+    environments.filter { (os, _) -> os == LINUX }.onEach { (_, envTestFile) ->
       dockerImages.forEach { dockerImage ->
         outputFile.appendText(
           """
@@ -139,7 +137,7 @@ jobs:
         - ./src/test/bash/test_docker_suite.sh
         - cd ${'$'}TRAVIS_BUILD_DIR
 """
-        )
+                             )
       }
     }
   }
@@ -151,26 +149,26 @@ jobs:
       "sudo apt-get update",
       "sudo apt-get install -y shellcheck bats",
       "apt-cache search oracle-"
-    )
+                                        )
     cmds.forEach { cmd ->
       outputFile.appendText(
         """
   - if [[ "${'$'}TRAVIS_OS_NAME" == "linux" ]]; then $cmd; fi
       """
-      )
+                           )
     }
   }
 
   private fun blockInstallOSX() {
     @Language("Bash") val cmds = arrayOf(
       "brew update", "brew reinstall shellcheck bats-core", "brew cask uninstall java", "brew search java"
-    )
+                                        )
     cmds.forEach { cmd ->
       outputFile.appendText(
         """
   - if [[ "${'$'}TRAVIS_OS_NAME" == "osx" ]]; then $cmd; fi
       """
-      )
+                           )
     }
   }
 

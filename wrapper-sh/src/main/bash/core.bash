@@ -43,7 +43,8 @@ ARCHIVE_EXT_DMG="dmg"
 JVMW_PROPERTY_FILE="${JVMW_PROPERTY_FILE:-./jvmw.properties}"
 OS=$(uname | tr '[:upper:]' '[:lower:]')
 ARCH=$([[ "$(uname -m)" == "x86_64" ]] && echo "x64" || echo "i586")
-ARCHIVE_EXT=$([[ "${OS}" == "darwin" ]] && echo ${ARCHIVE_EXT_DMG} || echo ${ARCHIVE_EXT_TAR_GZ})
+IS_MAC_OS=$([[ "${OS}" == "darwin" ]] && echo true || echo false)
+ARCHIVE_EXT=$(${IS_MAC_OS} && echo ${ARCHIVE_EXT_DMG} || echo ${ARCHIVE_EXT_TAR_GZ})
 #
 REQUIRED_COMMANDS_CORE='awk tr head rm mv cd curl readlink dirname'
 REQUIRED_COMMANDS_DARWIN='hdiutil xar cpio shasum'
@@ -63,7 +64,7 @@ function log_2() {
 function print_debug_info() {
 	if [[ "${JVMW_DEBUG}" == "Y" ]]; then
 		printf ''
-		for key in OS ARCH JVMW_HOME ARCHIVE_EXT JVM_VERSION JVM_VERSION_MAJOR JVM_VERSION_UPDATE JDK_ROOT_DIR JDK_HOME_DIR JAVA_HOME_DIR JVM_PAGE_URL ARCHIVE_JVM_URL ARCHIVE_JVM_CHECKSUM ARCHIVE_FILE LAST_UPDATE_FILE REQUIRED_UPDATE JVMW_DEBUG USE_SYSTEM_JVM JVM_VENDOR ORACLE_USER; do
+		for key in OS IS_MAC_OS ARCH JVMW_HOME ARCHIVE_EXT JVM_VERSION JVM_VERSION_MAJOR JVM_VERSION_UPDATE JDK_ROOT_DIR JDK_HOME_DIR JAVA_HOME_DIR JVM_PAGE_URL ARCHIVE_JVM_URL ARCHIVE_JVM_CHECKSUM ARCHIVE_FILE LAST_UPDATE_FILE REQUIRED_UPDATE JVMW_DEBUG USE_SYSTEM_JVM JVM_VENDOR ORACLE_USER; do
 			>&2 log_2 '' "${key}=${!key}";
 		done
 	fi

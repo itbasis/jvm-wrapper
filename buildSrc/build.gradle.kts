@@ -17,9 +17,10 @@ repositories {
 val kotlinVersion = "1.3.+"
 
 dependencies {
-  implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
+  implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:+")
 
   implementation("io.gitlab.arturbosch.detekt:detekt-gradle-plugin:+")
+  implementation("io.kotlintest:kotlintest-gradle-plugin:+")
 
 // TODO  implementation("gradle.plugin.org.jetbrains.intellij.plugins:gradle-intellij-plugin:+")
 }

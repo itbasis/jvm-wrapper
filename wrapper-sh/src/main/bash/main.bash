@@ -16,6 +16,7 @@ REQUIRED_COMMANDS_DARWIN=${REQUIRED_COMMANDS_DARWIN}
 REQUIRED_COMMANDS_LINUX=${REQUIRED_COMMANDS_LINUX}
 LAST_UPDATE_FILE=${LAST_UPDATE_FILE}
 REQUIRED_UPDATE=${REQUIRED_UPDATE}
+IS_MAC_OS=${IS_MAC_OS}
 
 
 # BEGIN SCRIPT
@@ -35,7 +36,7 @@ function check_is_out_of_date() {
 	else
 		local -r luf_date="$(head -1 <"${LAST_UPDATE_FILE}")"
 		# shellcheck disable=SC2005
-		local -r prev_date=$([[ "${OS}" == "darwin" ]] && echo "$(date -jf '%F %R' "${luf_date}" +%j)" || echo "$(date --date="${luf_date}" '+%j')")
+		local -r prev_date=$([[ ${IS_MAC_OS} ]] && echo "$(date -jf '%F %R' "${luf_date}" +%j)" || echo "$(date --date="${luf_date}" '+%j')")
 		local -r curr_date=$(date +%j)
 		debug "prev_date='${prev_date}', curr_date='${curr_date}'"
 		if [[ ${curr_date} > ${prev_date} ]]; then
@@ -109,7 +110,7 @@ function detect_reuse_jdk() {
 	return 0
 }
 
-if [[ "${OS}" == "darwin" ]]; then
+if [[ ${IS_MAC_OS} ]]; then
 	system_check_program_exists "${REQUIRED_COMMANDS_CORE}" "${REQUIRED_COMMANDS_DARWIN}"
 else
 	system_check_program_exists "${REQUIRED_COMMANDS_CORE}" "${REQUIRED_COMMANDS_LINUX}"

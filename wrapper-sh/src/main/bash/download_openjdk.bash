@@ -16,11 +16,12 @@ OTN_USER_AGENT=${OTN_USER_AGENT}
 JVM_VERSION=${JVM_VERSION}
 JVM_VERSION_MAJOR=${JVM_VERSION_MAJOR}
 ARCHIVE_JVM_CHECKSUM=${ARCHIVE_JVM_CHECKSUM}
+IS_MAC_OS=${IS_MAC_OS}
 
 # BEGIN SCRIPT
 
-
-RI_VERSION_MAX=10
+# Reference Implementations
+RI_VERSION_MAX=11
 
 function openjdk_check_the_need_for_downloading() {
 	if [[ "${REQUIRED_UPDATE}" != "Y" ]]; then
@@ -49,6 +50,9 @@ function openjdk_latest_version_page_parser() {
 	if [[ ${JVM_VERSION_MAJOR} -gt ${RI_VERSION_MAX} ]]; then
 		JVM_PAGE_URL="https://jdk.java.net/${JVM_VERSION_MAJOR}/"
 	else
+		if [[ ${IS_MAC_OS} ]]; then
+			die "MacOS does not support OpenJDK ${RI_VERSION_MAX} or below."
+		fi
 		JVM_PAGE_URL="https://jdk.java.net/java-se-ri/${JVM_VERSION_MAJOR}"
 	fi
 	openjdk_archive_parser
@@ -58,11 +62,11 @@ function openjdk_archive_parser() {
 	debug "JVM_PAGE_URL='${JVM_PAGE_URL}'"
 
 	local os=${OS}
-	if [[ "${os}" == "darwin" ]]; then
+	if [[ ${IS_MAC_OS} ]]; then
 		os=osx
 	fi
 	local arch=${ARCH}
-	if [[ "${OS}" == "darwin" ]] && [[ ${JVM_VERSION_MAJOR} -le 8 ]]; then
+	if [[ ${IS_MAC_OS} ]] && [[ ${JVM_VERSION_MAJOR} -le 8 ]]; then
 		arch="x86_64"
 	fi
 

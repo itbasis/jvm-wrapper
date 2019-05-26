@@ -9,10 +9,10 @@
 |OS|JVM|
 |---|---|
 |Linux|`OpenJDK 13`, `OpenJDK 12`, `OpenJDK 11`, `OpenJDK 10`, `OpenJDK 9`, `OpenJDK 8`, `OpenJDK 7`<br/>`Oracle JDK 12`, `Oracle JDK 11`, `Oracle JDK 8`|
-|OSX|`OpenJDK 13`, `OpenJDK 12`, `OpenJDK 11`<br/>`Oracle JDK 11`, `Oracle JDK 8`|
+|OSX|`OpenJDK 13`, `OpenJDK 12`<br/>`Oracle JDK 11`, `Oracle JDK 8`|
 
 ## Testing in docker images
-`centos:centos6`, `centos:centos7`, `debian:stable`, `debian:testing`, `debian:unstable`, `ubuntu:rolling`, `ubuntu:latest`, `ubuntu:devel`, `opensuse/leap`, `opensuse/tumbleweed`, `archlinux/base:latest`
+`centos:centos6`, `centos:centos7`, `debian:stable`, `debian:testing`, `debian:unstable`, `ubuntu:rolling`, `ubuntu:latest`, `ubuntu:devel`, `archlinux/base:latest`
 
 ## Install
 
