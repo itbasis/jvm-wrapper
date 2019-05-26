@@ -145,9 +145,9 @@ jobs:
   private fun blockInstallLinux() {
     @Language("Bash") val cmds = arrayOf(
       "docker --version",
-//      "sudo add-apt-repository -y ppa:duggan/bats",
       "sudo apt-get update",
-      "sudo apt-get install -y shellcheck bats",
+      "sudo apt-get install -y shellcheck",
+      "mkdir -p /opt/bats && git clone https://github.com/bats-core/bats-core.git && cd bats-core && sudo ./install.sh /usr/local",
       "apt-cache search oracle-"
                                         )
     cmds.forEach { cmd ->
