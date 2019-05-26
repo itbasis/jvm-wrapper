@@ -147,7 +147,7 @@ jobs:
       "docker --version",
       "sudo apt-get update",
       "sudo apt-get install -y shellcheck",
-      "mkdir -p /opt/bats && git clone https://github.com/bats-core/bats-core.git && cd bats-core && sudo ./install.sh /usr/local",
+      "mkdir -p /opt/bats && cd /opt/bats && git clone https://github.com/bats-core/bats-core.git && cd bats-core && sudo ./install.sh /usr/local && cd ${'$'}TRAVIS_BUILD_DIR",
       "apt-cache search oracle-"
                                         )
     cmds.forEach { cmd ->

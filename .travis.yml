@@ -23,7 +23,7 @@ install:
       
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install -y shellcheck; fi
       
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then mkdir -p /opt/bats && git clone https://github.com/bats-core/bats-core.git && cd bats-core && sudo ./install.sh /usr/local; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then mkdir -p /opt/bats && cd /opt/bats && git clone https://github.com/bats-core/bats-core.git && cd bats-core && sudo ./install.sh /usr/local && cd $TRAVIS_BUILD_DIR; fi
       
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then apt-cache search oracle-; fi
       

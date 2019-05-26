@@ -8,7 +8,7 @@ cp shellcheck-"${scversion}"/shellcheck /usr/bin/
 shellcheck --version
 
 # Bats
-mkdir -p /opt/bats && git clone https://github.com/bats-core/bats-core.git && cd bats-core && ./install.sh /usr/local
+mkdir -p /opt/bats && cd /opt/bats && git clone https://github.com/bats-core/bats-core.git && cd bats-core && ./install.sh /usr/local
 bats -v
 
 #
