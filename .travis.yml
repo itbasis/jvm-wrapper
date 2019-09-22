@@ -57,6 +57,15 @@ jobs:
     - stage: test
       os: osx
       env:
+        - ENV_TEST_FILE="oracle-13"
+      script:
+        - cd ./wrapper-sh/
+        - ./src/test/bash/test_suite.sh
+        - cd $TRAVIS_BUILD_DIR
+
+    - stage: test
+      os: osx
+      env:
         - ENV_TEST_FILE="oracle-12"
       script:
         - cd ./wrapper-sh/
@@ -94,6 +103,15 @@ jobs:
       os: linux
       env:
         - ENV_TEST_FILE="openjdk-12"
+      script:
+        - cd ./wrapper-sh/
+        - ./src/test/bash/test_suite.sh
+        - cd $TRAVIS_BUILD_DIR
+
+    - stage: test
+      os: linux
+      env:
+        - ENV_TEST_FILE="oracle-13"
       script:
         - cd ./wrapper-sh/
         - ./src/test/bash/test_suite.sh
@@ -381,6 +399,114 @@ jobs:
         - docker
       env:
         - ENV_TEST_FILE="openjdk-12"
+        - DOCKER_IMAGE="archlinux/base:latest"
+      script:
+        - cd ./wrapper-sh/
+        - ./src/test/bash/test_docker_suite.sh
+        - cd $TRAVIS_BUILD_DIR
+
+    - stage: test
+      os: linux
+      services:
+        - docker
+      env:
+        - ENV_TEST_FILE="oracle-13"
+        - DOCKER_IMAGE="centos:centos6"
+      script:
+        - cd ./wrapper-sh/
+        - ./src/test/bash/test_docker_suite.sh
+        - cd $TRAVIS_BUILD_DIR
+
+    - stage: test
+      os: linux
+      services:
+        - docker
+      env:
+        - ENV_TEST_FILE="oracle-13"
+        - DOCKER_IMAGE="centos:centos7"
+      script:
+        - cd ./wrapper-sh/
+        - ./src/test/bash/test_docker_suite.sh
+        - cd $TRAVIS_BUILD_DIR
+
+    - stage: test
+      os: linux
+      services:
+        - docker
+      env:
+        - ENV_TEST_FILE="oracle-13"
+        - DOCKER_IMAGE="debian:stable"
+      script:
+        - cd ./wrapper-sh/
+        - ./src/test/bash/test_docker_suite.sh
+        - cd $TRAVIS_BUILD_DIR
+
+    - stage: test
+      os: linux
+      services:
+        - docker
+      env:
+        - ENV_TEST_FILE="oracle-13"
+        - DOCKER_IMAGE="debian:testing"
+      script:
+        - cd ./wrapper-sh/
+        - ./src/test/bash/test_docker_suite.sh
+        - cd $TRAVIS_BUILD_DIR
+
+    - stage: test
+      os: linux
+      services:
+        - docker
+      env:
+        - ENV_TEST_FILE="oracle-13"
+        - DOCKER_IMAGE="debian:unstable"
+      script:
+        - cd ./wrapper-sh/
+        - ./src/test/bash/test_docker_suite.sh
+        - cd $TRAVIS_BUILD_DIR
+
+    - stage: test
+      os: linux
+      services:
+        - docker
+      env:
+        - ENV_TEST_FILE="oracle-13"
+        - DOCKER_IMAGE="ubuntu:rolling"
+      script:
+        - cd ./wrapper-sh/
+        - ./src/test/bash/test_docker_suite.sh
+        - cd $TRAVIS_BUILD_DIR
+
+    - stage: test
+      os: linux
+      services:
+        - docker
+      env:
+        - ENV_TEST_FILE="oracle-13"
+        - DOCKER_IMAGE="ubuntu:latest"
+      script:
+        - cd ./wrapper-sh/
+        - ./src/test/bash/test_docker_suite.sh
+        - cd $TRAVIS_BUILD_DIR
+
+    - stage: test
+      os: linux
+      services:
+        - docker
+      env:
+        - ENV_TEST_FILE="oracle-13"
+        - DOCKER_IMAGE="ubuntu:devel"
+      script:
+        - cd ./wrapper-sh/
+        - ./src/test/bash/test_docker_suite.sh
+        - cd $TRAVIS_BUILD_DIR
+
+    - stage: test
+      os: linux
+      services:
+        - docker
+      env:
+        - ENV_TEST_FILE="oracle-13"
         - DOCKER_IMAGE="archlinux/base:latest"
       script:
         - cd ./wrapper-sh/

@@ -18,7 +18,7 @@ function properties_parser() {
 
 function properties_default() {
 	cat << EOF
-JVM_VERSION=11
+JVM_VERSION=13
 REQUIRED_UPDATE=Y
 CLEAR_COOKIE=Y
 JVMW_DEBUG=N

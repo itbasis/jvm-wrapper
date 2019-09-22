@@ -12,6 +12,8 @@ build/
 tmp.*
 *.swp
 
+.kotlintest/
+
 ### IntelliJ IDEA ###
 .idea/*
 !.idea/encodings.xml

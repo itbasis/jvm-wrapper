@@ -10,5 +10,6 @@
     <plugin id="name.kropp.intellij.makefile" />
     <plugin id="org.editorconfig.editorconfigjetbrains" />
     <plugin id="org.jetbrains.kotlin" />
+    <plugin id="tanvd.grazi" />
   </component>
 </project>

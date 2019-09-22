@@ -22,6 +22,7 @@ function download_jdk() {
 		return 0
 	fi
 
+	debug "ARCHIVE_JVM_URL=${ARCHIVE_JVM_URL}"
 	if [[ -z "${ARCHIVE_JVM_URL}" ]]; then
 		die "empty ARCHIVE_JVM_URL. Use page '${JVM_PAGE_URL}'"
 	fi

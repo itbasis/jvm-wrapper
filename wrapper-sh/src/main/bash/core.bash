@@ -28,7 +28,6 @@ LAST_UPDATE_FILE=${LAST_UPDATE_FILE}
 REQUIRED_UPDATE=${REQUIRED_UPDATE}
 #
 export JVMW=true
-#JVMW_HOME=${HOME}/.jvm
 if [[ -z "${JVMW_HOME}" ]]; then
 	JVMW_HOME="${HOME}/.jvm"
 fi

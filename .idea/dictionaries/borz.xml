@@ -2,7 +2,12 @@
   <dictionary name="borz">
     <words>
       <w>archlinux</w>
+      <w>atomicfu</w>
+      <w>bytebuddy</w>
+      <w>coroutines</w>
       <w>devel</w>
+      <w>kotlinx</w>
+      <w>ktor</w>
       <w>nfyl</w>
       <w>noconfirm</w>
       <w>pacman</w>
